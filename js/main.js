@@ -29,13 +29,11 @@ function create() {
 	game.scale.pageAlignVertically = true
 	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 	game.physics.startSystem(Phaser.Physics.ARCADE);
-
 	game.stage.backgroundColor = '#5c94fc';
 
 	map = game.add.tilemap('level');
 	map.addTilesetImage('tiles', 'tiles');
 	map.setCollisionBetween(3, 12, true, 'solid');
-
 	map.createLayer('background');
 
 	layer = map.createLayer('solid');
