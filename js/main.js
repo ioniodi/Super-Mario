@@ -11,8 +11,8 @@ function preload() {
 
 	// We need this because the assets are on github pages
 	// Remove the next 2 lines if running locally
-	// this.load.baseURL = 'https://ioniodi.github.io/Super-Mario/';
-	// this.load.crossOrigin = 'anonymous';
+	this.load.baseURL = 'https://ioniodi.github.io/Super-Mario/';
+	this.load.crossOrigin = 'anonymous';
 
 	this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16, 16);
 	this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
