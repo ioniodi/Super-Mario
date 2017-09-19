@@ -14,5 +14,3 @@
 - [Official Phaser Tutorials](https://phaser.io/learn/official-tutorials)
 - [Phaser Examples](http://phaser.io/examples)
 - [Javascript tutorial](http://www.w3schools.com/js/)
-- [Using States in Phaser Tutorial](http://perplexingtech.weebly.com/game-dev-blog/using-states-in-phaserjs-javascript-game-developement)
-
