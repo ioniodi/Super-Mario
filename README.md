@@ -7,9 +7,6 @@
 ![ScreenShot](1.png)
 
 - Στο [index.html](index.html) άλλαξε το ioniodi με το δικό σου username.
-![ScreenShot](3.png)
-
-- Στο [load.js](/js/load.js) άλλαξε το ioniodi με το δικό σου username. 
 ![ScreenShot](2.png)
 
 ## Resources
