@@ -1,4 +1,2 @@
-# Super-Mario
+# Super-Mario Extensions
 
-## Extensions
-- 
