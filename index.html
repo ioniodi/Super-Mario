@@ -24,19 +24,37 @@ body {
 
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
-			this.load.baseURL = 'https://ioniodi.github.io/Super-Mario/';
+			this.load.baseURL = 'https://mkamgit.github.io/Super-Mario/';
 			this.load.crossOrigin = 'anonymous';
 
 			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,
 					16);
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
-			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
-			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
+			this.load.spritesheet('mario', 'assets/Hero.png', 16, 16);
+			this.load.spritesheet('coin', 'assets/rcoin.png', 16, 16);
+			this.load.spritesheet('enemy', 'assets/spritesforyou.png', 16, 16);
 
-			this.load.tilemap('level', 'assets/super_mario_map.json', null,
+			this.load.tilemap('level', 'assets/maptest2.json', null,
 					Phaser.Tilemap.TILED_JSON);
+			
+			this.load.audio('background_music', ['audio/bgm.mp3', 'audio/bgm.ogg']);
+			
+			this.load.audio('coin_sfx', 'audio/coin.wav');
+			this.load.audio('jump_sfx', 'audio/jump.wav');
+			this.load.audio('stomp_sfx', 'audio/stomp.wav');
 		}
-
+		
+		var music;
+		var coinSfx;
+		var jumpSfx;
+		var stompSfx;
+		
+		var score = 0;
+		var scoreText;
+		
+		var lives = 3;
+		var livesText;
+		
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 			game.scale.pageAlignHorizontally = true;
@@ -47,6 +65,8 @@ body {
 			game.stage.backgroundColor = '#5c94fc';
 
 			map = game.add.tilemap('level');
+			map.addTilesetImage('super_mario_tiles', 'tiles');
+			map.addTilesetImage('spritesforyou', 'enemy');
 			map.addTilesetImage('tiles', 'tiles');
 			map.setCollisionBetween(3, 12, true, 'solid');
 
@@ -59,8 +79,15 @@ body {
 			coins.enableBody = true;
 			map.createFromTiles(2, null, 'coin', 'stuff', coins);
 			coins.callAll('animations.add', 'animations', 'spin',
-					[ 0, 0, 1, 2 ], 3, true);
+					[ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ], 3, true);
 			coins.callAll('animations.play', 'animations', 'spin');
+			
+			bonuses = game.add.group();
+			bonuses.enableBody = true;
+			map.createFromTiles(31, null, 'enemy', 'stuff', bonuses);
+			bonuses.callAll('animations.add', 'animations', 'spin',
+					[ 28, 29, 28 ], 3, true);
+			bonuses.callAll('animations.play', 'animations', 'spin');
 
 			goombas = game.add.group();
 			goombas.enableBody = true;
@@ -71,25 +98,51 @@ body {
 			goombas.setAll('body.bounce.x', 1);
 			goombas.setAll('body.velocity.x', -20);
 			goombas.setAll('body.gravity.y', 500);
+			
+			enemies = game.add.group();
+			enemies.enableBody = true;
+			map.createFromTiles(31, null, 'enemy', 'stuff', enemies);
+			enemies.callAll('animations.add', 'animations', 'walk', [ 9, 10 ],
+					2, true);
+			enemies.callAll('animations.play', 'animations', 'walk');
+			enemies.setAll('body.bounce.x', 1);
+			enemies.setAll('body.velocity.x', -20);
+			enemies.setAll('body.gravity.y', 500);
 
 			player = game.add.sprite(16, game.world.height - 48, 'mario');
 			game.physics.arcade.enable(player);
 			player.body.gravity.y = 370;
 			player.body.collideWorldBounds = true;
-			player.animations.add('walkRight', [ 1, 2, 3 ], 10, true);
-			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
+			player.animations.add('walkRight', [ 12, 13, 14 ], 10, true);
+			player.animations.add('walkLeft', [ 9, 10, 11 ], 10, true);
 			player.goesRight = true;
 
 			game.camera.follow(player);
 
 			cursors = game.input.keyboard.createCursorKeys();
+			
+			music = game.add.audio('background_music');
+			music.play();
+			
+			coinSfx = game.add.audio('coin_sfx');
+			jumpSfx = game.add.audio('jump_sfx');
+			stompSfx = game.add.audio('stomp_sfx');
+			
+			scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '16px', fill: '#000' });
+			scoreText.fixedToCamera = true;
+			
+			livesText = game.add.text(190, 16, 'Lives : ' + lives, { font: '16px Arial', fill: '#fff' });
+			livesText.fixedToCamera = true;
 		}
 
 		function update() {
 			game.physics.arcade.collide(player, layer);
 			game.physics.arcade.collide(goombas, layer);
+			game.physics.arcade.collide(enemies, layer);
 			game.physics.arcade.overlap(player, goombas, goombaOverlap);
+			game.physics.arcade.overlap(player, enemies, enemyOverlap);
 			game.physics.arcade.overlap(player, coins, coinOverlap);
+			game.physics.arcade.overlap(player, bonuses, bonusOverlap);
 
 			if (player.body.enable) {
 				player.body.velocity.x = 0;
@@ -104,27 +157,43 @@ body {
 				} else {
 					player.animations.stop();
 					if (player.goesRight)
-						player.frame = 0;
+						player.frame = 15;
 					else
-						player.frame = 7;
+						player.frame = 8;
 				}
 
 				if (cursors.up.isDown && player.body.onFloor()) {
 					player.body.velocity.y = -190;
 					player.animations.stop();
+					
+					jumpSfx.play();
 				}
 
 				if (player.body.velocity.y != 0) {
 					if (player.goesRight)
-						player.frame = 5;
+						player.frame = 18;
 					else
-						player.frame = 12;
+						player.frame = 16;
 				}
 			}
 		}
 
 		function coinOverlap(player, coin) {
+			coinSfx.play();
+			
+			score += 1;
+			scoreText.text = 'Score: ' + score;
+			
 			coin.kill();
+		}
+		
+		function bonusOverlap(player, bonus) {
+			coinSfx.play();
+			
+			score += 10;
+			scoreText.text = 'Score: ' + score;
+			
+			bonus.kill();
 		}
 
 		function goombaOverlap(player, goomba) {
@@ -136,13 +205,58 @@ body {
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
 				});
+				
+				stompSfx.play();
 			} else {
-				player.frame = 6;
-				player.body.enable = false;
-				player.animations.stop();
-				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+				if (lives > 0) {
+					if (!player.hasOverlapped && !goomba.hasOverlapped) {
+						player.hasOverlapped = goomba.hasOverlapped = true;
+						lives -= 1;
+						livesText.text = 'Lives: ' + lives;
+						setTimeout(function(){
+							player.hasOverlapped = goomba.hasOverlapped = false;
+						}, 2000)
+					}
+
+				} else {
+					player.frame = 22;
+					player.body.enable = false;
+					player.animations.stop();
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
 					game.paused = true;
+				});}
+			}
+		}
+			
+		function enemyOverlap(player, enemy) {
+			if (player.body.touching.down) {
+				enemy.animations.stop();
+				enemy.frame = 11;
+				enemy.body.enable = false;
+				player.body.velocity.y = -80;
+				game.time.events.add(Phaser.Timer.SECOND, function() {
+					enemy.kill();
 				});
+				
+				stompSfx.play();
+			} else {
+				if (lives > 0) {
+					if (!player.hasOverlapped && !enemy.hasOverlapped) {
+						player.hasOverlapped = enemy.hasOverlapped = true;
+						lives -= 1;
+						livesText.text = 'Lives: ' + lives;
+						setTimeout(function(){
+							player.hasOverlapped = enemy.hasOverlapped = false;
+						}, 2000)
+					}
+
+				} else {
+					player.frame = 22;
+					player.body.enable = false;
+					player.animations.stop();
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+					game.paused = true;
+				});}
 			}
 		}
 	</script>
