@@ -87,11 +87,8 @@ body {
 			player.goesRight = true;
 
 			game.camera.follow(player);
-			scoreText = game.add.text(1, 16, 'score: 0', { font: "20px Arial", fill: "#ffffff", align: "left" });
-    			livesText = game.add.text(30, 16, 'lives: 3', { font: "20px Arial", fill: "#ffffff", align: "left" });
-
-			cursors = game.input.keyboard.createCursorKeys();
-		}
+			scoreText = game.add.text(10, 10, 'score: 0', { font: "16px Arial", fill: "#ffffff", align: "left" });
+    			livesText = game.add.text(game.world.width - 100, 10, 'lives: 3', { font: "16px Arial", fill: "#ffffff", align: "left" });
 
 		function update() {
 			game.physics.arcade.collide(player, layer);
