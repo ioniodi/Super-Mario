@@ -35,6 +35,10 @@ body {
 
 			this.load.tilemap('level', 'assets/super_mario_map_new.json', null,
 					Phaser.Tilemap.TILED_JSON);
+			//Score
+			var score=0;
+			var scoreText;
+			scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 		}
 
 		function create() {
@@ -125,6 +129,9 @@ body {
 
 		function coinOverlap(player, coin) {
 			coin.kill();
+			//score
+			score+=1;
+			scoreText.text = 'Score: ' + score;
 		}
 
 		function goombaOverlap(player, goomba) {
