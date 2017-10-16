@@ -35,9 +35,6 @@ body {
 
 			this.load.tilemap('level', 'assets/super_mario_map_new.json', null,
 					Phaser.Tilemap.TILED_JSON);
-			//might not work
-			this.load.audio('coin_a','audio/coin.wav');
-			//this.load.audio('jump_a','audio/jump.wav');
 		}
 
 		function create() {
@@ -127,7 +124,6 @@ body {
 		}
 
 		function coinOverlap(player, coin) {
-			coin = game.add.audio('coin_a');
 			coin.kill();
 		}
 
