@@ -38,7 +38,7 @@ body {
 			//Score
 			var score=0;
 			var scoreText;
-			scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+			scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '20px', fill: '#000' });
 		}
 
 		function create() {
@@ -128,10 +128,11 @@ body {
 		}
 
 		function coinOverlap(player, coin) {
-			coin.kill();
-			//score
 			score+=1;
 			scoreText.text = 'Score: ' + score;
+			coin.kill();
+			//score
+			
 		}
 
 		function goombaOverlap(player, goomba) {
@@ -141,14 +142,18 @@ body {
 				goomba.body.enable = false;
 				player.body.velocity.y = -80;
 				game.time.events.add(Phaser.Timer.SECOND, function() {
+					score +=1;
+					scoreText.text = 'Score: ' + score;
 					goomba.kill();
+					
+					
 				});
 			} else {
 				player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-					game.paused = true;
+					game.restart = true;
 				});
 			}
 		}
