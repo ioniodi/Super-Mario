@@ -87,9 +87,6 @@ body {
 			player.goesRight = true;
 
 			game.camera.follow(player);
-			scoreText = game.add.text(10, 10, 'score: 0', { font: "16px Arial", fill: "#ffffff", align: "left" });
-    			livesText = game.add.text(100, 10, 'lives: 3', { font: "16px Arial", fill: "#ffffff", align: "left" });
-
 		function update() {
 			game.physics.arcade.collide(player, layer);
 			game.physics.arcade.collide(goombas, layer);
