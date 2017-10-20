@@ -125,6 +125,8 @@ body {
 
 		function coinOverlap(player, coin) {
 			coin.kill();
+			var audioCoin = new Audio('audio/coin.wav');
+			audioCoin.play()
 		}
 
 		function goombaOverlap(player, goomba) {
