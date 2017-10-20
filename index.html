@@ -112,8 +112,6 @@ body {
 				if (cursors.up.isDown && player.body.onFloor()) {
 					player.body.velocity.y = -190;
 					player.animations.stop();
-					var audioJump = new Audio('audio/jump.wav');
-					audio.play()
 				}
 
 				if (player.body.velocity.y != 0) {
@@ -128,7 +126,7 @@ body {
 		function coinOverlap(player, coin) {
 			coin.kill();
 			var audioCoin = new Audio('audio/coin.wav');
-			audio.play()
+			audio.play();
 		}
 
 		function goombaOverlap(player, goomba) {
