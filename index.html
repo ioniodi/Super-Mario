@@ -149,6 +149,8 @@ body {
 				player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
+				var endsound = new Audio('audio/end.wav');
+				endsound.play()
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
 					//game.paused = true;
 					game.state.restart();
