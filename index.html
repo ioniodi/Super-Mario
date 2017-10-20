@@ -22,6 +22,8 @@ body {
 			create : create,
 			update : update
 		}, false, false);
+		var score;
+		var lives;
 
 		function preload() {
 
@@ -86,6 +88,8 @@ body {
 			game.camera.follow(player);
 
 			cursors = game.input.keyboard.createCursorKeys();
+			//
+			text= game.add.text(12,23,'Score:0',{fill:'#FFFFFF'});
 		}
 
 		function update() {
@@ -130,6 +134,9 @@ body {
 
 		function coinOverlap(player, coin) {
 			coin.kill();
+			score++;
+			text.text = "Score: " + score;
+			
 			var coina = new Audio('audio/coin.wav');
 			coina.play()
 		}
@@ -142,6 +149,8 @@ body {
 				player.body.velocity.y = -80;
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
+					score+=100;
+					text.text = "Score: " + score;
 					var stompgoomba = new Audio('audio/stomp.wav');
 					stompgoomba.play()
 				});
