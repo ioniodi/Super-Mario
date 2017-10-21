@@ -160,14 +160,14 @@ body {
 				});
 			} else {
 				player.frame = 6;
-				var endsound = new Audio('audio/end.wav');
-				endsound.play()
 				life--;
 				Lifetext.text= "lives:" + life;
 				player.body.enable = false;
 				player.animations.stop();
-				game.time.events.add(Phaser.Timer.SECOND * 5, function() {
+				game.time.events.add(Phaser.Timer.SECOND * 1, function() {
 					if(life<=0){
+						var endsound = new Audio('audio/end.wav');
+						endsound.play()
 						game.paused = true;
 					}else{
 						player.body.enable = true;
