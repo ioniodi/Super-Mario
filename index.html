@@ -24,7 +24,7 @@ body {
 		}, false, false);
 		var score=0;
 		var lives=3;
-
+		var Scoretext;
 		function preload() {
 
 			//  We need this because the assets are on github pages
@@ -89,7 +89,7 @@ body {
 
 			cursors = game.input.keyboard.createCursorKeys();
 			//
-			text = game.add.text(16,16,'Score:0',{fill:'#FFFFFF'});
+			Scoretext = game.add.text(16,16,'Score:0',{fontSize:'22px', fill:'#FFFFFF'});
 		}
 
 		function update() {
@@ -135,7 +135,7 @@ body {
 		function coinOverlap(player, coin) {
 			coin.kill();
 			score++;
-			text.text = "Score: " + score;
+			Coretext.text = "Score: " + score;
 			
 			var coina = new Audio('audio/coin.wav');
 			coina.play()
@@ -150,7 +150,7 @@ body {
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
 					score+=100;
-					text.text = "Score: " + score;
+					Scoretext.text = "Score: " + score;
 					var stompgoomba = new Audio('audio/stomp.wav');
 					stompgoomba.play()
 				});
