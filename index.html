@@ -171,8 +171,7 @@ body {
 						game.paused = true;
 					}else{
 						player.body.enable = true;
-						player.body.x = 0;
-    						player.body.y = 0;
+						player.reset(x, y)
 					}
 					
 				});
