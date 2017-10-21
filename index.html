@@ -89,7 +89,10 @@ body {
 
 			cursors = game.input.keyboard.createCursorKeys();
 			//
-			Scoretext = game.add.text(16,16,'Score:0',{fontSize:'12px', fill:'#FFFFFF'});
+			//Scoretext = game.add.text(16,16,'Score:0',{fontSize:'12px', fill:'#FFFFFF'});
+			this.Scoretext = this.game.add.text(this.game.camera.width/2, 16,'Score:0',{fontSize:'12px', fill:'#FFFFFF'});
+			this.Scoretext.setTo(0.5,0.5);
+			this.Scoretext.fixedToCamera = true;
 		}
 
 		function update() {
