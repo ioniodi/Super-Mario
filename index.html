@@ -171,7 +171,8 @@ body {
 						game.paused = true;
 					}else{
 						player.body.enable = true;
-						player = game.add.sprite(16, game.world.height - 48, 'mario');
+						player.x=16;
+						player.y = game.world.height - 48;
 					}
 					
 				});
