@@ -23,8 +23,9 @@ body {
 			update : update
 		}, false, false);
 		var score=0;
-		var lives=3;
+		var life=3;
 		var Scoretext;
+		var Lifetext;
 		function preload() {
 
 			//  We need this because the assets are on github pages
@@ -91,6 +92,8 @@ body {
 			//
 			Scoretext = game.add.text(16,16,'Score:0',{fontSize:'12px', fill:'#FFFFFF'});
 			Scoretext.fixedToCamera = true;
+			Lifetext = game.add.text(32,16,'lives:3',{fontSize:'12px', fill:'#FFFFFF'});
+			Lifetext.fixedToCamera = true;
 		}
 
 		function update() {
@@ -157,13 +160,19 @@ body {
 				});
 			} else {
 				player.frame = 6;
-				player.body.enable = false;
-				player.animations.stop();
 				var endsound = new Audio('audio/end.wav');
 				endsound.play()
+				life--;
+				Lifetext.text= "lives:" + life;
+				player.body.enable = false;
+				player.animations.stop();
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-					//game.paused = true;
-					game.state.restart();
+					if(life>0){
+						game.state.restart();
+					}else{
+						game.paused = true;
+					}
+					
 				});
 			}
 		}
