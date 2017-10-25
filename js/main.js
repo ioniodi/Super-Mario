@@ -32,8 +32,8 @@ function preload() {
 
 	//  We need this because the assets are on github pages
 	//  Remove the next 2 lines if running locally
-	//this.load.baseURL = 'https://DimitrisTria.github.io/SuperMario/';
-	//this.load.crossOrigin = 'anonymous';
+	this.load.baseURL = 'https://dimitristria.github.io/SuperMario/';
+	this.load.crossOrigin = 'anonymous';
 
     //load sptites
 	this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16, 16);
