@@ -49,7 +49,7 @@ function preload() {
     this.load.spritesheet('finish', 'assets/sprites/finish.png', 14, 14);
     
     //load tilemap
-    this.load.tilemap('level', 'assets/levels/super_mario_map' +currentStage +'.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.tilemap('level', 'extensions/2015077.json', null, Phaser.Tilemap.TILED_JSON);
     
     //load audio
     this.load.audio('jumpS', 'audio/jump.wav', true);
