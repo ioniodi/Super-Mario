@@ -180,7 +180,7 @@ function create() {
     bonus_type_text.fixedToCamera = true;
     bonus_type_text.text = currentBonus = "none   0";
     
-    createStageInfo();
+    //createStageInfo();
 }
 
 function createStageInfo() {
