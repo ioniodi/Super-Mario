@@ -2,7 +2,7 @@
 * By Jim
 *****************************************************/
 
-var game = new Phaser.Game(256, 240, Phaser.AUTO, '', {
+var game = new Phaser.Game(256, 240, Phaser.CANVAS, '', {
 	preload : preload,
 	create : create,
 	update : update
@@ -27,42 +27,47 @@ var checkF = false;
 var currentStage = 2;
 var stageColor = ['#3399FF', '#33CCAA', '#33CCAA'];
 
+var startCor = {
+    x:10, 
+    y:140
+}
+
 //loads sprites from spritesheets
 function preload() {
 
 	//  We need this because the assets are on github pages
 	//  Remove the next 2 lines if running locally
-	this.load.baseURL = 'https://dimitristria.github.io/Super-Mario/';
-	this.load.crossOrigin = 'anonymous';
+	//game.load.baseURL = 'https://DimitrisTria.github.io/SuperMario/';
+	//game.load.crossOrigin = 'anonymous';
 
     //load sptites
-	this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16, 16);
-	this.load.spritesheet('goomba', 'assets/sprites/goomba.png', 16, 16, 3);
-	this.load.spritesheet('player', 'assets/sprites/player.png', 14, 16, 7);
-	this.load.spritesheet('rotated_coin', 'assets/sprites/rotated_coin.png', 14, 16, 4);
-    this.load.spritesheet('fireball', 'assets/sprites/fireball.png', 15, 21);
-    this.load.spritesheet('lives', 'assets/sprites/lives.png', 49, 8, 6);
-    this.load.spritesheet('score', 'assets/sprites/score.png', 14, 16);
-    this.load.spritesheet('bonus_star', 'assets/sprites/bonus_star.png', 16, 16);
-    this.load.spritesheet('mushroom', 'assets/sprites/mushroom.png', 16, 16);
-    this.load.spritesheet('checkpoint', 'assets/sprites/checkpoint.png', 16, 16, 2);
-    this.load.spritesheet('finish', 'assets/sprites/finish.png', 14, 14);
+	game.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16, 16);
+	game.load.spritesheet('goomba', 'assets/sprites/goomba.png', 16, 16, 3);
+	game.load.spritesheet('player', 'assets/sprites/player.png', 14, 16, 7);
+	game.load.spritesheet('rotated_coin', 'assets/sprites/rotated_coin.png', 14, 16);
+    game.load.spritesheet('fireball', 'assets/sprites/fireball.png', 15, 21);
+    game.load.spritesheet('lives', 'assets/sprites/lives.png', 49, 8, 6);
+    game.load.spritesheet('score', 'assets/sprites/score.png', 14, 16);
+    game.load.spritesheet('bonus_star', 'assets/sprites/bonus_star.png', 16, 16);
+    game.load.spritesheet('mushroom', 'assets/sprites/mushroom.png', 16, 16);
+    game.load.spritesheet('checkpoint', 'assets/sprites/checkpoint.png', 16, 16);
+    game.load.spritesheet('finish', 'assets/sprites/finish.png', 14, 14);
     
     //load tilemap
-    this.load.tilemap('level', 'assets/levels/super_mario_map' +currentStage +'.json', null, Phaser.Tilemap.TILED_JSON);
+    game.load.tilemap('level', 'assets/levels/super_mario_map' +currentStage +'.json', null, Phaser.Tilemap.TILED_JSON);
     
     //load audio
-    this.load.audio('jumpS', 'audio/jump.wav', true);
-    this.load.audio('coinS', 'audio/smb_coin.wav', true);
-    this.load.audio('stompS', 'audio/smb_stomp.wav', true);
-    this.load.audio('deathS', 'audio/smb_mariodies.wav', true);
-    this.load.audio('game_overS', 'audio/smb_game_over.wav', true);
-    this.load.audio('checkpointS', 'audio/key.wav', true);
-    this.load.audio('doubleCoinS', 'audio/coin.wav', true);
-    this.load.audio('doubleKillS', 'audio/stomp.wav', true);
-    this.load.audio('backgroundS', 'audio/bgm.mp3', true);
+    game.load.audio('jumpS', 'assets/audio/jump.wav', true);
+    game.load.audio('coinS', 'assets/audio/smb_coin.wav', true);
+    game.load.audio('stompS', 'assets/audio/smb_stomp.wav', true);
+    game.load.audio('deathS', 'assets/audio/smb_mariodies.wav', true);
+    game.load.audio('game_overS', 'assets/audio/smb_game_over.wav', true);
+    game.load.audio('checkpointS', 'assets/audio/key.wav', true);
+    game.load.audio('doubleCoinS', 'assets/audio/coin.wav', true);
+    game.load.audio('doubleKillS', 'assets/audio/stomp.wav', true);
+    game.load.audio('backgroundS', 'assets/audio/bgm.mp3', true);
     
-    this.load.bitmapFont('font', 'assets/sprites/font.png', 'assets/sprites/font.xml');
+    game.load.bitmapFont('font', 'assets/sprites/font.png', 'assets/sprites/font.xml');
 }
 
 function create() {
@@ -101,7 +106,7 @@ function create() {
 	goombas.setAll('body.gravity.y', 500);
 
     //create player
-	player = game.add.sprite(10, game.world.height - 100, 'player');
+	player = game.add.sprite(startCor.x, startCor.y, 'player');
 	game.physics.arcade.enable(player);
 	player.body.gravity.y = 370;
 	player.body.collideWorldBounds = true;
@@ -134,8 +139,6 @@ function create() {
     checkpoints = game.add.group();
     checkpoints.enableBody = true;
     map.createFromTiles(7, null, 'checkpoint', 'stuff', checkpoints);
-//    checkpoints.x = 0;
-//    checkpoints.y = 0;
     
     finishs = game.add.group();
     finishs.enableBody = true;
@@ -158,15 +161,15 @@ function create() {
     bonus.fixedToCamera = true;
     
     //add audio
-    jumpS = this.add.audio('jumpS', 0.08);
-    coinS = this.add.audio('coinS', 0.12);
-    stompS = this.add.audio('stompS', 0.12);
-    deathS = this.add.audio('deathS', 0.2);
-    game_overS = this.add.audio('game_overS', 0.2);
-    checkpointS = this.add.audio('checkpointS', 0.4);
-    doubleCoinS = this.add.audio('doubleCoinS', 0.12);
-    doubleKillS = this.add.audio('doubleKillS', 0.12);
-    backgroundS = this.add.audio('backgroundS', 0.5);
+    jumpS = game.add.audio('jumpS', 0.08);
+    coinS = game.add.audio('coinS', 0.12);
+    stompS = game.add.audio('stompS', 0.12);
+    deathS = game.add.audio('deathS', 0.2);
+    game_overS = game.add.audio('game_overS', 0.2);
+    checkpointS = game.add.audio('checkpointS', 0.4);
+    doubleCoinS = game.add.audio('doubleCoinS', 0.12);
+    doubleKillS = game.add.audio('doubleKillS', 0.12);
+    backgroundS = game.add.audio('backgroundS', 0.5);
     backgroundS.play();
     
     //score and bonus text
@@ -273,11 +276,11 @@ function checkpointOverlap(player, checkpoint) {
 function finishOverlap(player, finish) {
     if(player.body.onFloor() && cursors.down.isDown && checkF == false) {
         backgroundS.stop();
-        alert('Level is finished:(\n\n Press the f5 or the restart game button '
+        alert('Level is finished :)\n\n Press the f5 or the restart game button '
         +'to start over!\n\nPLayer status\n'
         +'kills: ' +kills +'\ncoins: ' +score);
         checkF = true;
-        timeLeft = 5;
+        timeLeft = 3;
     }
 }
 
@@ -299,12 +302,33 @@ function bonusEffect() {
             player.alpha = 1;
             timeCounter = 0;
             timeLeft = 0;
-            currentBonus = "none";
             checkB = false;
             enableEnemyPhysics = true;
+            currentBonus = "none";
             currentBonusScoreEffect = 0;
         }
         bonus_type_text.text = currentBonus +"   " +timer();
+    }
+}
+
+function enemyPhysics() {
+    if(enableEnemyPhysics == true) {
+        game.physics.arcade.overlap(player, goombas, goombaOverlap);
+        game.physics.arcade.overlap(player, fireballs, fireballOverlap);
+    }
+}
+
+function levelFinish() {
+    if(checkF == true && timeCounter >= 0 && timeLeft >= 0) {
+        if(timer() == 0) {
+            timeCounter = 0;
+            timeLeft = 0;
+            game.paused = true;
+        }
+        
+        if(timeLeft > 0) {
+           player.alpha = 1 - 1/timeLeft;
+        }
     }
 }
 
@@ -316,24 +340,6 @@ function timer() {
         timeCounter = 0;
     }
     return timeLeft;
-}
-
-function enemyPhysics() {
-    if(enableEnemyPhysics == true) {
-        game.physics.arcade.overlap(player, goombas, goombaOverlap);
-        game.physics.arcade.overlap(player, fireballs, fireballOverlap);
-    }
-}
-
-function levelFinish() {
-    if(checkF == true) {
-        if(timer() == 0) {
-            timeCounter = 0;
-            timeLeft = 0;
-            game.paused = true;
-        }
-        player.alpha = 1 - 1/timeLeft;
-    }
 }
 
 /*life handler function*/
@@ -422,22 +428,22 @@ function playerMoves() {
 //checkpoints
 function checkPoint() {
     if(checkP == true) {
-       if(currentStage == 1 && player.x > 952) {
+       if(currentStage == 1) {
             player.x = 952;
             player.y = 161;
         }
-        else if(currentStage == 2 && player.x > 406) {
+        else if(currentStage == 2) {
             player.x = 406;
             player.y = 95;
         }
-        else if(currentStage == 3 && player.x > 704) {
+        else if(currentStage == 3) {
             player.x = 705;
             player.y = 96;
         }
     }
     else if(checkP == false){
-        player.x = 10;
-        player.y = game.world.height - 100;
+        player.x = startCor.x;
+        player.y = startCor.y;
     }
 
     game.paused = false;
