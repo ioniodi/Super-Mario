@@ -57,6 +57,14 @@
         {
          "firstgid":22,
          "source":"mario.tsx"
+        }, 
+        {
+         "firstgid":36,
+         "source":"goomba.tsx"
+        }, 
+        {
+         "firstgid":39,
+         "source":"coin.tsx"
         }],
  "tilewidth":16,
  "type":"map",
