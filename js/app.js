@@ -20,6 +20,8 @@ var game = new Phaser.Game(600, 256, Phaser.AUTO, 'game', {
 });
 
 function preload() {
+            this.load.baseURL = 'https://scarlettmiss.github.io/Super-Mario/';
+			this.load.crossOrigin = 'anonymous';
     game.load.tilemap('objects', 'assets/maps/map1-1.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', 'assets/tilesets/items.png');
     game.load.spritesheet('mario', 'assets/sprites/mario-small.png', 34, 34, 7);
