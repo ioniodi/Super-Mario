@@ -45,7 +45,7 @@ function preload() {
 	game.load.spritesheet('goomba', 'assets/sprites/goomba.png', 16, 16, 3);
 	game.load.spritesheet('player', 'assets/sprites/player.png', 14, 16, 7);
 	game.load.spritesheet('rotated_coin', 'assets/sprites/rotated_coin.png', 14, 16);
-    game.load.spritesheet('fireball', 'assets/sprites/fireball.png', 15, 21);
+    //game.load.spritesheet('fireball', 'assets/sprites/fireball.png', 15, 21);
     game.load.spritesheet('lives', 'assets/sprites/lives.png', 49, 8, 6);
     game.load.spritesheet('score', 'assets/sprites/score.png', 14, 16);
     game.load.spritesheet('bonus_star', 'assets/sprites/bonus_star.png', 16, 16);
@@ -121,14 +121,14 @@ function create() {
 	cursors = game.input.keyboard.createCursorKeys();
     
     //create fireball
-    fireballs = game.add.group();
-	fireballs.enableBody = true;
-	map.createFromTiles(3, null, 'fireball', 'stuff', fireballs);
-	fireballs.callAll('animations.add', 'animations', 'walk', [ 0, 1, 2 ], 4, true);
-	fireballs.callAll('animations.play', 'animations', 'walk');
-	fireballs.setAll('body.bounce.x', 1);
-	fireballs.setAll('body.velocity.x', -10);
-	fireballs.setAll('body.gravity.y', 0);
+//     fireballs = game.add.group();
+// 	fireballs.enableBody = true;
+// 	map.createFromTiles(3, null, 'fireball', 'stuff', fireballs);
+// 	fireballs.callAll('animations.add', 'animations', 'walk', [ 0, 1, 2 ], 4, true);
+// 	fireballs.callAll('animations.play', 'animations', 'walk');
+// 	fireballs.setAll('body.bounce.x', 1);
+// 	fireballs.setAll('body.velocity.x', -10);
+// 	fireballs.setAll('body.gravity.y', 0);
     
     //create mushrooms
     mushrooms = game.add.group();
@@ -196,7 +196,7 @@ function update() {
     /*collisions*/
 	game.physics.arcade.collide(player, layer);
 	game.physics.arcade.collide(goombas, layer);
-    game.physics.arcade.collide(fireballs, layer);
+    //game.physics.arcade.collide(fireballs, layer);
     game.physics.arcade.collide(mushrooms, layer);
     game.physics.arcade.collide(checkpoints, layer);
     game.physics.arcade.collide(finishs, layer);
@@ -256,9 +256,9 @@ function goombaOverlap(player, goomba) {
 }
 
 /*player killed by fireball*/
-function fireballOverlap(player, fireball) {
-    playerLosesLife();
-}
+// function fireballOverlap(player, fireball) {
+//     playerLosesLife();
+// }
 
 function mushroomOverlap(player, mushroom) {
     checkB = true;
@@ -314,7 +314,7 @@ function bonusEffect() {
 function enemyPhysics() {
     if(enableEnemyPhysics == true) {
         game.physics.arcade.overlap(player, goombas, goombaOverlap);
-        game.physics.arcade.overlap(player, fireballs, fireballOverlap);
+        //game.physics.arcade.overlap(player, fireballs, fireballOverlap);
     }
 }
 
