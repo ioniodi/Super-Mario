@@ -81,6 +81,7 @@ body {
 			player.goesRight = true;
 			
 			player.lives = 3;
+			player.isDead = false;
 
 			game.camera.follow(player);
 
@@ -140,7 +141,8 @@ body {
 				});
 			} else {
 				player.lives = player.lives-1;
-				if(player.lives == 0){
+				if(player.lives <= 0){
+					player.isDead = true;
 					player.frame = 6;
 					player.body.enable = false;
 					player.animations.stop();
