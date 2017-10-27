@@ -139,15 +139,15 @@ body {
 					goomba.kill();
 				});
 			} else {
-				player.frame = 6;
-				player.body.enable = false;
-				player.animations.stop();
-				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-					player.lives= player.lives-1;
-					if(player.lives = 0){
+				player.lives=player.lives-1;
+				if(player.lives = 0){
+					player.frame = 6;
+					player.body.enable = false;
+					player.animations.stop();
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
 						game.paused = true;
-					}
-				});
+					});
+				}
 			}
 		}
 	</script>
