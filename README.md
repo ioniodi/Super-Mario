@@ -9,6 +9,9 @@
 - Στο [index.html](index.html) άλλαξε το ioniodi με το δικό σου username.
 ![ScreenShot](2.png)
 
+## Notes
+- Στην περίπτωση που κάποιος θέλει εναλλακτικά να τρέξει το παιχνίδι **τοπικά** μπορεί να ακολουθήσει τις οδηγίες από το [επίσημο site](http://phaser.io/tutorials/getting-started/index). Προτεινόμενος local web server: [xampp](https://www.apachefriends.org/index.html). Editor μπορείτε να βρείτε από [εδώ](http://phaser.io/tutorials/getting-started/part4) ή να χρησιμοποιήσετε το [eclipse](http://www.eclipse.org/) ακολουθώντας τις οδηγίες που δίνονται [εδώ](http://www.html5gamedevs.com/topic/22688-setting-up-eclipse-to-work-with-phaser-how-to/). **Προσοχή:** Για να βαθμολογηθεί το παιχνίδι πρέπει να βρίσκεται υποχρεωτικά στην προσωπική σας github page.
+
 ## Resources
 - [Phaser Tutorial](http://phaser.io/learn)
 - [Official Phaser Tutorials](https://phaser.io/learn/official-tutorials)
