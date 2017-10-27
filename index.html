@@ -141,8 +141,10 @@ body {
 				});
 			} else {
 				player.lives = player.lives-1;
-				if(player.lives <= 0){
+				if(player.lives = 0){
 					player.isDead = true;
+				}
+				if(player.isDead){
 					player.frame = 6;
 					player.body.enable = false;
 					player.animations.stop();
