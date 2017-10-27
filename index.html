@@ -24,7 +24,7 @@ body {
 
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
-			this.load.baseURL = 'https://ioniodi.github.io/Super-Mario/';
+			this.load.baseURL = 'https://lazlo54.github.io/Super-Mario/';
 			this.load.crossOrigin = 'anonymous';
 
 			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,
@@ -79,6 +79,9 @@ body {
 			player.animations.add('walkRight', [ 1, 2, 3 ], 10, true);
 			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
 			player.goesRight = true;
+			
+			player.lives = 3;
+			player.isDead = false;
 
 			game.camera.follow(player);
 
