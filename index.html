@@ -79,6 +79,8 @@ body {
 			player.animations.add('walkRight', [ 1, 2, 3 ], 10, true);
 			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
 			player.goesRight = true;
+			
+			player.lives = 3;
 
 			game.camera.follow(player);
 
@@ -141,7 +143,10 @@ body {
 				player.body.enable = false;
 				player.animations.stop();
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-					game.paused = true;
+					player.lives= player.lives-1;
+					if(player.lives = 0){
+						game.paused = true;
+					}
 				});
 			}
 		}
