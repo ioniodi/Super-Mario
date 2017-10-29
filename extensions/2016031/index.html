@@ -27,10 +27,10 @@ body {
 			this.load.baseURL = 'https://jimchloros.github.io/SuperMario-Trial/';
 			this.load.crossOrigin = 'anonymous';
 
-                                                    this.load.spritesheet('tree', 'assets/tree.png', 16, 16);
-                                               this.load.spritesheet('extra-tiles', 'assets/extra-tiles.png', 16, 16);
+
 			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,
 					16);
+                        this.load.spritesheet('tree', 'assets/tree.png', 16, 16);
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
 			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
@@ -50,8 +50,7 @@ body {
 
 			map = game.add.tilemap('level');
 			map.addTilesetImage('tiles', 'tiles');
-                                                   map.addTilesetImage('tree', 'tree');
-                                                   map.addTilesetImage('extra-tiles', 'extra-tiles');
+                        map.addTilesetImage('tree', 'tree');
 			map.setCollisionBetween(3, 12, true, 'solid');
 
 			map.createLayer('background');
