@@ -35,7 +35,7 @@ body {
 
 			this.load.tilemap('level', 'assets/super_mario_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
-			this.load.audio('jump', 'audio/jump.wav');
+			
 		}
 
 		function create() {
@@ -81,7 +81,6 @@ body {
 			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
 			player.goesRight = true;
 			
-			jump = game.add.audio('jump');
 
 			game.camera.follow(player);
 
@@ -115,7 +114,6 @@ body {
 				if (cursors.up.isDown && player.body.onFloor()) {
 					player.body.velocity.y = -190;
 					player.animations.stop();
-					jump.play();
 					
 				}
 
