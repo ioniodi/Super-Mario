@@ -5,32 +5,8 @@
 var game = new Phaser.Game(256, 240, Phaser.CANVAS, '', {
 	preload : preload,
 	create : create,
-	update : update
+	update : update,
 }, false, false);
-
-var kills = 0;
-var score_text;
-var score = 0;
-var bonus_type_text;
-var bonus_type = ["2x coins", "2x kills score", "invisible"];
-var info_text;
-var currentBonus = 0;
-var currentBonusScoreEffect = 0;
-var checkB = false;
-var currentLifes = 5;
-var enableEnemyPhysics = true;
-var checkP = false;
-var timeCounter = 0;
-var timeLeft = 0;
-var checkF = false;
-
-var currentStage = 2;
-var stageColor = ['#3399FF', '#33CCAA', '#33CCAA'];
-
-var startCor = {
-    x:10, 
-    y:140
-}
 
 //loads sprites from spritesheets
 function preload() {
@@ -42,20 +18,20 @@ function preload() {
 
     //load sptites
 	game.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16, 16);
-	game.load.spritesheet('goomba', 'assets/sprites/goomba.png', 16, 16, 3);
-	game.load.spritesheet('player', 'assets/sprites/player.png', 14, 16, 7);
+	game.load.spritesheet('goomba', 'assets/sprites/enemies/goomba.png', 16, 16, 3);
+	game.load.spritesheet('player', 'assets/sprites/player/player.png', 14, 16, 7);
 	game.load.spritesheet('rotated_coin', 'assets/sprites/rotated_coin.png', 14, 16);
-    //game.load.spritesheet('fireball', 'assets/sprites/fireball.png', 15, 21);
+    game.load.spritesheet('fireball', 'assets/sprites/enemies/fireball.png', 15, 21);
     game.load.spritesheet('lives', 'assets/sprites/lives.png', 49, 8, 6);
     game.load.spritesheet('score', 'assets/sprites/score.png', 14, 16);
     game.load.spritesheet('bonus_star', 'assets/sprites/bonus_star.png', 16, 16);
     game.load.spritesheet('mushroom', 'assets/sprites/mushroom.png', 16, 16);
     game.load.spritesheet('checkpoint', 'assets/sprites/checkpoint.png', 16, 16);
     game.load.spritesheet('finish', 'assets/sprites/finish.png', 14, 14);
-    
+
     //load tilemap
     game.load.tilemap('level', 'assets/levels/super_mario_map' +currentStage +'.json', null, Phaser.Tilemap.TILED_JSON);
-    
+
     //load audio
     game.load.audio('jumpS', 'assets/audio/jump.wav', true);
     game.load.audio('coinS', 'assets/audio/smb_coin.wav', true);
@@ -66,8 +42,44 @@ function preload() {
     game.load.audio('doubleCoinS', 'assets/audio/coin.wav', true);
     game.load.audio('doubleKillS', 'assets/audio/stomp.wav', true);
     game.load.audio('backgroundS', 'assets/audio/bgm.mp3', true);
-    
+
     game.load.bitmapFont('font', 'assets/sprites/font.png', 'assets/sprites/font.xml');
+}
+
+var kills = 0;
+var score_text;
+var score = 0;
+var bonus_type_text;
+var bonus_type = ["2x coins", "2x kills score", "invisible"];
+var info_text = [];
+var currentBonus = 0;
+var currentBonusScoreEffect = 0;
+var checkB = false;
+var currentLifes = 5;
+var enableEnemyPhysics = true;
+var checkP = false;
+var timeCounter = 0;
+var timeLeft = 0;
+var checkF = false;
+var firstGame = true;
+var checkTelport = false;
+
+var currentStage = 0;
+var stageColor = ['3399FF', '3399FF', '#33CCAA', '#33CCAA'];
+
+var startCor = {
+    x:10,
+    y:140
+}
+
+var scoreCor = {
+    x:70,
+    y:0
+}
+
+var bonusCor = {
+    x:120,
+    y:0
 }
 
 function create() {
@@ -76,7 +88,10 @@ function create() {
 	game.scale.pageAlignVertically = true;
 	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 	game.physics.startSystem(Phaser.Physics.ARCADE);
-	game.stage.backgroundColor = stageColor[currentStage - 1];
+	game.stage.backgroundColor = stageColor[currentStage];
+
+    //Game stills run
+    //this.stage.disableVisibilityChange = true;
 
     //create map
 	map = game.add.tilemap('level');
@@ -113,53 +128,54 @@ function create() {
 	player.animations.add('walkRight', [ 0, 1, 2 ], 8, true);
 	player.animations.add('walkLeft', [ 4, 5, 6 ], 8, true);
     player.goesRight = true;
-    player.anchor.setTo(0.5);
+    player.anchor.set(0.5);
     //camera follows player
     game.camera.follow(player);
-    
-    //keyboard input
-	cursors = game.input.keyboard.createCursorKeys();
-    
+
     //create fireball
-//     fireballs = game.add.group();
-// 	fireballs.enableBody = true;
-// 	map.createFromTiles(3, null, 'fireball', 'stuff', fireballs);
-// 	fireballs.callAll('animations.add', 'animations', 'walk', [ 0, 1, 2 ], 4, true);
-// 	fireballs.callAll('animations.play', 'animations', 'walk');
-// 	fireballs.setAll('body.bounce.x', 1);
-// 	fireballs.setAll('body.velocity.x', -10);
-// 	fireballs.setAll('body.gravity.y', 0);
-    
+    fireballs = game.add.group();
+	fireballs.enableBody = true;
+	map.createFromTiles(3, null, 'fireball', 'stuff', fireballs);
+	fireballs.callAll('animations.add', 'animations', 'walk', [ 0, 1, 2 ], 4, true);
+	fireballs.callAll('animations.play', 'animations', 'walk');
+	fireballs.setAll('body.bounce.x', 1);
+	fireballs.setAll('body.velocity.x', -10);
+	fireballs.setAll('body.gravity.y', 0);
+
     //create mushrooms
     mushrooms = game.add.group();
 	mushrooms.enableBody = true;
 	map.createFromTiles(9, null, 'mushroom', 'stuff', mushrooms);
-    
+
     //create checkpoint
     checkpoints = game.add.group();
     checkpoints.enableBody = true;
     map.createFromTiles(7, null, 'checkpoint', 'stuff', checkpoints);
-    
+
     finishs = game.add.group();
     finishs.enableBody = true;
     map.createFromTiles(6, null, 'finish', 'stuff', finishs);
     finishs.alpha = 0.0001;
-    
+
     //create lives
     lives = game.add.sprite(0, 0, 'lives');
     lives.frame = 5 - currentLifes;
     lives.fixedToCamera = true;
-    
-    //create score sprite
-    score = game.add.sprite(70, 0, 'score');
+
+    //create sprite and text for score and bonus
+    score = game.add.sprite(scoreCor.x, scoreCor.y, 'score');
     score.scale.setTo(0.7, 0.7);
     score.fixedToCamera = true;
-    
-    //create bonus spite
-    bonus = game.add.sprite(122, 0, 'bonus_star');
+    score = 0;
+    score_text = game.add.bitmapText(scoreCor.x+15, scoreCor.y+1, 'font', '0', 12);
+    score_text.fixedToCamera = true;
+    bonus = game.add.sprite(bonusCor.x, bonusCor.y, 'bonus_star');
     bonus.scale.setTo(0.7, 0.7);
     bonus.fixedToCamera = true;
-    
+    bonus_type_text = game.add.bitmapText(bonusCor.x+15, bonusCor.y+1,'font', '0', 12);
+    bonus_type_text.fixedToCamera = true;
+    bonus_type_text.text = currentBonus = "none  0";
+
     //add audio
     jumpS = game.add.audio('jumpS', 0.08);
     coinS = game.add.audio('coinS', 0.12);
@@ -171,53 +187,40 @@ function create() {
     doubleKillS = game.add.audio('doubleKillS', 0.12);
     backgroundS = game.add.audio('backgroundS', 0.5);
     backgroundS.play();
-    
-    //score and bonus text
-    score = 0;
-    score_text = game.add.bitmapText(85, 1, 'font', '0', 12);
-    score_text.fixedToCamera = true;
-    bonus_type_text = game.add.bitmapText(135, 1,'font', '0', 12);
-    bonus_type_text.fixedToCamera = true;
-    bonus_type_text.text = currentBonus = "none   0";
-    
-    //createStageInfo();
-}
 
-function createStageInfo() {
-    if(currentStage == 2) {
-        info_text = game.add.text(100, 70, "New enemy called fireball\nthat can not be killed", {
-            font: "12px Arial",
-            fill: "#ff0000",
-        });
-    }
+    createStageInfo();
 }
 
 function update() {
     /*collisions*/
 	game.physics.arcade.collide(player, layer);
 	game.physics.arcade.collide(goombas, layer);
-    //game.physics.arcade.collide(fireballs, layer);
+    game.physics.arcade.collide(fireballs, layer);
     game.physics.arcade.collide(mushrooms, layer);
     game.physics.arcade.collide(checkpoints, layer);
     game.physics.arcade.collide(finishs, layer);
-    
+
     /*overlaps*/
     game.physics.arcade.overlap(player, coins, coinOverlap);
     game.physics.arcade.overlap(player, mushrooms, mushroomOverlap);
     game.physics.arcade.overlap(player, checkpoints, checkpointOverlap);
     game.physics.arcade.overlap(player, finishs, finishOverlap);
     enemyPhysics(enableEnemyPhysics);
-    
+
     //update score
     score_text.text = score;
-    
+
     //bonus effects
     bonusEffect();
-    
+
     //player movement
     playerMoves();
-    
+
+    //level finish
     levelFinish();
+
+    //teleport
+    teleportF();
 }
 
 /*player collects coins*/
@@ -256,9 +259,9 @@ function goombaOverlap(player, goomba) {
 }
 
 /*player killed by fireball*/
-// function fireballOverlap(player, fireball) {
-//     playerLosesLife();
-// }
+function fireballOverlap(player, fireball) {
+    playerLosesLife();
+}
 
 function mushroomOverlap(player, mushroom) {
     checkB = true;
@@ -274,8 +277,9 @@ function checkpointOverlap(player, checkpoint) {
 }
 
 function finishOverlap(player, finish) {
-    if(player.body.onFloor() && cursors.down.isDown && checkF == false) {
+    if(player.body.onFloor() && game.input.keyboard.isDown(Phaser.Keyboard.DOWN) && checkF == false) {
         backgroundS.stop();
+        player.body.enable = false;
         alert('Level is finished :)\n\n Press the f5 or the restart game button '
         +'to start over!\n\nPLayer status\n'
         +'kills: ' +kills +'\ncoins: ' +score);
@@ -297,7 +301,7 @@ function bonusEffect() {
             player.alpha = 0.4;
             enableEnemyPhysics = false;
         }
-        
+
         if(timer() == 0) {
             player.alpha = 1;
             timeCounter = 0;
@@ -314,22 +318,9 @@ function bonusEffect() {
 function enemyPhysics() {
     if(enableEnemyPhysics == true) {
         game.physics.arcade.overlap(player, goombas, goombaOverlap);
-        //game.physics.arcade.overlap(player, fireballs, fireballOverlap);
+        game.physics.arcade.overlap(player, fireballs, fireballOverlap);
     }
-}
-
-function levelFinish() {
-    if(checkF == true && timeCounter >= 0 && timeLeft >= 0) {
-        if(timer() == 0) {
-            timeCounter = 0;
-            timeLeft = 0;
-            game.paused = true;
-        }
-        
-        if(timeLeft > 0) {
-           player.alpha = 1 - 1/timeLeft;
-        }
-    }
+    else {}
 }
 
 //effect countdown timer
@@ -386,12 +377,12 @@ function playerMoves() {
 		//mario stops
         player.body.velocity.x = 0;
 
-        if (cursors.left.isDown) {  //mario walks right
+        if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {  //mario walks right
             player.body.velocity.x = -90;
             player.animations.play('walkLeft');
             player.goesRight = false;
         }
-        else if (cursors.right.isDown) {    //mario walks left
+        else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {    //mario walks left
             player.body.velocity.x = 90;
             player.animations.play('walkRight');
             player.goesRight = true;
@@ -407,7 +398,7 @@ function playerMoves() {
         }
 
         //mario jumps
-        if (cursors.up.isDown && player.body.onFloor()) {
+        if (game.input.keyboard.isDown(Phaser.Keyboard.UP) && player.body.onFloor()) {
             jumpS.play();
             player.body.velocity.y = -190;
             player.animations.stop();
@@ -449,19 +440,129 @@ function checkPoint() {
     game.paused = false;
     player.body.enable = true;
     player.goesRight = true;
-    
+
     game.time.events.add(Phaser.Timer.SECOND * 0.5, function() {
         player.alpha = 1;
     });
+}
+
+function createStageInfo() {
+    if(firstGame == true) {
+        if(currentStage == 0) {
+            info_text[currentStage] = game.add.text(2, 10, "lives", {
+                font: "12px Arial",
+                fill: "#ffcc00"
+            });
+            info_text[currentStage].fixedToCamera = true;
+            info_text[currentStage] = game.add.text(scoreCor.x, scoreCor.y+10, "score", {
+                font: "12px Arial",
+                fill: "#ffcc00",
+            });
+            info_text[currentStage].fixedToCamera = true;
+            info_text[currentStage] = game.add.text(bonusCor.x, bonusCor.y+10, "bonus info", {
+                font: "12px Arial",
+                fill: "#ffcc00",
+            });
+            info_text[currentStage].fixedToCamera = true;
+            info_text[currentStage] = game.add.text(20, 90, "collect coins\n to increase score", {
+                font: "10 Arial",
+                fill: "#ffcc00",
+            });
+            info_text[currentStage] = game.add.text(220, 100, "collect mushrooms\n to activate bonus", {
+                font: "10px Arial",
+                fill: "#ffcc00",
+            });
+            info_text[currentStage] = game.add.text(380, 45, "when finish press\n the down arrow", {
+                font: "11px Arial",
+                fill: "#ffcc00",
+            });
+            info_text[currentStage] = game.add.text(450, 140, "finish", {
+                font: "12px Arial",
+                fill: "#ffcc00",
+            });
+        }
+        else if(currentStage == 1) {
+            info_text[currentStage] = game.add.text(932, 145, "checkpoint", {
+                    font: "12px Arial",
+                    fill: "#ffcc00",
+            });
+            info_text[currentStage] = game.add.text(2018, 125, "finish", {
+                font: "12px Arial",
+                fill: "#ffcc00",
+            });
+        }
+        else if(currentStage == 2) {
+            info_text[currentStage] = game.add.text(100, 70, "New enemy called fireball\nthat can not be killed", {
+                font: "12px Arial",
+                fill: "#ff0000",
+            });
+            info_text[currentStage] = game.add.text(770, 160, "finish", {
+                font: "12px Arial",
+                fill: "#ffcc00",
+            });
+        }
+        else if(currentStage == 3) {
+            info_text[currentStage] = game.add.text(1571, 140, "finish", {
+                font: "12px Arial",
+                fill: "#ffcc00",
+            });
+        }
+    }
+}
+
+function teleportF() {
+    if(checkTelport == false) {
+        if(game.input.keyboard.isDown(Phaser.Keyboard.T)) {
+            if(currentStage == 1) {
+                player.x = 420;
+                player.y = 20;
+            }
+            if(currentStage == 2) {
+                player.x = 420;
+                player.y = 20;
+            }
+            if(currentStage == 3) {
+                player.x = 420;
+                player.y = 20;
+            }
+            checkTelport = true;
+        }
+    }
+}
+
+function levelFinish() {
+    if(checkF == true && timeCounter >= 0 && timeLeft >= 0) {
+        if(timer() == 0) {
+            timeCounter = 0;
+            timeLeft = 0;
+            game.paused = true;
+            nextLevel();
+        }
+
+        if(timeLeft > 0) {
+           player.alpha = 1 - 1/timeLeft;
+        }
+    }
+}
+
+function nextLevel() {
+    currentStage++;
+    if(currentStage > 3) {
+        alert("You have finished all stages\nWell Done\n");
+        currentStage = 1;
+    }
+    else {
+        restart();
+    }
 }
 
 /**********************************************************/
 
 function pause() {
     game.paused = true;
-	if(player.body.enable == true) {			
-		alert('Game is paused\n\n press Ok to continue');
-	}
+}
+
+function resume() {
     game.paused = false;
 }
 
