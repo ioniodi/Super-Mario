@@ -280,8 +280,7 @@ function finishOverlap(player, finish) {
     if(player.body.onFloor() && game.input.keyboard.isDown(Phaser.Keyboard.DOWN) && checkF == false) {
         backgroundS.stop();
         player.body.enable = false;
-        alert('Level is finished :)\n\n Press the f5 or the restart game button '
-        +'to start over!\n\nPLayer status\n'
+        alert('Level is finished :)\n\nPLayer status\n'
         +'kills: ' +kills +'\ncoins: ' +score);
         checkF = true;
         timeLeft = 3;
@@ -357,9 +356,9 @@ function playerLosesLife() {
                 });
                 game.time.events.add(Phaser.Timer.SECOND * 5, function() {
                     game.paused = true;
-                    alert('Game Over :(\n\n Press the f5 or the restart game button '
-                    +'to start over!\n\nPLayer status\n'
+                    alert('Game Over :(\n\nPLayer status\n'
                     +'kills: ' +kills +'\ncoins: ' +score);
+                    refresh();
                 });
             }
         });
@@ -468,7 +467,7 @@ function createStageInfo() {
                 font: "10 Arial",
                 fill: "#ffcc00",
             });
-            info_text[currentStage] = game.add.text(220, 100, "collect mushrooms\n to activate bonus", {
+            info_text[currentStage] = game.add.text(220, 100, "collect mushrooms\n to activate a bonus", {
                 font: "10px Arial",
                 fill: "#ffcc00",
             });
@@ -552,7 +551,7 @@ function nextLevel() {
         currentStage = 1;
     }
     else {
-        restart();
+        refresh();
     }
 }
 
@@ -566,10 +565,8 @@ function resume() {
     game.paused = false;
 }
 
-function restart() {
-	if(player.body.enable == false) {
-        location.reload();
-	}
+function refresh() {
+    location.reload();
 }
 
 function onLoad() {
