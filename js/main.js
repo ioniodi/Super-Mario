@@ -41,7 +41,7 @@ function preload() {
     game.load.audio('checkpointS', 'assets/audio/key.wav', true);
     game.load.audio('doubleCoinS', 'assets/audio/coin.wav', true);
     game.load.audio('doubleKillS', 'assets/audio/stomp.wav', true);
-    game.load.audio('backgroundS', 'assets/audio/bgm.mp3', true);
+    game.load.audio('backgroundS', ['assets/audio/bgm.mp3', 'assets/audio/bgm.ogg'], true);
 
     game.load.bitmapFont('font', 'assets/sprites/font.png', 'assets/sprites/font.xml');
 }
