@@ -31,7 +31,7 @@ body {
 					16);
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
 			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
-			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
+			this.load.spritesheet('coin', 'assets/CoinAnim.png', 32, 32);
 
 			this.load.tilemap('level', 'assets/super_mario_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
@@ -39,6 +39,7 @@ body {
 			this.load.audio('coin','audio/coin.wav');
 			this.load.audio('stomp','audio/stomp.wav');
 			this.load.audio('background','audio/bgm.mp3');
+			this.load.audio('door','audio/door.wav');
 			
 			
 			
@@ -67,7 +68,7 @@ body {
 			coins.enableBody = true;
 			map.createFromTiles(2, null, 'coin', 'stuff', coins);
 			coins.callAll('animations.add', 'animations', 'spin',
-					[ 0, 0, 1, 2 ], 3, true);
+					[ 0, 1, 1, 2 ], 3, true);
 			coins.callAll('animations.play', 'animations', 'spin');
 
 			goombas = game.add.group();
@@ -92,6 +93,7 @@ body {
 			coinsound = game.add.sound('coin');
 			stompsound = game.add.sound('stomp');
 			backsound = game.add.sound('background');
+			doorsound = game.add.sound('door');
 			
 			
 			backsound.loop = true;
@@ -162,6 +164,7 @@ body {
 				player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
+				doorsound.play();
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
 					game.paused = true;
 				});
