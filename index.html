@@ -68,7 +68,7 @@ body {
 			coins.enableBody = true;
 			map.createFromTiles(2, null, 'coin', 'stuff', coins);
 			coins.callAll('animations.add', 'animations', 'spin',
-					[ 0, 1, 1, 2 ], 3, true);
+					[ 0, 1, 2, 3 ], 4, true);
 			coins.callAll('animations.play', 'animations', 'spin');
 
 			goombas = game.add.group();
