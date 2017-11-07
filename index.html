@@ -1,19 +1,3 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-<title>Super-Mario</title>
-<meta charset="utf-8">
-<style>
-body {
-	margin: 0;
-	padding: 0;
-	background-color: #000;
-}
-</style>
-<script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
-</head>
-<body>
-	<script type="text/javascript">
 		var game = new Phaser.Game(256, 240, Phaser.CANVAS, '', {
 			preload : preload,
 			create : create,
@@ -24,19 +8,25 @@ body {
 
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
-			this.load.baseURL = 'https://ioniodi.github.io/Super-Mario/';
-			this.load.crossOrigin = 'anonymous';
+			// this.load.baseURL = 'https://dimitragkena.github.io/Super-Mario/';
+			// this.load.crossOrigin = 'anonymous';
 
 			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,
 					16);
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
-			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
-			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
+			this.load.spritesheet('marioblue', 'assets/marioblue.png', 16, 16);
+			this.load.spritesheet('fcoins', 'assets/fcoins.png', 16, 16);
 
-			this.load.tilemap('level', 'assets/super_mario_map.json', null,
+			this.load.tilemap('level', 'assets/marioD.json', null,
 					Phaser.Tilemap.TILED_JSON);
 		}
 
+		game.load.audio('jump', 'assets/audio/jump.wav', true);
+  	        game.load.audio('coin', 'assets/audio/coin.wav', true);
+                game.load.audio('stomp', 'assets/audio/stomp.wav', true);
+		
+		
+		
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 			game.scale.pageAlignHorizontally = true;
