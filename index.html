@@ -41,6 +41,7 @@ body {
 
 			this.load.tilemap('level', 'assets/super_mario_new_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
+			this.load.audio('deathsound','audio/mariodeath.mp3');
 		}
 		
 		var beat;
@@ -157,9 +158,13 @@ body {
 					goomba.kill();
 				});
 			} else {
+				var death;
 				player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
+				beat.stop();
+				death = game.add.audio('deathsound');
+				death.play();
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
 					game.paused = true;
 				});
