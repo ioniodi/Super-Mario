@@ -41,6 +41,7 @@ body {
 
 			this.load.tilemap('level', 'assets/super_mario_new_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
+			this.load.audio('menusong','audio/SDREMario.mp3');
 		}
 		
 		
@@ -91,6 +92,11 @@ body {
 			game.camera.follow(player);
 
 			cursors = game.input.keyboard.createCursorKeys();
+			
+			var beat;
+			beat=game.add.audio('menusong');
+			music.play()
+			
 		}
 		 var coinsounds;
 		
