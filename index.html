@@ -92,8 +92,7 @@ body {
 
 			cursors = game.input.keyboard.createCursorKeys();
 		}
-		 var coinsounds,jumps,stompsounds;
-		 
+		 var coinsounds;
 		
 		function update() {
 			game.physics.arcade.collide(player, layer);
@@ -118,6 +117,7 @@ body {
 					else
 						player.frame = 7;
 				}
+					var sounds;
 
 				if (cursors.up.isDown && player.body.onFloor()) {
 					jumps = game.add.audio('jumpsound')
@@ -140,6 +140,7 @@ body {
 			coinsounds.play();
 			coin.kill();
 		}
+			var stompsounds;
 
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
