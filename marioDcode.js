@@ -8,8 +8,8 @@ var game = new Phaser.Game(256, 240, Phaser.CANVAS, '', {
 function preload() {
 	//  We need this because the assets are on github pages
 	//  Remove the next 2 lines if running locally
-	//game.load.baseURL = 'https://dimitragkena.github.io/SuperMario/';
-	//game.load.crossOrigin = 'anonymous';
+	game.load.baseURL = 'https://dimitragkena.github.io/SuperMario/';
+	game.load.crossOrigin = 'anonymous';
 
 	
 	game.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16, 16);
