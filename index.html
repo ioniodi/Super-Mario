@@ -24,7 +24,7 @@ body {
 			
 			
 			
-			this.load.audio('coins','audio/coin.wav');
+			this.load.audio('coinsound','audio/coin.wav');
 
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
@@ -90,7 +90,7 @@ body {
 
 			cursors = game.input.keyboard.createCursorKeys();
 		}
-		 var coinsound;
+		 var coinsounds;
 		
 		function update() {
 			game.physics.arcade.collide(player, layer);
@@ -131,8 +131,8 @@ body {
 		}
 
 		function coinOverlap(player, coin) {
-			coinsound = game.add.audio('coins');
-			couinsoun.play();
+			coinsounds = game.add.audio('coinsound');
+			couinsounds.play();
 			coin.kill();
 		}
 
