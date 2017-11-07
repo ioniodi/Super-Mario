@@ -93,12 +93,13 @@ body {
 
 			cursors = game.input.keyboard.createCursorKeys();
 			
-			var beat;
-			beat=game.add.audio('menusong');
+			
+			beat = game.add.audio('menusong');
 			music.play()
 			
 		}
 		 var coinsounds;
+		 var beat;
 		
 		function update() {
 			game.physics.arcade.collide(player, layer);
