@@ -30,16 +30,16 @@ body {
 			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,
 					16);
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
-			this.load.spritesheet('mario', 'assets/marioblue.png', 16, 16);
-			this.load.spritesheet('coin', 'assets/fcoins.png', 16, 16);
+			this.load.spritesheet('marioblue', 'assets/marioblue.png', 16, 16);
+			this.load.spritesheet('fcoins', 'assets/fcoins.png', 16, 16);
 
 			this.load.tilemap('level', 'assets/super_mario_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
 		}
 
-		game.load.audio('jumpS', 'assets/audio/jump.wav', true);
-  	        game.load.audio('coinS', 'assets/audio/coin.wav', true);
-                game.load.audio('stompS', 'assets/audio/stomp.wav', true);
+		game.load.audio('jump', 'assets/audio/jump.wav', true);
+  	        game.load.audio('coin', 'assets/audio/coin.wav', true);
+                game.load.audio('stomp', 'assets/audio/stomp.wav', true);
 		
 		
 		
