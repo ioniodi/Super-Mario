@@ -1,4 +1,4 @@
-# Super-Mario
+# Super-Mario edited from p13korb
 
 ## Initial Settings
 - Από την στιγμή που έχεις κάνει αντιγραφή (fork) το [αποθετήριο](https://github.com/ioniodi/Super-Mario) του παιχνιδιού, θα πρέπει να έχει κατέβει στο προσωπικό σου github αποθετήριο ο [κώδικας του παιχνιδιού](index.html), ο φάκελος [assets](/assets/) με τα αντικείμενα (πίστες, εικόνες) και ο φάκελος [audio](/audio/) με τους ήχους που θα χρησιμοποιήσεις στο παιχνίδι σου.
