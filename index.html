@@ -23,7 +23,7 @@ body {
 		function preload() {
 			
 			
-			
+			this.load.audio('menusong','audio/SDREMario.mp3');
 			this.load.audio('coinsound','audio/coin.wav');
 			this.load.audio('jumpsound','audio/jump.wav');
 			this.load.audio('stompsound','audio/stomp.wav');
@@ -41,10 +41,9 @@ body {
 
 			this.load.tilemap('level', 'assets/super_mario_new_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
-			this.load.audio('menusong','audio/SDREMario.mp3');
 		}
 		
-		
+		var beat;
 		
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
@@ -92,14 +91,11 @@ body {
 			game.camera.follow(player);
 
 			cursors = game.input.keyboard.createCursorKeys();
-			
-			
 			beat = game.add.audio('menusong');
-			music.play()
+			beat.play()
 			
 		}
 		 var coinsounds;
-		 var beat;
 		
 		function update() {
 			game.physics.arcade.collide(player, layer);
