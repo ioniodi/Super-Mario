@@ -40,7 +40,9 @@ body {
 			this.load.tilemap('level', 'assets/super_mario_new_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
 		}
-
+		
+		
+		
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 			game.scale.pageAlignHorizontally = true;
@@ -88,7 +90,8 @@ body {
 
 			cursors = game.input.keyboard.createCursorKeys();
 		}
-
+		 var coinsound;
+		
 		function update() {
 			game.physics.arcade.collide(player, layer);
 			game.physics.arcade.collide(goombas, layer);
@@ -128,6 +131,8 @@ body {
 		}
 
 		function coinOverlap(player, coin) {
+			coinsound = game.add.audio('coins');
+			couinsoun.play();
 			coin.kill();
 		}
 
