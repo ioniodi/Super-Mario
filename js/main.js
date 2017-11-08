@@ -513,7 +513,8 @@ function createStageInfo() {
 
 function teleportF() {
     if(checkTelport == false) {
-        if(game.input.keyboard.isDown(Phaser.Keyboard.T)) {
+		//xaxa game.input.keyboard.isDown(Phaser.Keyboard.T)
+        if(checkTelport == true) {
             if(currentStage == 1) {
                 player.x = 420;
                 player.y = 20;
