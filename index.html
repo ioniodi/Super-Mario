@@ -19,7 +19,7 @@ body {
 			create : create,
 			update : update
 		}, false, false);
-                var mySound;
+                
 		
 		function preload() {
 
@@ -36,8 +36,11 @@ body {
 
 			this.load.tilemap('level', 'assets/super_mario_map_new.json', null,
 					Phaser.Tilemap.TILED_JSON);
+			this.load.audio('sound', 'audio/bon_t.mp3');
 			
 		}
+		mySound = new sound("bon_t.mp3");
+			mySound.play();
 
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
@@ -47,6 +50,9 @@ body {
 			game.physics.startSystem(Phaser.Physics.ARCADE);
 
 			game.stage.backgroundColor = '#80FFFF';
+			
+			game.sound = game.add.audio('sound');
+                        game.sound.play();
 
 			map = game.add.tilemap('level');
 			map.addTilesetImage('tiles', 'tiles');
@@ -85,8 +91,7 @@ body {
 			game.camera.follow(player);
 
 			cursors = game.input.keyboard.createCursorKeys();
-			mySound = new sound("bon_t.mp3");
-			mySound.play();
+			;
 		}
 
 		function update() {
