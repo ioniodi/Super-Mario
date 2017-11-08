@@ -7,7 +7,7 @@
 body {
 	margin: 0;
 	padding: 0;
-	background-color: #207068;
+	background-color: #000;
 }
 </style>
 <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
@@ -29,9 +29,9 @@ body {
 
 			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,
 					16);
-			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
-			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
-			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
+			this.load.spritesheet('goomba', 'assets/goomba1.png', 16, 16);
+			this.load.spritesheet('mario', 'assets/mario1.png', 16, 16);
+			this.load.spritesheet('coin', 'assets/coin1.png', 16, 16);
 
 			this.load.tilemap('level', 'assets/super_mario_map1.json', null,
 					Phaser.Tilemap.TILED_JSON);
