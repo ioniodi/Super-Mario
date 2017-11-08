@@ -66,6 +66,7 @@ body {
 
 			map = game.add.tilemap('level');
 			map.addTilesetImage('tiles', 'tiles');
+			map.addTilesetImage('bigcoins', 'bigcoins');
 			map.setCollisionBetween(3, 12, true, 'solid');
 
 			map.createLayer('background');
@@ -82,7 +83,7 @@ body {
 
 			bigcoins = game.add.group();
 			bigcoins.enableBody = true;
-			map.createFromTiles(1, null ,'bigcoins', 'stuff', bigcoins);
+			map.createFromTiles(3, null ,'bigcoins', 'stuff', bigcoins);
 			bigcoins.callAll('animations.add', 'animations', 'spin' , [1], 3 , true);
 			bigcoins.callAll('animations.play', 'animations', 'spin');
 
