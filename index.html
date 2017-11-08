@@ -44,6 +44,10 @@ body {
 					Phaser.Tilemap.TILED_JSON);
 		}
 
+		localStorage.setItem("lives", 3);
+		var livesStyle;
+		var livesCount;
+
 		var scoreStyle;
 		var scoreCount;
 
@@ -55,7 +59,7 @@ body {
 
 		function create() {
 
-			scoreStyle = game.add.text(5, 5, '0',{
+			scoreStyle = game.add.text( 5, 5, '0',{
 				font: "25px arial",
 				fill: "#ffffff",
 				aligment: "center"
@@ -64,6 +68,16 @@ body {
 			scoreStyle.stroke = '#000000';
 			scoreStyle.strokeThickness = 1;
 			scoreCount = 0;
+
+			livesStyle = game.add.text( 150, 5, '0',{
+				font: "25px arial",
+				fill: "#ffffff",
+				aligment: "center"
+			});
+			livesStyle.fixedToCamera = true;
+			livesStyle.stroke = '#000000';
+			livesStyle.strokeThickness = 1;
+			livesCount = parseInt(localStorage.getItem("lives"));
 
 			music = game.add.audio('music')
 			music.play('',0,1,true);
@@ -116,6 +130,8 @@ body {
 		}
 
 		function update() {
+			livesStyle.text = "Lives : " + livesCount;
+			game.world.bringToTop(livesStyle);
 
 			scoreStyle.text = "Score : " + scoreCount;
 			game.world.bringToTop(scoreStyle);
@@ -188,6 +204,9 @@ body {
 				});
 			} else {
 
+				livesCount-= 1;
+				localStorage.setItem("lives", livesCount);
+
 				deathSound = game.add.audio('death');
 				deathSound.play();
 
@@ -195,7 +214,11 @@ body {
 				player.body.enable = false;
 				player.animations.stop();
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-					game.paused = true;
+					if(livesCount > 0){
+						this.game.state.restart();
+					}else if(livesCount == 0){
+						game.paused = true;
+					}
 				});
 			}
 		}
