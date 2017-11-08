@@ -26,6 +26,7 @@ body {
 			this.load.audio('coinsound','audio/coin.wav');
 			this.load.audio('jumpsound','audio/mariojump.mp3');
 			this.load.audio('stompsound','audio/stomp.wav');
+            this.load.image('mariolives','assets/lives2.png');
 			
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
@@ -47,9 +48,10 @@ body {
         
         
         var beat;
-        var lives=5;
+        var lives=3;
 		var points;
         var livect;
+        var mlives;
         
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
@@ -88,12 +90,15 @@ body {
 			player.goesRight = true;
 			game.camera.follow(player);
             points=game.add.text(20,8,'SCORE\n'+score,{font:'15px' ,fontSize: '10px', fill: 'white'} );
-			points.fixedToCamera=true;
-            livesct=game.add.text(100,8,'LIVES\n'+lives,{font:'15px' ,fontSize: '10px', fill: 'white'} );
-			livesct.fixedToCamera=true;           
+			points.fixedToCamera=true;     
 			cursors = game.input.keyboard.createCursorKeys();
             beat = game.add.audio('menusong');
 			beat.play();
+            
+            mlives=game.add.sprite(100,8,'mariolives');           
+            livesct=game.add.text(120,10,'X'+lives,{font:'15px',fontSize: '10px',fill:'white'});
+            mlives.fixedToCamera=true;
+            livesct.fixedToCamera=true;
 			
         		game.camera.follow(player);
 			
@@ -170,17 +175,9 @@ body {
 				beat.stop();
 				death = game.add.audio('deathsound');
 				death.play();
-				if(lives>1){
-					setTimeout(function(){
-					score=0;
-					lives-=1;				
-    		    		game.state.start(game.state.current);
-    		   		 }, 3500);
-    					} else {
-				setTimeout(function(){
-				alert("You Lost!!Its ok you cab try again just prest F5");
-				location.reload();
-				}, 3500);}
+				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+					game.paused = true;
+				});
 			}
 		}
 	</script>
