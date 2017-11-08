@@ -35,9 +35,13 @@ body {
 
 			this.load.tilemap('level', 'assets/super_mario_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
+			game.load.audio('mariomusic','audio/mariomusic.mp3');
 		}
 
 		function create() {
+			
+			music=game.add.audio(game,'mariomusic',50);
+			music.play();
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 			game.scale.pageAlignHorizontally = true;
 			game.scale.pageAlignVertically = true
