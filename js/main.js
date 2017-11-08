@@ -64,7 +64,7 @@ var checkF = false;
 var firstGame = true;
 var checkTelport = false;
 
-var currentStage = 0;
+var currentStage = 2;
 var stageColor = ['3399FF', '3399FF', '#33CCAA', '#33CCAA'];
 
 var startCor = {
@@ -336,7 +336,7 @@ function timer() {
 function playerLosesLife() {
     if(player.alpha == 1) {
         currentLifes--;
-        player.alpha = 0.99;
+        player.alpha = 0.95;
         lives.frame = 5 - currentLifes;
         //backgroundS.stop();
         deathS.play();
@@ -436,11 +436,13 @@ function checkPoint() {
         player.y = startCor.y;
     }
 
-    game.paused = false;
-    player.body.enable = true;
+	game.paused = false;
+	game.time.events.add(Phaser.Timer.SECOND * 0.3, function() {
+		player.body.enable = true;
+	});
     player.goesRight = true;
 
-    game.time.events.add(Phaser.Timer.SECOND * 0.5, function() {
+    game.time.events.add(Phaser.Timer.SECOND * 0.7, function() {
         player.alpha = 1;
     });
 }
@@ -491,10 +493,10 @@ function createStageInfo() {
             });
         }
         else if(currentStage == 2) {
-            info_text[currentStage] = game.add.text(100, 70, "New enemy called fireball\nthat can not be killed", {
-                font: "12px Arial",
-                fill: "#ff0000",
-            });
+            // info_text[currentStage] = game.add.text(100, 70, "New enemy called fireball\nthat can not be killed", {
+                // font: "12px Arial",
+                // fill: "#ff0000",
+            // });
             info_text[currentStage] = game.add.text(770, 160, "finish", {
                 font: "12px Arial",
                 fill: "#ffcc00",
