@@ -41,10 +41,12 @@ body {
 
 			this.load.tilemap('level', 'assets/super_mario_new_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
-			this.load.audio('deathsound','audio/mariodeath.mp3');
+			this.load.audio('deathsound',['audio/mariodeath.mp3']);
+			this.load.image('mariolives',['assets/lives.png');
 		}
 		
 		var beat;
+		var zwes;
 		
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
@@ -90,6 +92,8 @@ body {
 			player.goesRight = true;
 
 			game.camera.follow(player);
+			
+			game.add.sprite(145,8,'mariolives');
 
 			cursors = game.input.keyboard.createCursorKeys();
 			beat = game.add.audio('menusong');
