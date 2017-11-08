@@ -48,7 +48,8 @@ body {
 		
 		var beat;
 		var points;
-		var lives=5;       			
+		var lives=5;  
+		var livect;
 		
 						
 		function create() {
@@ -96,8 +97,8 @@ body {
 			game.camera.follow(player);
 			points=game.add.text(20,8,'SCORE\n'+score,{font:'15px' ,fontSize: '10px', fill: 'white'} );
 			points.fixedToCamera=true;
-			lives=game.add.text(100,8,'LIVES:  \n'+lives,{font:'15px' ,fontSize: '10px', fill: 'white'} );
-			lives.fixedToCamera=true;
+			livesct=game.add.text(100,8,'LIVES:  \n'+lives,{font:'15px' ,fontSize: '10px', fill: 'white'} );
+			livesct.fixedToCamera=true;
 			
                		cursors = game.input.keyboard.createCursorKeys();
 			beat = game.add.audio('menusong');
