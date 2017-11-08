@@ -281,7 +281,7 @@ function finishOverlap(player, finish) {
         backgroundS.stop();
         player.body.enable = false;
         alert('Level is finished :)\n\nPLayer status\n'
-        +'kills: ' +kills +'\ncoins: ' +score);
+        +'kills: ' +kills +'\nscore: ' +score);
         checkF = true;
         timeLeft = 3;
     }
@@ -357,7 +357,7 @@ function playerLosesLife() {
                 game.time.events.add(Phaser.Timer.SECOND * 5, function() {
                     game.paused = true;
                     alert('Game Over :(\n\nPLayer status\n'
-                    +'kills: ' +kills +'\ncoins: ' +score);
+                    +'kills: ' +kills +'\nscore: ' +score);
                     refresh();
                 });
             }
