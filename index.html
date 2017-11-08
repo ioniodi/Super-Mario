@@ -47,6 +47,8 @@ body {
 		
 		var beat;
 		var points;
+		var zwes=5;
+		var zwesct;
 				
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
@@ -95,6 +97,9 @@ body {
 			
 			points=game.add.text(20,8,'SCORE\n'+score,{font:'16px' ,fontSize: '16px', fill: 'white'} );
 			points.fixedToCamera=true;
+			
+			zwes=game.add.text(60,8,'LIVES\n'+lives,{font:'16px' ,fontSize: '16px', fill: 'white'} );
+			zwes.fixedToCamera=true;
 
 			cursors = game.input.keyboard.createCursorKeys();
 			beat = game.add.audio('menusong');
