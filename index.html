@@ -58,7 +58,7 @@ body {
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 			game.scale.pageAlignHorizontally = true;
-			game.scale.pageAlignVertically = true
+			game.scale.pageAlignVertically = true;
 			game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 			game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -83,7 +83,7 @@ body {
 
 			this.bigcoins = game.add.group();
 			this.bigcoins.enableBody = true;
-			this.map.createFromTiles(3, null ,'bigcoins', 'stuff', this.bigcoins);
+			this.map.createFromTiles(1, null ,'bigcoins', 'stuff', this.bigcoins);
 			this.bigcoins.callAll('animations.add', 'animations', 'spin' , [1], 3 , true);
 			this.bigcoins.callAll('animations.play', 'animations', 'spin');
 
