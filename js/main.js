@@ -497,6 +497,10 @@ function createStageInfo() {
                 // font: "12px Arial",
                 // fill: "#ff0000",
             // });
+			info_text[currentStage] = game.add.text(game.world.width - 100, 45, "when finish press\n the down arrow", {
+                font: "12px Arial",
+                fill: "#ffcc00",
+            });
             info_text[currentStage] = game.add.text(770, 160, "finish", {
                 font: "12px Arial",
                 fill: "#ffcc00",
