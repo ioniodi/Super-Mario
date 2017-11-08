@@ -206,7 +206,8 @@ body {
 
 				livesCount-= 1;
 				localStorage.setItem("lives", livesCount);
-
+				
+				music.stop();
 				deathSound = game.add.audio('death');
 				deathSound.play();
 
