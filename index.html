@@ -97,8 +97,6 @@ body {
 			points=game.add.text(20,8,'SCORE\n'+score,{font:'15px' ,fontSize: '10px', fill: 'white'} );
 			points.fixedToCamera=true;
 			
-			zwesct=game.add.text(60,8,'LIVES\n'=zwes,{font:'15px' ,fontSize: '10px', fill: 'white'} );
-			zwesct.fixedToCamera=true;
 
 			cursors = game.input.keyboard.createCursorKeys();
 			beat = game.add.audio('menusong');
@@ -107,7 +105,7 @@ body {
 		}
 		 var coinsounds;
 			var score=0;
-			var zwes=5;
+
 		 		
 		function update() {
 			game.physics.arcade.collide(player, layer);
