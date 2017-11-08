@@ -22,6 +22,13 @@ var game = new Phaser.Game(256, 240, Phaser.CANVAS, '', {
 }, false, false);
 
 
+	var jump = newAudio('audio/jump.wav');
+	var stomp = newAudio('audio/stomp.wav');
+	var coin = newAudio('audio/coin.wav');
+	var background = newAudio('audio/bgm.mp3', 'audio/bgm.ogg');
+		
+		
+		
 function preload() {
 	//  We need this because the assets are on github pages
 	//  Remove the next 2 lines if running locally
@@ -29,41 +36,21 @@ function preload() {
 	//game.load.crossOrigin = 'anonymous';
 
 	
-	game.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16, 16);
-	game.load.spritesheet('goomba', 'assets/goomba.png', 16, 16 );
-	game.load.spritesheet('player', 'assets/marioblue.png', 16, 16);
-	game.load.spritesheet('fcoins', 'assets/fcoins.png', 16, 16);
+	this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16, 16);
+	this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16 );
+	this.load.spritesheet('player', 'assets/marioblue.png', 16, 16);
+	this.load.spritesheet('fcoins', 'assets/fcoins.png', 16, 16);
 
-	game.load.tilemap('level', 'assets/marioD' +currentStage +'.json', null, Phaser.Tilemap.TILED_JSON);
+	this.load.tilemap('level', 'assets/marioD.json', null, Phaser.Tilemap.TILED_JSON);
+}
 
-	
-	game.load.audio('jump', 'assets/audio/jump.wav', true);
-        game.load.audio('coin', 'assets/audio/coin.wav', true);
-        game.load.audio('stomp', 'assets/audio/stomp.wav', true);
-	game.load.audio('background', ['assets/audio/bgm.mp3', 'assets/audio/bgm.ogg'], true);
-
-	var score_text;
-	var score = 0;
-	var currentStage = 0;
-	var stageColor = ['3399FF', '3399FF', '#33CCAA', '#33CCAA'];
-	
-	var startCor = {
-		x:10,
-		y:140
-	}
-
-	var scoreCor = {
-		x:70,
-		y:0
-	}
-
-	
+function create() {	
 	Phaser.Canvas.setImageRenderingCrisp(game.canvas);
 	game.scale.pageAlignHorizontally = true;
 	game.scale.pageAlignVertically = true;
 	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 	game.physics.startSystem(Phaser.Physics.ARCADE);
-	game.stage.backgroundColor = stageColor[currentStage];
+	game.stage.backgroundColor = '#5c94fc';
 
 
 	map = game.add.tilemap('level');
@@ -94,73 +81,37 @@ function preload() {
 	goombas.setAll('body.gravity.y', 500);
 
 
-	player = game.add.sprite(startCor.x, startCor.y, 'player');
+	player = game.add.sprite(16, game.world.height - 48, 'marioblue');
 	game.physics.arcade.enable(player);
 	player.body.gravity.y = 370;
 	player.body.collideWorldBounds = true;
-	player.animations.add('walkRight', [ 0, 1, 2 ], 8, true);
-	player.animations.add('walkLeft', [ 4, 5, 6 ], 8, true);
+	player.animations.add('walkRight', [ 5, 6, 7, 8 ], 10, true);
+	player.animations.add('walkLeft', [ 0, 1, 2, 3 ], 10, true);
         player.goesRight = true;
         player.anchor.set(0.5);
         game.camera.follow(player);
-
-
-	score = game.add.sprite(scoreCor.x, scoreCor.y, 'score');
-        score.scale.setTo(0.7, 0.7);
-        score.fixedToCamera = true;
-        score = 0;
-        score_text = game.add.bitmapText(scoreCor.x+15, scoreCor.y+1, 'font', '0', 12);
-        score_text.fixedToCamera = true;
-
+	cursors = game.input.keyboard.createCursorKeys();
+}
 	
-	jump = game.add.audio('jump', 0.08);
-        coin = game.add.audio('coin', 0.12);
-        stomp = game.add.audio('stomp', 0.12);	
-	background = game.add.audio('background', 0.5);
-        background.play();
-	
-	createStageInfo();
 
 
 function update() {
+	
+	game.physics.arcade.checkCollision.down = false;
 	game.physics.arcade.collide(player, layer);
 	game.physics.arcade.collide(goombas, layer);
-	
+	game.physics.arcade.overlap(player, goombas, goombaOverlap);
 	game.physics.arcade.overlap(player, coins, coinOverlap);
 
-	score_text.text = score;
 	
-	playerMoves();
-	teleportF(); 
-
-
-}
-
-
-function coinOverlap(player, coin) {
-	score = score + 10;
-	coin.kill();
-}
-
-function goombaOverlap(player, goomba) {
-	if (player.body.touching.down) {
-        goomba.animations.stop();
-        goomba.frame = 2;
-	}
-
-	goomba.body.enable = false;
-	player.body.velocity.y = -80;
-}
-
-function playerMoves() {
-    if (player.body.enable == true) {
+  if (player.body.enable) {
         player.body.velocity.x = 0;
-        if (game.input.keyboard.isDown(Phaser.Keyboard.LEFT)) {  
+        if (cursors.left.isDown) {  
             player.body.velocity.x = -90;
             player.animations.play('walkLeft');
             player.goesRight = false;
         }
-        else if (game.input.keyboard.isDown(Phaser.Keyboard.RIGHT)) {  
+        else if (cursors.right.isDown) {  
             player.body.velocity.x = 90;
             player.animations.play('walkRight');
             player.goesRight = true;
@@ -168,56 +119,43 @@ function playerMoves() {
         else {  
             player.animations.stop();
             if (player.goesRight) {
-                player.frame = 2;
+                player.frame = 5;
         }
         else {
-            player.frame = 4;
+            player.frame = 0;
         }
 }
 
-if (game.input.keyboard.isDown(Phaser.Keyboard.UP) && player.body.onFloor()) {
-        jump.play();
+if (cursors.up.isDown && player.body.onFloor()) {
         player.body.velocity.y = -190;
+	jump.play();
         player.animations.stop();
 }
 
 if (player.body.velocity.y != 0) {
-        if (player.goesRight == true) {
+        if (player.goesRight) {
+            player.frame = 6;
+        }
+        else 
             player.frame = 1;
         }
-        else if(player.goesRight == false) {
-            player.frame = 5;
-        }
 }
 
-function createStageInfo() {
-	if(firstGame == true) {
-		info_text[currentStage].fixedToCamera = true;
-                info_text[currentStage] = game.add.text(scoreCor.x, scoreCor.y+10, "score", {
-                font: "12px Arial",
-                fill: "#ffcc00",
-                });
+function coinOverlap(player, coin) {
+	var coinAudio=new Audio('audio/coin.wav');
+	coinAudio.play();//paizei to audio coin
+	coin.kill();
 }
+	
+	function goombaOverlap(player, goomba) {
+		if (player.body.touching.down) {
+		stompAudio.play();//paizei to audio stomp
+		 else {
+		player.x=player.x-15;5 
+		goomba.x=goomba.x+15;
+		}
+	}
 
-
-function teleportF() {
-    if(checkTelport == false) {
-        if(game.input.keyboard.isDown(Phaser.Keyboard.T)) {
-            if(currentStage == 1) {
-                player.x = 420;
-                player.y = 20;
-            }
-            if(currentStage == 2) {
-                player.x = 420;
-                player.y = 20;
-            }
-            if(currentStage == 3) {
-                player.x = 420;
-                player.y = 20;
-            }
-            checkTelport = true;
-        }
-    }
 }
 
 	</script>
