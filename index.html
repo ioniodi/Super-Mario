@@ -188,18 +188,9 @@ body {
 				beat.stop();
 				death = game.add.audio('deathsound');
 				death.play();
-				
-				if(lives>1){
-					setTimeout(function(){
-					score=0;
-					lives-=1;				
-    		    		game.state.start(game.state.current);
-    		   		 }, 3500);
-    					} else {
-				setTimeout(function(){
-				alert("You Lost! You Wanna Try again??");
-				location.reload();
-				}, 3500);}
+				game.time.events.add(Phaser.Timer.SECOND * 3, function(){
+					game.paused = true;
+				});				
 			}
 		}
 	</script>
