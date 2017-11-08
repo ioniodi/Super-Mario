@@ -49,7 +49,7 @@ body {
 		var beat;
 		var points;
 		var lives=5;       			
-		var livescounter;
+		var livestext;
 						
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
@@ -93,14 +93,11 @@ body {
 			player.animations.add('walkRight', [ 1, 2, 3 ], 10, true);
 			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
 			player.goesRight = true;
-
 			game.camera.follow(player);
-			
 			points=game.add.text(20,8,'SCORE\n'+score,{font:'15px' ,fontSize: '10px', fill: 'white'} );
 			points.fixedToCamera=true;
-			          
-			livescounter=game.add.text(100,8,'LIVES:  \n'+lives,{font:'15px' ,fontSize: '10px', fill: 'white'} );
-			livescounter.fixedToCamera=true;
+			livestext=game.add.text(100,8,'LIVES:  \n'+lives,{font:'15px' ,fontSize: '10px', fill: 'white'} );
+			livestext.fixedToCamera=true;
 			
                		cursors = game.input.keyboard.createCursorKeys();
 			beat = game.add.audio('menusong');
