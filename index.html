@@ -46,6 +46,7 @@ body {
 		}
 		
 		var beat;
+		var points;
 				
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
@@ -92,6 +93,8 @@ body {
 
 			game.camera.follow(player);
 			
+			points=game.add.text(20,8,'SCORE\n'+score,{font:'15px' ,fontSize: '8px', fill: 'white'} );
+			points.fixedToCamera=true;
 
 			cursors = game.input.keyboard.createCursorKeys();
 			beat = game.add.audio('menusong');
@@ -99,6 +102,7 @@ body {
 			
 		}
 		 var coinsounds;
+			var score=0;
 		 		
 		function update() {
 			game.physics.arcade.collide(player, layer);
@@ -144,6 +148,8 @@ body {
 		function coinOverlap(player, coin) {
 			coinsounds = game.add.audio('coinsound');
 			coinsounds.play();
+			score +=50;
+			points.text='SCORE\n'+score;
 			coin.kill();
 		}
 			var stompsounds;
@@ -156,6 +162,8 @@ body {
 				player.body.velocity.y = -80;
 				stompsounds = game.add.audio('stompsound');
 				stompsounds.play();
+				score += 100;
+    				points.text = 'SCORE\n' + score;
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
 				});
