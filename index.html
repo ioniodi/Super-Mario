@@ -27,6 +27,7 @@ body {
 			this.load.audio('coinsound','audio/coin.wav');
 			this.load.audio('jumpsound','audio/mariojump.mp3');
 			this.load.audio('stompsound','audio/stomp.wav');
+			this.load.spritesheet('mariolives','assets/lives.png');
 			
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
@@ -46,6 +47,9 @@ body {
 		}
 		
 		var beat;
+		var livesct=5
+		var zwes;
+		var zwesct;
 		
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
@@ -92,7 +96,8 @@ body {
 
 			game.camera.follow(player);
 			
-			
+			zwes=game.add.sprite(142,8,'mariolives');
+			zwesct=game.add.text(160,13,'x'+livesct,{font:'15px' ,fontSize: '8px', fill: 'white'});
 
 			cursors = game.input.keyboard.createCursorKeys();
 			beat = game.add.audio('menusong');
