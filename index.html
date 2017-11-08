@@ -49,9 +49,8 @@ body {
 		
 		var beat;
 		var points;
-		var lives=5;
-            		var livesimage;
-            			var livescounter;
+		var lives=5;       			
+		var livescounter;
 						
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
@@ -103,13 +102,11 @@ body {
 			points.fixedToCamera=true;
 			
 			//mariolives
-			livesimage=game.add.sprite(140,15,'mariolives');           
-                   	 livescounter=game.add.text(100,8,'X'+mariolives,{font:'15px',fontSize: '10px',  fill:'white'});
-           		 livesimage.fixedToCamera=true;
-			 livescounter.fixedToCamera=true;
+			          
+			livescounter=game.add.text(100,8,'LIVES:  \n'+lives,{font:'15px' ,fontSize: '10px', fill: 'white'} );
+			livescounter.fixedToCamera=true;
 			
-
-			cursors = game.input.keyboard.createCursorKeys();
+               		cursors = game.input.keyboard.createCursorKeys();
 			beat = game.add.audio('menusong');
 			beat.play();
 			
