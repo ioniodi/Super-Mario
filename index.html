@@ -36,10 +36,10 @@ function preload() {
 	game.load.crossOrigin = 'anonymous';
 
 	
-	this.load.spritesheet('tiles', 'assets/mario_tiles.png', 16, 16);
-	this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16 );
-	this.load.spritesheet('player', 'assets/marioblue.png', 16, 16);
-	this.load.spritesheet('fcoins', 'assets/fcoins.png', 16, 16);
+	this.load.spritesheet('tiles', 'extensions/mario_tiles.png', 16, 16);
+	this.load.spritesheet('goomba', 'extensions/goomba.png', 16, 16 );
+	this.load.spritesheet('player', 'extensions/marioblue.png', 16, 16);
+	this.load.spritesheet('fcoins', 'extensions/fcoins.png', 16, 16);
 
 	this.load.tilemap('level', 'extensions/marioD.json', null, Phaser.Tilemap.TILED_JSON);
 }
