@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Super-Mario2</title>
+<title>Super-Mario</title>
 <meta charset="utf-8">
 <style>
 body {
@@ -44,6 +44,9 @@ body {
 					Phaser.Tilemap.TILED_JSON);
 		}
 
+		var scoreStyle;
+		var scoreCount;
+
 		var music;
 		var jumpSound;
 		var coinSound;
@@ -51,6 +54,17 @@ body {
 		var deathSound;
 
 		function create() {
+
+			scoreStyle = game.add.text(5, 5, '0',{
+				font: "25px arial",
+				fill: "#ffffff",
+				aligment: "center"
+			});
+			scoreStyle.fixedToCamera = true;
+			scoreStyle.stroke = '#000000';
+			scoreStyle.strokeThickness = 1;
+			scoreCount = 0;
+
 			music = game.add.audio('music')
 			music.play('',0,1,true);
 
@@ -102,6 +116,10 @@ body {
 		}
 
 		function update() {
+
+			scoreStyle.text = "Score : " + scoreCount;
+			game.world.bringToTop(scoreStyle);
+
 			game.physics.arcade.collide(player, layer);
 			game.physics.arcade.collide(goombas, layer);
 			game.physics.arcade.overlap(player, goombas, goombaOverlap);
