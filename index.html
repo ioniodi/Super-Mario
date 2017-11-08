@@ -89,12 +89,13 @@ body {
 			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
 			player.goesRight = true;
 			game.camera.follow(player);
+			//score
             points=game.add.text(20,8,'SCORE\n'+score,{font:'15px' ,fontSize: '10px', fill: 'white'} );
 			points.fixedToCamera=true;     
 			cursors = game.input.keyboard.createCursorKeys();
             beat = game.add.audio('menusong');
 			beat.play();
-            
+            //lives
             mlives=game.add.sprite(100,8,'mariolives');           
             livesct=game.add.text(120,10,'X'+lives,{font:'15px',fontSize: '10px',fill:'white'});
             mlives.fixedToCamera=true;
