@@ -166,6 +166,8 @@ body {
 			coinSound = game.add.audio('coin');
 			coinSound.play();
 
+			scoreCount += 10;
+
 			coin.kill();
 		}
 
@@ -174,6 +176,8 @@ body {
 
 				killSound = game.add.audio('rip');
 				killSound.play();
+
+				scoreCount += 25;
 
 				goomba.animations.stop();
 				goomba.frame = 2;
