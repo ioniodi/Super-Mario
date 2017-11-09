@@ -19,12 +19,14 @@ body {
 			create : create,
 			update : update
 		}, false, false);
-           	var.sc=0;
-		var score;
-		var lives;
-		var livescount=3;
-            
-
+		//instert score
+           	var score = 0;
+		var scoreText;
+            	//instert lives
+           	 var lives=3;
+           	 var limage;
+            	 var lcounter;
+           
 		function preload() {
 
 			//  We need this because the assets are on github pages
@@ -37,6 +39,7 @@ body {
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
 			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
+			this.load.image('live','assets/emotion_heart.png');
 
 			this.load.tilemap('level', 'assets/super_mario_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
@@ -109,11 +112,21 @@ body {
 			backsound.loop = true;
             		backsound.play();
 			
+			scoreText = game.add.text(16, 16, 'Score: 0', { fontSize: '10px', fill: 			'#000' });
+           		scoreText.fixedToCamera = true;
+			limage=game.add.sprite(140,15,'live');           
+            		lcounter=game.add.text(158,20,'X'+lives,{font:'30px',fontSize: '8px',                   fill:'white'});
+            		limage.fixedToCamera=true;
+				lcounter.fixedToCamera=true;
+            		 if(lives==3){
+				alert("Let's go!!!");
+				}
 			game.camera.follow(player);
 
 			cursors = game.input.keyboard.createCursorKeys();
 		}
-
+		
+	
 		function update() {
 			game.physics.arcade.collide(player, layer);
 			game.physics.arcade.collide(goombas, layer);
@@ -154,19 +167,12 @@ body {
 				}
 			}
 		}
-		var pl=0;
+		
 		function coinOverlap(player, coin) {
 			coinsound.play();
-			sc=sc+10;
-			score.text='Score:'+sc;
-			pl=pl+1;
 			coin.kill();
-			if(pl==30){
-				sc=sc+1000;
-				score.text='Score:'+sc;
-				alert("Pires ola ta nomismata!+1000 score!!Kerdises");
-				location.reload();
-				}
+			score += 10;
+    			scoreText.text = 'Score: ' + score;
 			
 			
 		}
@@ -177,28 +183,33 @@ body {
 				goomba.frame = 2;
 				goomba.body.enable = false;
 				player.body.velocity.y = -80;
-				sc=sc+10;
-				score.text='Score:'+sc;
-				game.time.events.add(Phaser.Timer.SECOND, function() {
+				
+				 score += 100;
+    				 scoreText.text = 'Score: ' + score; 
+				
+				 game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
 				});
 			} else {
+				doorsound.play();
+				backsound.stop();
 				player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
-				doorsound.play();
-				if (livescount>1){
-					backgroundsound.stop();
+				
+				if(lives>1){
+					setTimeout(function(){
 					score=0;
-					livescount=livescount-1;
-					game.state.restart();
+					lives-=1;
+					game.state.start(game.state.current);
+    		   		 	}, 3500);
 				}
-				else{
+				else {
+					setTimeout(function(){
+					alert("You are IDIOT! Play again!!");
 					location.reload();
+					},3500);
 				}
-				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-					game.paused = true;
-				});
 			}
 		}
 	</script>
