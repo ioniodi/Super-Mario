@@ -19,114 +19,162 @@ body {
 			create : create,
 			update : update
 		}, false, false);
-
+		
+		
+		var score = "";
+		var score1 = "";
+		var lives = "";
+		var lives1 = "";
+		var music;
+		var jump;
+		var score_count = 0;
+		var lives_count = 3;
+		// Unecessary Edit
+		var unecessary_var = 0;
 		function preload() {
-
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
 			this.load.baseURL = 'https://george2705.github.io/Super-Mario/';
 			this.load.crossOrigin = 'anonymous';
-
+			
 			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,
 					16);
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
-			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
+			this.load.spritesheet('mario', 'assets/kirby1.png', 21, 21);
 			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
-
-			this.load.tilemap('level', 'assets/super_mario_map.json', null,
+			this.load.spritesheet('bonus', 'assets/NES.png', 16, 16);
+			this.load.spritesheet('coins', 'assets/coins.png', 16, 16);
+			this.load.spritesheet('bigcoins', 'assets/bigcoins.png', 16, 32);
+			this.load.audio('BGM', 'audio/bgm.mp3');
+			this.load.audio('stomp', 'audio/stomp.wav');
+			this.load.audio('jump', 'audio/jump.wav');
+			this.load.audio('coin', 'audio/coin.wav');
+			this.load.tilemap('level', 'assets/super_mario.json', null,
 					Phaser.Tilemap.TILED_JSON);
 		}
-
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 			game.scale.pageAlignHorizontally = true;
-			game.scale.pageAlignVertically = true
+			game.scale.pageAlignVertically = true;
 			game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 			game.physics.startSystem(Phaser.Physics.ARCADE);
-
 			game.stage.backgroundColor = '#5c94fc';
-
-			map = game.add.tilemap('level');
-			map.addTilesetImage('tiles', 'tiles');
-			map.setCollisionBetween(3, 12, true, 'solid');
-
-			map.createLayer('background');
-
-			layer = map.createLayer('solid');
-			layer.resizeWorld();
-
-			coins = game.add.group();
-			coins.enableBody = true;
-			map.createFromTiles(2, null, 'coin', 'stuff', coins);
-			coins.callAll('animations.add', 'animations', 'spin',
-					[ 0, 0, 1, 2 ], 3, true);
-			coins.callAll('animations.play', 'animations', 'spin');
-
-			goombas = game.add.group();
-			goombas.enableBody = true;
-			map.createFromTiles(1, null, 'goomba', 'stuff', goombas);
-			goombas.callAll('animations.add', 'animations', 'walk', [ 0, 1 ],
+			this.map = game.add.tilemap('level');
+			this.map.addTilesetImage('tiles', 'tiles');
+			this.map.addTilesetImage('bigcoins', 'bigcoins');
+			this.map.setCollisionBetween(3, 12, true, 'solid');
+			this.map.createLayer('background');
+			this.layer = this.map.createLayer('solid');
+			this.layer.resizeWorld();
+			this.coins = game.add.group();
+			this.coins.enableBody = true;
+			this.map.createFromTiles(2, null, 'coins', 'stuff', this.coins);
+			this.coins.callAll('animations.add', 'animations', 'spin',
+					[ 0, 1, 2, 3 ], 3, true);
+			this.coins.callAll('animations.play', 'animations', 'spin');
+			this.bigcoins = game.add.group();
+			this.bigcoins.enableBody = true;
+			this.map.createFromTiles(1, null ,'bigcoins', 'stuff', this.bigcoins);
+			this.bigcoins.callAll('animations.add', 'animations', 'spin' , [1], 3 , true);
+			this.bigcoins.callAll('animations.play', 'animations', 'spin');
+			this.goombas = game.add.group();
+			this.goombas.enableBody = true;
+			this.map.createFromTiles(1, null, 'goomba', 'stuff', this.goombas);
+			this.goombas.callAll('animations.add', 'animations', 'walk', [ 0, 1 ],
 					2, true);
-			goombas.callAll('animations.play', 'animations', 'walk');
-			goombas.setAll('body.bounce.x', 1);
-			goombas.setAll('body.velocity.x', -20);
-			goombas.setAll('body.gravity.y', 500);
-
-			player = game.add.sprite(16, game.world.height - 48, 'mario');
-			game.physics.arcade.enable(player);
-			player.body.gravity.y = 370;
-			player.body.collideWorldBounds = true;
-			player.animations.add('walkRight', [ 1, 2, 3 ], 10, true);
-			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
-			player.goesRight = true;
-
-			game.camera.follow(player);
-
-			cursors = game.input.keyboard.createCursorKeys();
+			this.goombas.callAll('animations.play', 'animations', 'walk');
+			this.goombas.setAll('body.bounce.x', 1);
+			this.goombas.setAll('body.velocity.x', -20);
+			this.goombas.setAll('body.gravity.y', 500);
+			this.player = game.add.sprite(30, game.world.height - 48, 'mario');
+			game.physics.arcade.enable(this.player);
+			this.player.body.gravity.y = 370;
+			this.player.body.collideWorldBounds = true;
+			this.player.animations.add('walkRight', [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9], 10, true);
+			this.player.animations.add('walkLeft', [ 12, 13, 14, 15, 16, 17, 18, 19, 20, 21 ], 10, true);
+			this.player.goesRight = true;
+			game.camera.follow(this.player);
+			this.cursors = game.input.keyboard.createCursorKeys();
+			music = game.add.audio('BGM');
+			music.loopFull();
+			jump = game.add.audio('jump');
+			score = game.add.text(1,1,'Score:',{
+				font:"12px Gabriella",
+				fill:"#ffffff",
+				align:"center"
+			});
+			score.fixedToCamera = true;
+			lives = game.add.text(1,15,'Lives:',{
+				font:"12px Gabriella",
+				fill:"#ffffff",
+				align:"center"
+			});
+			lives.fixedToCamera = true;
+			score1 = game.add.text(35,1,'Score:',{
+				font:"12px Gabriella",
+				fill:"#ffffff",
+				align:"center"
+			});
+			score1.fixedToCamera = true;
+			lives1 = game.add.text(35,15,'Lives:',{
+				font:"12px Gabriella",
+				fill:"#ffffff",
+				align:"center"
+			});
+			lives1.fixedToCamera = true;
 		}
-
 		function update() {
-			game.physics.arcade.collide(player, layer);
-			game.physics.arcade.collide(goombas, layer);
-			game.physics.arcade.overlap(player, goombas, goombaOverlap);
-			game.physics.arcade.overlap(player, coins, coinOverlap);
-
-			if (player.body.enable) {
-				player.body.velocity.x = 0;
-				if (cursors.left.isDown) {
-					player.body.velocity.x = -90;
-					player.animations.play('walkLeft');
-					player.goesRight = false;
-				} else if (cursors.right.isDown) {
-					player.body.velocity.x = 90;
-					player.animations.play('walkRight');
-					player.goesRight = true;
+			score1.text = score_count;
+			lives1.text = lives_count;
+			game.physics.arcade.collide(this.player, this.layer);
+			game.physics.arcade.collide(this.goombas, this.layer);
+			game.physics.arcade.overlap(this.player, this.goombas, goombaOverlap);
+			game.physics.arcade.overlap(this.player,this.bigcoins,bigcoinsOverlap,function(){
+				game.bigcoin = game.add.audio('coin');
+				game.bigcoin.play();
+				score_count+=1000;
+			});
+			game.physics.arcade.overlap(this.player, this.coins, coinOverlap,function(){
+				game.coin = game.add.audio('coin');
+				game.coin.play();
+				score_count+=10;
+			});
+			if (this.player.body.enable) {
+				this.player.body.velocity.x = 0;
+				if (this.cursors.left.isDown) {
+					this.player.body.velocity.x = -90;
+					this.player.animations.play('walkLeft');
+					this.player.goesRight = false;
+				} else if (this.cursors.right.isDown) {
+					this.player.body.velocity.x = 90;
+					this.player.animations.play('walkRight');
+					this.player.goesRight = true;
 				} else {
-					player.animations.stop();
-					if (player.goesRight)
-						player.frame = 0;
+					this.player.animations.stop();
+					if (this.player.goesRight)
+						this.player.frame = 11;
 					else
-						player.frame = 7;
+						this.player.frame = 23;
 				}
-
-				if (cursors.up.isDown && player.body.onFloor()) {
-					player.body.velocity.y = -190;
-					player.animations.stop();
+				if (this.cursors.up.isDown && this.player.body.onFloor()) {
+					this.player.body.velocity.y = -190;
+					this.player.animations.stop();
+					jump.play();
 				}
-
-				if (player.body.velocity.y != 0) {
-					if (player.goesRight)
-						player.frame = 5;
+				if (this.player.body.velocity.y != 0) {
+					if (this.player.goesRight)
+						this.player.frame = 10;
 					else
-						player.frame = 12;
+						this.player.frame = 22;
 				}
 			}
 		}
-
 		function coinOverlap(player, coin) {
 			coin.kill();
 		}
-
+		function bigcoinsOverlap(player, bigcoins){
+			bigcoins.kill();
+		}
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
 				goomba.animations.stop();
@@ -135,13 +183,37 @@ body {
 				player.body.velocity.y = -80;
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
+					score_count += 100;
 				});
 			} else {
 				player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
-				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-					game.paused = true;
+				music.stop();
+				game.time.events.add(Phaser.Timer.SECOND * 2, function() {
+					game.world.removeAll();
+					if(lives_count>0){
+						lives_count -= 1;
+						lives1.text='lives x' + lives_count;
+						var contGame = game.add.text(25,16,'Lives x' + lives_count, {
+							fontSize:'18px',
+							fill:'#FFFFFF'
+						});
+						contGame.fixedToCamera = true;
+						contGame.cameraOffset.setTo(80,100);
+					}
+					else{
+						var gameOver = game.add.text(25,16,'Game Over',{
+							fontSize:'35px',
+							fill:'#FFFFFF'
+						});
+						gameOver.fixedToCamera = true;
+						gameOver.cameraOffset.setTo(30,70);
+						game.paused = true;
+					}
+					game.time.events.add(Phaser.Timer.SECOND * 2, function(){
+						game.state.restart();
+					});
 				});
 			}
 		}
