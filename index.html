@@ -24,27 +24,37 @@ body {
 
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
-			this.load.baseURL = 'https://ioniodi.github.io/Super-Mario/';
-			this.load.crossOrigin = 'anonymous';
-
+			this.load.baseURL = 'https://AlxiKan.github.io/Super-Mario/';
+			this.load.crossOrigin = 'AlxiKan';
+                        this.load.audio('goombasound','audio/stomp.wav');
+			this.load.audio('coinsound','audio/coin.wav');
+			this.load.audio('sm','audio/SuperMetroid.mp3');
+			this.load.audio('jumpsound','audio/jump.wav');
 			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,
 					16);
-			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
-			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
-			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
+			this.load.spritesheet('goomba', 'assets/enemies.png', 16, 16);
+			this.load.spritesheet('mario', 'assets/samus.png', 16, 16);
+			this.load.spritesheet('coin', 'assets/coins.png', 16, 16);
 
 			this.load.tilemap('level', 'assets/super_mario_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
 		}
-
+			var gsound;
+			var csound;
+			var smsound;
+			var jsound;
+			
+			var GameScoreText;
+			
 		function create() {
+
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 			game.scale.pageAlignHorizontally = true;
 			game.scale.pageAlignVertically = true
 			game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 			game.physics.startSystem(Phaser.Physics.ARCADE);
 
-			game.stage.backgroundColor = '#5c94fc';
+			game.stage.backgroundColor = '#000000';
 
 			map = game.add.tilemap('level');
 			map.addTilesetImage('tiles', 'tiles');
@@ -59,7 +69,7 @@ body {
 			coins.enableBody = true;
 			map.createFromTiles(2, null, 'coin', 'stuff', coins);
 			coins.callAll('animations.add', 'animations', 'spin',
-					[ 0, 0, 1, 2 ], 3, true);
+					[ 0, 0, 1, 2 ,3,4,5,6,7,8,9], 10, true);
 			coins.callAll('animations.play', 'animations', 'spin');
 
 			goombas = game.add.group();
@@ -76,20 +86,37 @@ body {
 			game.physics.arcade.enable(player);
 			player.body.gravity.y = 370;
 			player.body.collideWorldBounds = true;
-			player.animations.add('walkRight', [ 1, 2, 3 ], 10, true);
-			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
+			player.animations.add('walkRight', [ 3, 4, 5 ], 10, true);
+			player.animations.add('walkLeft', [ 32, 31, 30 ], 10, true);
 			player.goesRight = true;
 
 			game.camera.follow(player);
 
-			cursors = game.input.keyboard.createCursorKeys();
-		}
+			GameScoreText=game.add.text(20,20,'Score: ' + GameScore,{font:'15px PressStart2P' ,fontSize: '8px', fill: 'white'} );
 
-		function update() {
+			GameScoreText.fixedToCamera = true;
+			
+
+			cursors = game.input.keyboard.createCursorKeys();
+			csound=this.add.audio('coinsound');
+			gsound=this.add.audio('goombasound');
+			jsound=this.add.audio('jumpsound');
+			smsound=this.add.audio('sm');
+			smsound.loop=true;
+			smsound.play();
+
+			
+			
+		}
+			var GameScore = 0;
+
+			function update() {
 			game.physics.arcade.collide(player, layer);
 			game.physics.arcade.collide(goombas, layer);
 			game.physics.arcade.overlap(player, goombas, goombaOverlap);
 			game.physics.arcade.overlap(player, coins, coinOverlap);
+			
+			
 
 			if (player.body.enable) {
 				player.body.velocity.x = 0;
@@ -104,31 +131,39 @@ body {
 				} else {
 					player.animations.stop();
 					if (player.goesRight)
-						player.frame = 0;
+						player.frame = 1;
 					else
-						player.frame = 7;
+						player.frame = 28;
 				}
 
 				if (cursors.up.isDown && player.body.onFloor()) {
+					jsound.play();
 					player.body.velocity.y = -190;
 					player.animations.stop();
 				}
 
 				if (player.body.velocity.y != 0) {
 					if (player.goesRight)
-						player.frame = 5;
+						player.frame = 4;    
 					else
-						player.frame = 12;
+						player.frame = 31;
 				}
 			}
 		}
-
+		
 		function coinOverlap(player, coin) {
+			csound.play();
 			coin.kill();
-		}
+			GameScore +=100;
+			GameScoreText.text='Score: ' + GameScore;
+
+			
+			}
+		
 
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
+				gsound.play();
 				goomba.animations.stop();
 				goomba.frame = 2;
 				goomba.body.enable = false;
@@ -137,7 +172,7 @@ body {
 					goomba.kill();
 				});
 			} else {
-				player.frame = 6;
+				player.frame = 10;
 				player.body.enable = false;
 				player.animations.stop();
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
