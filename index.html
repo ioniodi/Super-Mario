@@ -19,12 +19,7 @@ body {
 			create : create,
 			update : update
 		}, false, false);
-           	var.sc=0;
-		var score;
-		var lives;
-		var livescount=3;
-            
-
+           
 		function preload() {
 
 			//  We need this because the assets are on github pages
@@ -113,6 +108,11 @@ body {
 
 			cursors = game.input.keyboard.createCursorKeys();
 		}
+		
+		var sc=0;
+		var score;
+		var lives;
+		var livescount=3;
 
 		function update() {
 			game.physics.arcade.collide(player, layer);
