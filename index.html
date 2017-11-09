@@ -19,8 +19,17 @@ body {
 			create : create,
 			update : update
 		}, false, false);
-
+		
+		var text;
+		
 		function preload() {
+			
+			var style = { font: "bold 32px Arial",fill: "#fff", boundsAlignH: "center", boundsAlignV: "top" }; 
+			text = game.add.text(0, 0, "LEVEL 1", style);
+ text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+			text.setTextBounds(0, 50, 800, 150); 
+			
+			
 
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
@@ -33,10 +42,31 @@ body {
 			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
 
-			this.load.tilemap('level', 'assets/super_mario_map.json', null,
+			this.load.tilemap('level', 'assets/2016201.json', null,
 					Phaser.Tilemap.TILED_JSON);
+
+			game.load.audio('themesong','audio/bgm.ogg');
+			game.load.audio('coins', 'audio/coin.wav');
+			game.load.audio('stomp', 'audio/stomp.wav');
+			game.load.audio('jumps', 'audio/jump.wav'); 
+			game.load.audio('mariodies', 'audio/death.wav');
+			
 		}
 
+		var theme;
+		var coinss;
+		var goombakill;
+		var jumper;
+		var mariodeath;
+		var score=0;
+		var scoreString= ' ';	
+		var scoreText;
+		var coinsss=0;
+		var coinsString= ' ';	
+		var coinsText;
+		var livesString= ' ';	
+		var livesText;
+		var lives=3;
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 			game.scale.pageAlignHorizontally = true;
@@ -44,7 +74,7 @@ body {
 			game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 			game.physics.startSystem(Phaser.Physics.ARCADE);
 
-			game.stage.backgroundColor = '#5c94fc';
+			game.stage.backgroundColor = '#003366';
 
 			map = game.add.tilemap('level');
 			map.addTilesetImage('tiles', 'tiles');
@@ -59,7 +89,7 @@ body {
 			coins.enableBody = true;
 			map.createFromTiles(2, null, 'coin', 'stuff', coins);
 			coins.callAll('animations.add', 'animations', 'spin',
-					[ 0, 0, 1, 2 ], 3, true);
+					[ 0, 1, 2, 3, 4, 5, 6, 7 ], 8, true);
 			coins.callAll('animations.play', 'animations', 'spin');
 
 			goombas = game.add.group();
@@ -83,6 +113,21 @@ body {
 			game.camera.follow(player);
 
 			cursors = game.input.keyboard.createCursorKeys();
+			scoreString = 'Score : ';
+			scoreText = game.add.text(10, 10, scoreString + score, { font: '12px Arial', fill: '#fff' });
+			scoreText.fixedToCamera=true;
+			livesString = 'Lives : ';
+		 	livesText = game.add.text(100, 10, livesString + lives, { font: '12px Arial', fill: '#fff' });
+			livesText.fixedToCamera=true;
+			coinsString = 'Coins : ';
+			coinsText = game.add.text(190, 10, coinsString + coinsss, { font: '12px Arial', fill: '#fff' });
+			coinsText.fixedToCamera=true;
+			
+			theme= game.add.audio('themesong');
+			theme.loop=true;
+
+    
+			theme.play();
 		}
 
 		function update() {
@@ -110,6 +155,8 @@ body {
 				}
 
 				if (cursors.up.isDown && player.body.onFloor()) {
+					jumper=game.add.audio('jumps');
+			  		jumper.play();
 					player.body.velocity.y = -190;
 					player.animations.stop();
 				}
@@ -124,25 +171,49 @@ body {
 		}
 
 		function coinOverlap(player, coin) {
+			score+=100;
+			scoreText.text = scoreString + score;
+			coinsss+=1;
+			coinsText.text = coinsString + coinsss;
 			coin.kill();
+			coinss= game.add.audio('coins');
+			coinss.play();
 		}
 
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
+				score+=100;
+				scoreText.text = scoreString + score;
+				goombakill=game.add.audio('stomp');
+				goombakill.play();
 				goomba.animations.stop();
 				goomba.frame = 2;
 				goomba.body.enable = false;
 				player.body.velocity.y = -80;
-				game.time.events.add(Phaser.Timer.SECOND, function() {
-					goomba.kill();
+				game.time.events.add(Phaser.Timer.SECOND, function(){
+				goomba.kill();
 				});
+
 			} else {
+				theme.stop();
+				mariodeath=game.add.audio('mariodies');
+				mariodeath.play();
 				player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
-				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-					game.paused = true;
-				});
+				if (lives>1){
+					setTimeout(function(){
+						score=0;
+						coinsss=0;
+						lives-=1;
+						game.state.restart();
+					},3000);
+				}
+				else{
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+						location.reload();	
+					});
+				}
 			}
 		}
 	</script>
