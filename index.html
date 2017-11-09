@@ -24,25 +24,36 @@ body {
 
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
-			this.load.baseURL = 'https://https://aggeloszag.github.io/Super-Mario//';
+			this.load.baseURL = 'https://aggeloszag.github.io/Super-Mario/';
 			this.load.crossOrigin = 'anonymous';
 
 			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,
 					16);
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
-			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
+			this.load.spritesheet('mario', 'assets/mario2.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
 
 			this.load.tilemap('level', 'assets/super_mario_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
+					this.load.audio('stomp','audio/stomp.wav');
+					this.load.audio('coin','audio/coin.wav');
+					this.load.audio('jump','audio/jump.wav');
 		}
-
+		var score = 0;
+		var scoreText;
+		var lives = 3;
+		var livesText;
+		var lifeLostText;
+		var death;
+			
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 			game.scale.pageAlignHorizontally = true;
 			game.scale.pageAlignVertically = true
 			game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 			game.physics.startSystem(Phaser.Physics.ARCADE);
+			lives = 3;
+			score = 0;
 
 			game.stage.backgroundColor = '#5c94fc';
 
@@ -51,6 +62,16 @@ body {
 			map.setCollisionBetween(3, 12, true, 'solid');
 
 			map.createLayer('background');
+			
+			
+			scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '12px', fill: '#000' });
+			livesText = game.add.text(16, 30,'lives: 3', { fontSize: '12px', fill : '#000'});
+			
+			
+			
+			musicst = game.add.audio('stomp');
+			musicco = game.add.audio('coin');
+			musicju = game.add.audio('jump');
 
 			layer = map.createLayer('solid');
 			layer.resizeWorld();
@@ -76,7 +97,7 @@ body {
 			game.physics.arcade.enable(player);
 			player.body.gravity.y = 370;
 			player.body.collideWorldBounds = true;
-			player.animations.add('walkRight', [ 1, 2, 3 ], 10, true);
+			player.animations.add('walkRight', [ 1, 2, 3,  ], 10, true);
 			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
 			player.goesRight = true;
 
@@ -86,11 +107,17 @@ body {
 		}
 
 		function update() {
+			scoreText.x = game.camera.x;
+			scoreText.y = game.camera.y;
+			livesText.x = game.camera.x;
+			livesText.y = game.camera.y+15;
 			game.physics.arcade.collide(player, layer);
 			game.physics.arcade.collide(goombas, layer);
 			game.physics.arcade.overlap(player, goombas, goombaOverlap);
 			game.physics.arcade.overlap(player, coins, coinOverlap);
-
+			
+			
+			
 			if (player.body.enable) {
 				player.body.velocity.x = 0;
 				if (cursors.left.isDown) {
@@ -110,8 +137,10 @@ body {
 				}
 
 				if (cursors.up.isDown && player.body.onFloor()) {
+					musicju.play();
 					player.body.velocity.y = -190;
 					player.animations.stop();
+					
 				}
 
 				if (player.body.velocity.y != 0) {
@@ -122,27 +151,65 @@ body {
 				}
 			}
 		}
-
+		
 		function coinOverlap(player, coin) {
+			musicco.play();
+			
+		
 			coin.kill();
+			//  Add and update the score
+			score += 100;
+			scoreText.text = 'Score: ' + score;
+			
 		}
-
+	
+        isInvincible = false;
+		
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
 				goomba.animations.stop();
 				goomba.frame = 2;
 				goomba.body.enable = false;
 				player.body.velocity.y = -80;
-				game.time.events.add(Phaser.Timer.SECOND, function() {
+				musicst.play();
+				//  Add and update the score
+				score += 200;
+				scoreText.text = 'Score: ' + score;
+				game.time.events.add(Phaser.Timer.SECOND,				function() {
+				
 					goomba.kill();
+		
 				});
 			} else {
-				player.frame = 6;
-				player.body.enable = false;
-				player.animations.stop();
-				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-					game.paused = true;
-				});
+			    if(isInvincible){
+					return;				
+				}
+				livesText.text = 'lives:' + (--lives);
+				isInvincible = true;
+				setTimeout(function(){
+					isInvincible = false;
+				},1000);
+				if(lives == 0){
+					player.frame = 6;
+					player.body.enable = false;
+
+					player.animations.stop();
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+						//game.paused = true;
+				
+					});
+					death = game.add.text(16, 30,'YOU DIED', { font: '12px', fill : '#FF0000'});
+					death.x = game.camera.x + game.camera.width/2 - death.width/2;
+					death.y = game.camera.y + game.camera.height/2 - death.height/2;
+					res = game.add.text(16,30,'Press space to restart',{ fontSize: '8px',fill:'#000'});
+					res.x = game.camera.x + game.camera.width/2 - res.width/2;
+					res.y = death.y + 15 
+					var spaceb = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR); 
+					spaceb.onDown.add(function(){
+						game.state.restart();
+						});
+					}
+				
 			}
 		}
 	</script>
