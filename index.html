@@ -26,6 +26,11 @@ body {
 			//  Remove the next 2 lines if running locally
 			this.load.baseURL = 'https://tkaradimos.github.io/Super-Mario/';
 			this.load.crossOrigin = 'anonymous';
+			
+			
+			game.load.audio('BGM',['audio/bgm.mp3', 'bgm.ogg']);
+			
+			
 
 			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,
 					16);
@@ -36,8 +41,21 @@ body {
 			this.load.tilemap('level', 'assets/super_mario_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
 		}
+		
+		var lives = 3;
+		var score = 0;
+		var bgm;
+		
+		
+		
+		
+		
 
 		function create() {
+			
+			bgm = game.add.audio('BGM');
+			bgm.play();
+			
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 			game.scale.pageAlignHorizontally = true;
 			game.scale.pageAlignVertically = true
@@ -124,6 +142,9 @@ body {
 		}
 
 		function coinOverlap(player, coin) {
+		coinsse = game.add.audio('coinss');
+		hxoscoinss.play();
+		score += 10;
 			coin.kill();
 		}
 
