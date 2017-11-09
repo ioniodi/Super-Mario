@@ -109,11 +109,7 @@ body {
 			cursors = game.input.keyboard.createCursorKeys();
 		}
 		
-		var sc=0;
-		var score;
-		var lives;
-		var livescount=3;
-
+	
 		function update() {
 			game.physics.arcade.collide(player, layer);
 			game.physics.arcade.collide(goombas, layer);
@@ -154,19 +150,12 @@ body {
 				}
 			}
 		}
-		var pl=0;
+		
 		function coinOverlap(player, coin) {
 			coinsound.play();
-			sc=sc+10;
-			score.text='Score:'+sc;
-			pl=pl+1;
+			
 			coin.kill();
-			if(pl==30){
-				sc=sc+1000;
-				score.text='Score:'+sc;
-				alert("Pires ola ta nomismata!+1000 score!!Kerdises");
-				location.reload();
-				}
+			
 			
 			
 		}
@@ -177,8 +166,7 @@ body {
 				goomba.frame = 2;
 				goomba.body.enable = false;
 				player.body.velocity.y = -80;
-				sc=sc+10;
-				score.text='Score:'+sc;
+				
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
 				});
@@ -187,15 +175,6 @@ body {
 				player.body.enable = false;
 				player.animations.stop();
 				doorsound.play();
-				if (livescount>1){
-					backgroundsound.stop();
-					score=0;
-					livescount=livescount-1;
-					game.state.restart();
-				}
-				else{
-					location.reload();
-				}
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
 					game.paused = true;
 				});
