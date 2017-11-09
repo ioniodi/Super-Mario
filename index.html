@@ -44,11 +44,9 @@ body {
 			var smsound;
 			var jsound;
 			
-			
+			var GameScoreText;
 			
 		function create() {
-
-			
 
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 			game.scale.pageAlignHorizontally = true;
@@ -94,6 +92,11 @@ body {
 
 			game.camera.follow(player);
 
+			GameScoreText=game.add.text(20,20,'Score: ' + GameScore,{font:'15px PressStart2P' ,fontSize: '8px', fill: 'white'} );
+
+			GameScoreText.fixedToCamera = true;
+			
+
 			cursors = game.input.keyboard.createCursorKeys();
 			csound=this.add.audio('coinsound');
 			gsound=this.add.audio('goombasound');
@@ -105,6 +108,7 @@ body {
 			
 			
 		}
+			var GameScore = 0;
 
 			function update() {
 			game.physics.arcade.collide(player, layer);
@@ -150,11 +154,12 @@ body {
 		function coinOverlap(player, coin) {
 			csound.play();
 			coin.kill();
-			
-  			
-			
-		}
+			GameScore +=100;
+			GameScoreText.text='Score: ' + GameScore;
 
+			
+			}
+		
 
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
