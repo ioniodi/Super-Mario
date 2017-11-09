@@ -1,5 +1,4 @@
 <!DOCTYPE HTML>
-
 <html>
 <head>
 <title>Super-Mario</title>
@@ -15,6 +14,8 @@ body {
 </head>
 <body>
 	<script type="text/javascript">
+        score = 0;
+        lives = 3;
 		var game = new Phaser.Game(256, 240, Phaser.CANVAS, '', {
 			preload : preload,
 			create : create,
@@ -26,14 +27,20 @@ body {
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
 			this.load.baseURL = 'https://korinaal.github.io/Super-Mario/';
-			this.load.crossOrigin = 'anonymous';
+			this.load.crossOrigin = 'korinaal';
 
 			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,
 					16);
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
-			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
+			this.load.spritesheet('mario', 'assets/flash.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
-
+            this.load.audio('music','audio/music.ogg');
+            this.load.audio('run','audio/run.ogg');
+            this.load.audio('coinsound','audio/coin_pick.ogg');
+            this.load.audio('onkill','audio/death.ogg');
+            this.load.audio('stompsound','audio/stomp.ogg');
+            this.load.audio('jump','audio/jump.wav');
+            this.load.image('headlives','assets/lives.png');
 			this.load.tilemap('level', 'assets/super_mario_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
 		}
@@ -60,7 +67,7 @@ body {
 			coins.enableBody = true;
 			map.createFromTiles(2, null, 'coin', 'stuff', coins);
 			coins.callAll('animations.add', 'animations', 'spin',
-					[ 0, 0, 1, 2 ], 3, true);
+					[ 0, 0, 1, 2,3 ], 3, true);
 			coins.callAll('animations.play', 'animations', 'spin');
 
 			goombas = game.add.group();
@@ -77,13 +84,35 @@ body {
 			game.physics.arcade.enable(player);
 			player.body.gravity.y = 370;
 			player.body.collideWorldBounds = true;
-			player.animations.add('walkRight', [ 1, 2, 3 ], 10, true);
-			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
+			player.animations.add('walkRight', [ 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17 ], 50, true);
+			player.animations.add('walkLeft', [ 35,34,33,32,31,30,29,28,27,26,25,24,23,22,21,20,19,18 ], 50, true);
 			player.goesRight = true;
-
+            
 			game.camera.follow(player);
 
 			cursors = game.input.keyboard.createCursorKeys();
+            music = game.add.audio('music');
+            music.play();
+            music.volume = 0.4;
+            run_sound = game.add.audio('run');
+            run_sound.volume = 2;
+            run_sound.play();
+            coin_sound = game.add.audio('coinsound');
+            onkillsound = game.add.audio('onkill');
+            onkillsound.volume = 3;
+            stompsound = game.add.audio('stompsound');
+            stompsound.volume = 2;
+            jumpsound = game.add.audio('jump');
+            jumpsound.volume = 0.2;
+            scoretext = game.add.text(0,0,"Score: "+score,{font: "Bold 21px serif",fill:"red",boundsAlignH:"center",boundsAlignV:"middle"});
+            scoretext.fixedToCamera = true ;
+            head = game.add.sprite(220,0,'headlives');
+            head.scale.setTo(0.15,0.15);
+            head.fixedToCamera = true;
+            livestext = game.add.text(210,10,lives+"x",{font: "Bold 55px serif",fill:"red",boundsAlignH:"center",boundsAlignV:"middle"});
+            livestext.fixedToCamera = true;
+            
+            
 		}
 
 		function update() {
@@ -91,7 +120,8 @@ body {
 			game.physics.arcade.collide(goombas, layer);
 			game.physics.arcade.overlap(player, goombas, goombaOverlap);
 			game.physics.arcade.overlap(player, coins, coinOverlap);
-
+            scoretext.text = 'Score '+score;
+            livestext.text = lives+"x";
 			if (player.body.enable) {
 				player.body.velocity.x = 0;
 				if (cursors.left.isDown) {
@@ -105,45 +135,68 @@ body {
 				} else {
 					player.animations.stop();
 					if (player.goesRight)
-						player.frame = 0;
+						player.frame = 40;
 					else
-						player.frame = 7;
+						player.frame = 41;
 				}
 
 				if (cursors.up.isDown && player.body.onFloor()) {
 					player.body.velocity.y = -190;
+                    jumpsound.play();
 					player.animations.stop();
 				}
 
 				if (player.body.velocity.y != 0) {
 					if (player.goesRight)
-						player.frame = 5;
+						player.frame = 36;
 					else
-						player.frame = 12;
+						player.frame = 37;
 				}
 			}
 		}
 
 		function coinOverlap(player, coin) {
+            coin_sound.play();
+            score+=10;
 			coin.kill();
 		}
 
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
+                stompsound.play();
 				goomba.animations.stop();
 				goomba.frame = 2;
+                score+=20;
 				goomba.body.enable = false;
 				player.body.velocity.y = -80;
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
 				});
+                if(goombas.countLiving()===0){
+                    score+=1000;
+                    game.add.text(0,10,"Bonus for killing all enemies!",{font: "Bold 55px serif",fill:"red",boundsAlignH:"center",boundsAlignV:"middle"}).fixedToCamera = true;
+                }
 			} else {
-				player.frame = 6;
-				player.body.enable = false;
-				player.animations.stop();
-				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+                lives-=1;
+                run_sound.stop();
+                onkillsound.play();
+				player.frame = 38;
+                if(lives==0){
+                    music.stop();
+                    player.body.enable = false;
+                    player.animations.stop();
+                    game.time.events.add(Phaser.Timer.SECOND * 3, function() {
 					game.paused = true;
-				});
+                    });
+                }else{
+                    player.position.x=16;
+                    player.position.y=game.world.height - 48;
+                    player.frame=0;
+                    player.body.enable = true; 
+                    score=0;
+                }
+				
+				
 			}
 		}
 	</script>
