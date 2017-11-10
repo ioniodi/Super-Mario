@@ -22,11 +22,11 @@ body {
         
         var myScore = 0;
         var myBonus = 0;
-        var myLifes = 3;
+        var myLives = 3;
         
         var sscore;
         var bbonus;
-        var llifes;
+        var llives;
                 
 		
 		function preload() {
@@ -90,11 +90,11 @@ body {
             //text
              sscore = game.add.text(16,7, 'SCORE--> 0 ', {fontSize: '10px', fill: '#800000'});
              bbonus = game.add.text(100,7, 'BONUS--> 0 ', {fontSize: '10px', fill: '#800000'});
-             llifes = game.add.text(200,7, 'LIFES--> 0 ', {fontSize: '10px', fill: '#800000'});
+             llives = game.add.text(200,7, 'LIVES--> 0 ', {fontSize: '10px', fill: '#800000'});
              
              sscore.fixedToCamera = true;
              bbonus.fixedToCamera = true;
-             llifes.fixedToCamera = true;
+             llives.fixedToCamera = true;
 		}
 		function update() {
 			game.physics.arcade.collide(player, layer);
