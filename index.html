@@ -19,9 +19,11 @@ body {
 			create : create,
 			update : update
 		}, false, false);
+		
 		//instert score
            	var score = 0;
 		var scoreText;
+		
             	//instert lives
            	 var lives=3;
            	 var limage;
@@ -43,6 +45,7 @@ body {
 
 			this.load.tilemap('level', 'assets/super_mario_map.json', null,
 					Phaser.Tilemap.TILED_JSON);
+			
 			this.load.audio('jump','audio/jump.wav');
 			this.load.audio('coin','audio/coin.wav');
 			this.load.audio('stomp','audio/stomp.wav');
@@ -96,11 +99,6 @@ body {
 			player.animations.add('walkRight', [ 1, 2, 3 ], 10, true);
 			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
 			player.goesRight = true;
-			score=this.add.text(16,10,'Score:'+ sc,{fontSize:'10px',fill: 'green'});
-			score.fixedToCamera=true;
-                        lives=this.add.text(150,10,'lives:'+ livescount,{fontSize:'10px',fill: 'red'});
-			lives.fixedToCamera=true;
-			
 			
 			jumpsound = game.add.sound('jump');
 			coinsound = game.add.sound('coin');
@@ -119,7 +117,7 @@ body {
             		limage.fixedToCamera=true;
 				lcounter.fixedToCamera=true;
             		 if(lives==3){
-				alert("Let's go!!!");
+				alert("Play!!!");
 				}
 			game.camera.follow(player);
 
