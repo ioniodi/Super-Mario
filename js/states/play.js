@@ -377,6 +377,20 @@ Game.playState.prototype = {
         teleportY = teleportB.y;
         this.teleportD(this);
     },
+    
+    teleportD:function(game) {
+        game.time.events.add(Phaser.Timer.SECOND*0.15, function() {
+            player.body.enable = false;
+            player.body.velocity.x = 0;
+            player.body.velocity.y = 0;
+        });
+        game.time.events.add(Phaser.Timer.SECOND*0.7, function() {
+            soundManager.playSound(this, teleportS);
+            game.setPlayer(this, teleportX + 230, teleportY - 100);
+            player.body.enable = true;
+        });
+        checkT = false;
+    },
 
     finishOverlap:function(player, finish) {
         if(player.body.onFloor() && this.input.keyboard.isDown(Phaser.KeyCode.DOWN) && checkF == false) {
