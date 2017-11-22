@@ -1,22 +1,46 @@
-<!DOCTYPE HTML>
+﻿<!DOCTYPE HTML>
 <html>
-    
- <head>
-    <meta charset="utf-8"/>
-    
-    <title>Super-Mario</title>
-    <style>
-        body {
-            margin: 0px;
-            padding: 0px;
-            background-color: #87CEFA;
-        }
-    </style>
-</head>   
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Super-Mario</title>
+
+        <script src="js/phaser.js"></script>
+        <script src="js/managers/soundManager.js"></script>
+        <script src="js/managers/textManager.js"></script>
+        <script src="js/managers/buttonManager.js"></script>
+        <script src="js/managers/imageManager.js"></script>
+        <script src="js/managers/playerStatsManager.js"></script>
+        <script src="js/managers/levelManager.js"></script>
+
+        <script src="js/states/boot.js"></script>
+        <script src="js/states/load.js"></script>
+        <script src="js/states/boot_menu.js"></script>
+        <script src="js/states/menu.js"></script>
+        <script src="js/states/settings.js"></script>
+        <script src="js/states/choose_level.js"></script>
+        <script src="js/states/help.js"></script>
+        <script src="js/states/play.js"></script>
+        <script src="js/states/next_level.js"></script>
+    </head>
     
     <body>
-        <script type="text/javascript" src="js/phaser.js"></script>
-        <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript">
+            window.onload = function() {
+                var game = new Phaser.Game(256, 240, Phaser.CANVAS, '');
+
+                game.state.add('boot', Game.bootState);
+                game.state.add('load', Game.loadState);
+                game.state.add('boot_menu', Game.boot_menuState);
+                game.state.add('menu', Game.menuState);
+                game.state.add('settings', Game.settingsState);
+                game.state.add('choose_level', Game.choose_levelState);
+                game.state.add('help', Game.helpState);
+                game.state.add('play', Game.playState);
+                game.state.add('next_level', Game.next_levelState);
+                
+                game.state.start('load');
+            };
+        </script>
     </body>
     
 </html>

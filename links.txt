@@ -1,0 +1,17 @@
+{
+  arrows: http://www.101computing.net/wp/wp-content/uploads/arrowKeys-300x205.png
+
+  teleportB: https://itunes.apple.com/us/app/iteleport-vnc-rdp/id489094439?mt=12
+
+  background: https://www.google.gr/search?sa=G&hl=el&q=backdrop+for+game&tbm=isch&tbs=simg:CAQSlgEJXysUxo3kAZkaigELEKjU2AQaBAgVCAQMCxCwjKcIGmEKXwgDEieJBIgXnAlopAP8C5wL2QODDJQL5Si1N-Eo5yilN6s3rDe5J7EqqjcaMKgUG7fxxI1JYQo9kPWRBo0Q2DNKdJySs_1ytIOHlELqXzibgJjMdBjjBT3YXQeLT5iAEDAsQjq7-CBoKCggIARIEqGe_1IQw&ved=0ahUKEwjYpMbD2KnXAhXLPxoKHfclC2cQ2A4IKigB&biw=1536&bih=742#imgrc=9v9h9Yi7ftJgYM:
+
+  player, enemies: https://opengameart.org/content/16x16-16x24-32x32-rpg-enemies-updated
+
+  extra audio: https://scratch.mit.edu/projects/49905542/
+
+  extra tileset: https://www.spriters-resource.com/nes/supermariobros2supermariobrosthelostlevelsjpn/sheet/52630/
+
+  bonus star: https://dribbble.com/shots/2010241-Game-Stars?list=shots&sort=popular&timeframe=now&offset=50
+}
+
+τα υπόλοιπα, εκτός από αυτά που ήρθαν με το παιχνίδι στην εργασία, δημιουργήθηκαν από εμένα.
