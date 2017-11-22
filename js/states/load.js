@@ -12,12 +12,12 @@ Game.loadState.prototype = {
         var c = 0;
         levelLocked[0] = 2; //level 0 is unlocked (frames: 2 green (yes) and 1 red (no))
         for(c=1; c<level.length; c++) {
-            levelLocked[c] = 1;
+            //levelLocked[c] = 1;
             levelScore[c-1] = 0;
         }
 
         //temp
-		//levelLocked = [2,2,2,2];
+	levelLocked = [2,2,2,2];
     },
     
     //loads sprites from spritesheets
