@@ -413,8 +413,7 @@ Game.playState.prototype = {
             });
         });
         game.time.events.add(Phaser.Timer.SECOND * 4, function() {
-            //game.state.start('next_level');
-            game.state.start('boot_menu');
+            game.state.start('next_level');
         });
     },
 
