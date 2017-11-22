@@ -15,7 +15,8 @@ Game.next_levelState.prototype = {
         if(currentLevel <= finishLevel && gameOver == false) {
             buttonManager.createButton(game, "continue", true, game.width-28, 11, 55, 20, function() {
                 checkF = false;
-                buttonManager.buttonState(game, currentLevel, 'play');
+                //buttonManager.buttonState(game, currentLevel, 'play');
+                buttonManager.buttonState(game, currentLevel, 'boot_menu');
             }, buttonFrame.menu_button, 0.85, false);
         }
         
