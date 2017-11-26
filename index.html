@@ -7,132 +7,358 @@
 body {
 	margin: 0;
 	padding: 0;
-	background-color: #000;
+	background-color: #255;
 }
 </style>
+<script src="MENU.js"></script>
+<script src="S1.js"></script>
+<script src="S2.js"></script>
 <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
 </head>
 <body>
 	<script type="text/javascript">
-		var game = new Phaser.Game(256, 240, Phaser.CANVAS, '', {
-			preload : preload,
-			create : create,
-			update : update
-		}, false, false);
+		var game = new Phaser.Game(1030, 480, Phaser.CANVAS, '', this, false, false);
 
-		function preload() {
+		function preload(){
 
-			//  We need this because the assets are on github pages
-			//  Remove the next 2 lines if running locally
-			this.load.baseURL = 'https://ioniodi.github.io/Super-Mario/';
-			this.load.crossOrigin = 'anonymous';
+		this.load.baseURL = 'https://p16bouk.github.io/Super-Mario/';
+		this.load.crossOrigin = 'anonymous';
 
-			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,
-					16);
-			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
-			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
-			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
+			}	
 
-			this.load.tilemap('level', 'assets/super_mario_map.json', null,
-					Phaser.Tilemap.TILED_JSON);
+		//Gae Texts
+		var lvltext;
+		var endtext;
+		var style = { font: "bold 20px Arial", fill: "#40ff00", boundsAlignH: "center", boundsAlignV: "middle" };
+		var style2 = { font: "bold 20px Arial", fill: "#40ff00", boundsAlignH: "center", boundsAlignV: "middle" };
+		var livestext;
+		var text;
+		var game_overtext;
+		var badmushtext;
+
+		//Game Sounds
+		var stars;
+		var ends;
+		var lavas;
+		var menus;
+		var fs;
+		var glin;
+		var jump;
+		var stomp;
+		var theme;
+		var mush;
+		var badmusha;
+		var dies;
+
+		//Other
+		var score = 0;
+		var lives = 2;
+		var star;
+		var mushroom;
+		var badmush;
+		var mushflag = false;
+		var badmushflag = false;
+
+		game.state.add('S1', S1);
+		game.state.add('S2', S2);
+		game.state.add('MENU', MENU);
+		game.state.start('MENU');
+
+		function nextlvl(){
+
+			lvl = game.add.audio('lvl');
+			badmushflag = false;
+			mushflag = false;
+			
+			var style5 = { font: "bold 80px Roman", fill: "#4bb84b", boundsAlignH: "center", boundsAlignV: "middle" };
+			lvltext = game.add.text(280, 150, "NEXT STAGE", style5);
+			lvltext.fixedToCamera = true;
+			theme.stop();
+			lvl.play();
+			player.body.enable = false;
+			player.animations.stop();
+
+			game.time.events.add(Phaser.Timer.SECOND * 5, function() {
+
+
+			game.state.start('S2');
+			});
 		}
 
-		function create() {
-			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
-			game.scale.pageAlignHorizontally = true;
-			game.scale.pageAlignVertically = true
-			game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-			game.physics.startSystem(Phaser.Physics.ARCADE);
+		function endgame(){
 
-			game.stage.backgroundColor = '#5c94fc';
+			theme.stop();
+			ends = game.add.audio('end');
+			var style5 = { font: "bold 80px Roman", fill: "#4bb84b", boundsAlignH: "center", boundsAlignV: "middle" };
+			var style = { font: "bold 70px Arial", fill: "#FFA500", boundsAlignH: "center", boundsAlignV: "middle" };
+			endtext = game.add.text(120, 150, "CONGRATULATIONS", style5);
+			text = game.add.text(360, 250, "SCORE:  "+score, style);
+			endtext.fixedToCamera=true; 
+			text.fixedToCamera=true;
+			ends.play();
+			player.body.enable = false;
+			player.animations.stop();
 
-			map = game.add.tilemap('level');
-			map.addTilesetImage('tiles', 'tiles');
-			map.setCollisionBetween(3, 12, true, 'solid');
+			game.time.events.add(Phaser.Timer.SECOND * 8, function() {
 
-			map.createLayer('background');
+			game.stage.backgroundColor = '#000000';	
+			lives = 2
+			score = 0;
+			game.state.start('MENU');
+				});
 
-			layer = map.createLayer('solid');
-			layer.resizeWorld();
-
-			coins = game.add.group();
-			coins.enableBody = true;
-			map.createFromTiles(2, null, 'coin', 'stuff', coins);
-			coins.callAll('animations.add', 'animations', 'spin',
-					[ 0, 0, 1, 2 ], 3, true);
-			coins.callAll('animations.play', 'animations', 'spin');
-
-			goombas = game.add.group();
-			goombas.enableBody = true;
-			map.createFromTiles(1, null, 'goomba', 'stuff', goombas);
-			goombas.callAll('animations.add', 'animations', 'walk', [ 0, 1 ],
-					2, true);
-			goombas.callAll('animations.play', 'animations', 'walk');
-			goombas.setAll('body.bounce.x', 1);
-			goombas.setAll('body.velocity.x', -20);
-			goombas.setAll('body.gravity.y', 500);
-
-			player = game.add.sprite(16, game.world.height - 48, 'mario');
-			game.physics.arcade.enable(player);
-			player.body.gravity.y = 370;
-			player.body.collideWorldBounds = true;
-			player.animations.add('walkRight', [ 1, 2, 3 ], 10, true);
-			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
-			player.goesRight = true;
-
-			game.camera.follow(player);
-
-			cursors = game.input.keyboard.createCursorKeys();
 		}
 
-		function update() {
-			game.physics.arcade.collide(player, layer);
-			game.physics.arcade.collide(goombas, layer);
-			game.physics.arcade.overlap(player, goombas, goombaOverlap);
-			game.physics.arcade.overlap(player, coins, coinOverlap);
+		function die(){
 
-			if (player.body.enable) {
-				player.body.velocity.x = 0;
-				if (cursors.left.isDown) {
-					player.body.velocity.x = -90;
-					player.animations.play('walkLeft');
-					player.goesRight = false;
-				} else if (cursors.right.isDown) {
-					player.body.velocity.x = 90;
-					player.animations.play('walkRight');
-					player.goesRight = true;
-				} else {
-					player.animations.stop();
-					if (player.goesRight)
-						player.frame = 0;
-					else
-						player.frame = 7;
+			dies = game.add.audio('dies');
+			lives--;
+			score = 0;
+			theme.stop();
+			dies.play();
+			game.state.start(game.state.current);
+
+		}
+
+		function dying(){
+
+			badmush.kill();
+			badmush.body.enable = false;
+			game_over = game.add.audio('game_over');
+			var style5 = { font: "bold 80px Roman", fill: "#4bb84b", boundsAlignH: "center", boundsAlignV: "middle" };
+			game_overtext = game.add.text(280, 150, "GAME OVER", style5);
+			var style = { font: "bold 70px Arial", fill: "#FFA500", boundsAlignH: "center", boundsAlignV: "middle" };
+			text = game.add.text(360, 250, "SCORE:  "+score, style);
+			text.fixedToCamera = true;
+			game_overtext.fixedToCamera=true; 
+			game_over.play();
+			game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+
+			game.stopped = true;
+			theme.stop();
+			game.stage.backgroundColor = '#000000';
+			lives = 2
+			score = 0;
+			game.state.start('MENU');
+				});
+
+		}
+
+		function starCollide1(player, star){
+
+			stars = game.add.audio('stars');
+			stars.play();
+			star.kill();
+			star.body.enable = false;
+			player.reset(2620,-420);
+		
+		}
+
+		function starCollide2(player, star){
+
+			stars = game.add.audio('stars');
+			stars.play();
+			star.kill();
+			star.body.enable = false;
+			player.reset(2760,224);
+		
+		}
+
+		function lavaO(goomba, lava){
+
+			if(goomba.body.touching.down){
+
+				goomba.frame = 2;
+				goomba.animations.stop();
+				goomba.enableBody = false;
+				goomba.kill();
+
+			}
+
+		}
+		
+		function snakeOverlap(player, snake){
+
+				
+			
+			if (player.body.touching.down) {
+				fs = game.add.audio('fs');
+				fs.play();
+				snake.animations.stop();
+				player.body.velocity.y = -600;
+				snake.body.enable = false;
+				
+					snake.kill();
+
+			} 
+			else {
+				player.frame = 6;
+				player.body.enable = false;
+				player.animations.stop();
+				
+				if (lives>=1) {
+
+					die();
+					
 				}
+				else{
 
-				if (cursors.up.isDown && player.body.onFloor()) {
-					player.body.velocity.y = -190;
-					player.animations.stop();
-				}
-
-				if (player.body.velocity.y != 0) {
-					if (player.goesRight)
-						player.frame = 5;
-					else
-						player.frame = 12;
+					dying();
+				
 				}
 			}
+
 		}
 
 		function coinOverlap(player, coin) {
+
+			glin = game.add.audio('glin');
 			coin.kill();
+			glin.play();
+			score++; 
+			if (score%40 == 0){
+
+				lives++;
+				livestext.text = 'LIVES: ' +lives;
+
+			}
+			text.text = 'SCORE:' + score;
 		}
 
-		function goombaOverlap(player, goomba) {
+		function mushroomOverlap(player,mushroom){ // Manitari
+			
+			
+			if (mushflag == false){
+
+				man = game.add.audio('man');
+				mush=game.add.audio('mush');
+				mush.play();
+				man.play();
+				mushroom.kill();
+				mushroom.body.enable = false;
+			}
+			mushflag = true;
+			
+
+			lives++;
+			livestext.text = 'LIVES: ' +lives;
+
+		}
+
+		function badmushOverlap(player,badmush){ // Manitari meion
+			
+			game_over = game.add.audio('game_over');
+			//var style6 = { font: "bold 30px Arial", fill: "00FF00", boundsAlignH: "center", boundsAlignV: "middle"};
+			
+			if (badmushflag == false){
+
+				if(lives>=1){
+
+				badmusha=game.add.audio('badmusha');
+				badmusha.play();
+				badmush.kill();
+				badmush.body.enable = false;
+				badmushflag = true;
+				
+
+					//badmushtext = game.add.text(9,90,"Oups -1 live", style6);
+					//badmushtext.setTextBounds(0, 100, 800, 100);
+
+
+			
+				lives--;
+				livestext.text = 'LIVES: ' +lives;
+				}
+				else{
+
+					dying();
+					
+			}
+		}
+	}		
+
+		function lavaOverlap(player, lava) {
+
+			lavas = game.add.audio('lavas');
 			if (player.body.touching.down) {
+
+				lavas.play();
+				player.frame = 6;
+				player.body.enable = false;
+				player.animations.stop();
+				
+				if (lives>=1) {
+
+					die();
+					
+				}
+				else{
+
+					dying();
+				
+				}
+
+			}
+
+			
+
+		}
+
+		function door1collide(player, door1){
+
+			if (player.body.touching.up){
+
+				door1.body.enable = false;
+				nextlvl();
+
+			}else if (player.body.touching.right){
+
+				door1.body.enable = false;
+				nextlvl();
+
+			}else if (player.body.touching.left){
+
+				door1.body.enable = false;
+				nextlvl();
+			}else
+
+				door1.body.enable = false;
+				nextlvl();
+
+		}
+
+		function door2collide(player, door2){
+
+			if (player.body.touching.up){
+
+				door2.body.enable = false;
+				endgame();
+
+			}else if (player.body.touching.right){
+
+				door2.body.enable = false;
+				endgame();
+
+			}else if (player.body.touching.left){
+				
+				door2.body.enable = false;
+				endgame();
+			}else
+
+				door2.body.enable = false;
+				endgame();
+
+		}
+			
+		function goombaOverlap(player, goomba) {
+
+			if (player.body.touching.down) {
+				stomp = game.add.audio('stomp');
+				stomp.play();
 				goomba.animations.stop();
+				player.body.velocity.y = -70;
 				goomba.frame = 2;
 				goomba.body.enable = false;
-				player.body.velocity.y = -80;
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
 				});
@@ -140,11 +366,20 @@ body {
 				player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
-				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-					game.paused = true;
-				});
+				
+				if (lives>=1) {
+
+					
+					die();
+
+				}
+				else{
+
+					dying();
+
 			}
 		}
+	}	
 	</script>
 </body>
 </html>
