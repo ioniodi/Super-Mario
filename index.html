@@ -26,6 +26,11 @@ body {
 			create : create,
 			update : update
 		}, false, false);
+		var score = 0;
+                var scoreText;
+                var life = 2;
+                var lifeText;
+                var gameoverText;
 
 		function preload() {
 
@@ -51,7 +56,7 @@ body {
 			game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 			game.physics.startSystem(Phaser.Physics.ARCADE);
 
-			game.stage.backgroundColor = '#5c94fc';
+			game.stage.backgroundColor = '#97ca65';
 
 			map = game.add.tilemap('level');
 			map.addTilesetImage('tiles', 'tiles');
@@ -90,6 +95,10 @@ body {
 			game.camera.follow(player);
 
 			cursors = game.input.keyboard.createCursorKeys();
+			scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '16px', fill: '#000' });
+		        scoreText.fixedToCamera = true;
+                        lifeText = game.add.text(16, 30, 'life: 3', { fontSize: '16px', fill: '#000' });
+		        lifeText.fixedToCamera = true;
 		}
 
 		function update() {
@@ -132,6 +141,10 @@ body {
 
 		function coinOverlap(player, coin) {
 			coin.kill();
+		        var audio = new Audio('audio/coin.wav');
+			audio.play()
+			score += 50;
+                        scoreText.text = 'Score: ' + score;
 		}
 
 		function goombaOverlap(player, goomba) {
