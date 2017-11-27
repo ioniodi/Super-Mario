@@ -2,11 +2,11 @@ var buttonManager = new Object();
 
 var button;
 
-buttonManager.createButton = function(game, stringName, menu_button, x, y, w, h, callback, buttonFrame, buttonAlpha, check) {
-    if(!menu_button) {
+buttonManager.createButton = function(game, stringName, isMenuButton, x, y, w, h, callback, buttonFrame, buttonAlpha, check) {
+    if(isMenuButton == false) {
         button = game.add.button(x, y, 'button', callback, this, buttonFrame, buttonFrame, 0);
     }
-    else if(menu_button) {
+    else if(isMenuButton == true) {
         button = game.add.button(x, y, 'button', callback, this, 2, buttonFrame, buttonFrame);
     }
 
@@ -26,7 +26,7 @@ buttonManager.buttonState = function(game, level, state) {
     soundManager.playSound(game, clickS);
     if(level >= 0) {
         currentLevel = level;
-        game.time.events.add(Phaser.Timer.SECOND * 0.5, function() {
+        game.time.events.add(Phaser.Timer.SECOND * 0.6, function() {
             game.state.start(state);
         });
     }

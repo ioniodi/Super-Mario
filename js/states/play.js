@@ -2,19 +2,6 @@ Game.playState = function(game) {
 
 };
 
-////////////////////
-//ufo
-var sprite;
-var bullets;
-var fireRate = 1000;
-var nextFire = 0;
-
-var angle = 0;
-
-var ufoDistance = 0;
-var ufoMaxDistance = 40;
-//////////////////
-
 Game.playState.prototype = {
 
     init:function(game) {
@@ -27,17 +14,18 @@ Game.playState.prototype = {
         checkPointY = 0;
         teleportX = 0;
         teleportY = 0;
+        nextFire = 0;
+        gameOver = false;
     },
 
     preload:function(game) {
+        //game.stage.backgroundColor = levelColor[currentLevel];
+        imageManager.createImage(game, game.width/2, game.height/2, 'background', 0.45, 0.65, 0, true);
         //load tilemap
         this.load.tilemap('level', 'assets/levels/' +level[currentLevel] +'.json', null, Phaser.Tilemap.TILED_JSON);
     },
 
     create:function(game) {
-        //game.stage.backgroundColor = levelColor[currentLevel];
-        imageManager.createImage(game, game.width/2, game.height/2, 'background', 0.45, 0.65, 0, true);
-
         backB = buttonManager.createButton(game, "back", true, 18, 10, 30, 20, function() {
             buttonManager.buttonState(game, max_level, 'boot_menu');
         }, buttonFrame.menu_button, 0.85, true);
@@ -94,7 +82,7 @@ Game.playState.prototype = {
         stop_signs = game.add.group();
         stop_signs.enableBody = true;
         map.createFromTiles(5, null, 'stop_sign', 'stuff', stop_signs);
-        stop_signs.alpha = 0.0001;
+        stop_signs.alpha = visibleObject.false;
 
         //create mushrooms
         mushrooms = game.add.group();
@@ -103,9 +91,9 @@ Game.playState.prototype = {
         mushrooms.setAll('body.bounce.x', 1);
 
         //create teleportB
-        teleportBs = game.add.group();
-        teleportBs.enableBody = true;
-        map.createFromTiles(8, null, 'teleportB', 'stuff', teleportBs);
+        teleports = game.add.group();
+        teleports.enableBody = true;
+        map.createFromTiles(8, null, 'teleport', 'stuff', teleports);
 
         //create checkpoint
         checkpoints = game.add.group();
@@ -115,7 +103,7 @@ Game.playState.prototype = {
         finishs = game.add.group();
         finishs.enableBody = true;
         map.createFromTiles(6, null, 'finish', 'stuff', finishs);
-        finishs.alpha = 0.0001;
+        finishs.alpha = visibleObject.false;
 
         //create lives
         lives = game.add.sprite(game.width - 52, 2, 'lives');
@@ -142,7 +130,7 @@ Game.playState.prototype = {
         bonus.fixedToCamera = true;
         bonus_type_text = game.add.bitmapText(bonusCor.x+15, bonusCor.y+1,'font', score, 12);
         bonus_type_text.fixedToCamera = true;
-        bonus_type_text.text = currentBonus = "none  0";
+        bonus_type_text.text = "none  0";
 
         soundManager.playSound(game, backgroundS);
 
@@ -154,6 +142,10 @@ Game.playState.prototype = {
         lasers.setAll('checkWorldBounds', true);
         lasers.setAll('outOfBoundsKill', true);
 
+        //ufos = game.add.group();
+        //ufos.enableBody = true;
+        //map.createFromTiles(4, null, 'ufo', 'stuff', ufos);
+        //ufos.alpha = visibleObject.true;
         ufo = game.add.sprite(230, 40, 'ufo');
         ufo.enableBody = true;
 //////////////////
@@ -165,36 +157,19 @@ Game.playState.prototype = {
         this.overlaps(game);
 
         this.playerMoves(game);
-
         this.bonusEffect(game);
-
         this.fire(game);
 
+        if(game.input.keyboard.isDown(Phaser.KeyCode.T)) {
+            player.x = 2030;
+            player.y = 40
+        }
+        
         //mushroom effect
         //this.physics.arcade.collide(player, mushrooms);
         //this.physics.arcade.collide(mushrooms, layer);
     },
-///////////////////////////////
-    fire:function(game) {
-        if(player.body.enable == true && player.alpha == 1)  {
-            if(player.x >= ufo.x - 100 && player.x <= ufo.x + 100) {
-                if (game.time.now > nextFire && lasers.countDead() > 0) {
-                    nextFire = game.time.now + fireRate;
-            
-                    var laser = lasers.getFirstDead();
-                    laser.reset(ufo.x+3, ufo.y+3);
-        
-                    game.physics.arcade.moveToObject(laser, player, 80);
-                }
-            }
-        }        
-    },
 
-    laserOverlap:function(player, laser) {
-        laser.kill();
-        //this.playerLosesLife(this);
-    },
-////////////////////////////
     //collisions
     collisions:function(game) {
         this.physics.arcade.collide(player, layer);
@@ -206,7 +181,7 @@ Game.playState.prototype = {
     overlaps:function(game) {
         this.physics.arcade.overlap(player, coins, this.coinOverlap.bind(this));
         this.physics.arcade.overlap(player, mushrooms, this.mushroomOverlap.bind(this));
-        this.physics.arcade.overlap(player, teleportBs, this.teleportBOverlap.bind(this));
+        this.physics.arcade.overlap(player, teleports, this.teleportOverlap.bind(this));
         this.physics.arcade.overlap(player, checkpoints, this.checkpointOverlap.bind(this));
         this.physics.arcade.overlap(player, finishs, this.finishOverlap.bind(this));
         this.enemyPhysics(enableEnemyPhysics);
@@ -275,9 +250,9 @@ Game.playState.prototype = {
 
     //life handler function
     playerLosesLife:function(game) {
-        if(player.alpha == 1) {
+        if(player.alpha == visibleObject.true) {
             currentLifes--;
-            player.alpha = 0.99;
+            player.alpha = visibleObject.cheat;
             lives.frame = 5 - currentLifes;
             soundManager.playSound(this, deathS);
             player.animations.stop();
@@ -328,7 +303,7 @@ Game.playState.prototype = {
         }
         
         this.time.events.add(Phaser.Timer.SECOND * 0.5, function() {
-            player.alpha = 1;
+            player.alpha = visibleObject.true;
         });
         player.goesRight = true;
         player.body.enable = true;
@@ -347,7 +322,7 @@ Game.playState.prototype = {
             currentBonusScoreEffect = 2;
         }
         else if(currentBonus == bonus_type[2]) {
-            player.alpha = 0.4;
+            player.alpha = visibleObject.mid;
             enableEnemyPhysics = false;
         }
         timeLeft = 8;
@@ -357,7 +332,7 @@ Game.playState.prototype = {
     bonusEffect:function(game) {
         if(checkB == true) {
             if(this.timer(game) == 0) {
-                player.alpha = 1;
+                player.alpha = visibleObject.true;
                 timeCounter = 0;
                 timeLeft = 0;
                 checkB = false;
@@ -370,15 +345,15 @@ Game.playState.prototype = {
         else {}
     },
 
-    teleportBOverlap:function(player, teleportB) {
-        teleportB.kill();
+    teleportOverlap:function(player, teleport) {
+        teleport.kill();
         checkT = true;
-        teleportX = teleportB.x;
-        teleportY = teleportB.y;
-        this.teleportD(this);
+        teleportX = teleport.x;
+        teleportY = teleport.y;
+        this.teleport(this);
     },
-    
-    teleportD:function(game) {
+
+    teleport:function(game) {
         game.time.events.add(Phaser.Timer.SECOND*0.15, function() {
             player.body.enable = false;
             player.body.velocity.x = 0;
@@ -390,6 +365,29 @@ Game.playState.prototype = {
             player.body.enable = true;
         });
         checkT = false;
+    },
+
+    laserOverlap:function(player, laser) {
+        if(player.alpha == visibleObject.true) {
+            laser.kill();
+            this.playerLosesLife(this);
+        }
+    },
+
+    fire:function(game) {
+        if(player.body.enable == true && player.alpha == visibleObject.true)  {
+            if(player.x >= ufo.x - ufoRange && player.x <= ufo.x + ufoRange) {
+                if (game.time.now > nextFire && lasers.countDead() > 0) {
+                    nextFire = game.time.now + fireRate;
+            
+                    var laser = lasers.getFirstDead();
+                    laser.reset(ufo.x+3, ufo.y+3);
+
+                    game.physics.arcade.moveToObject(laser, player, 80);
+                    soundManager.playSound(game, lazerS);
+                }
+            }
+        }        
     },
 
     finishOverlap:function(player, finish) {

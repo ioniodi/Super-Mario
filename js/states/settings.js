@@ -2,6 +2,13 @@ Game.settingsState = function(game) {
     
 };
 
+var dificulty_text;
+var mute_text;
+var isDificultyPressed = false;
+var isMuteBPressed = false;
+var mute_state;
+var isDificultyBPressed = false;
+
 Game.settingsState.prototype = {
     create:function(game) {
         imageManager.createImage(game, game.width / 2, game.height / 2, 'background', 0.45, 0.65, 0, false);
@@ -12,34 +19,58 @@ Game.settingsState.prototype = {
             buttonManager.buttonState(game, max_level, 'menu');
         }, buttonFrame.menu_button, 0.85, false);
 
-        var dificultyB = buttonManager.createButton(game, "Difficulty {", true, game.width / 2, game.height / 2 + 11, menuButtonSize.width - 10, 20, function() {
-            soundManager.playSound(game, clickS);
-            var normalB = buttonManager.createButton(game, "normal", true, (game.width/2) + 55, (game.height/2) - 10, menuButtonSize.width - 30, 20, function() {
-                soundManager.playSound(game, clickS);
-                dificulty = 1;
-                game.time.events.add(Phaser.Timer.SECOND*0.4, function() {
-                    alert('dificulty set to: normal');
-                });
-            }, buttonFrame.menu_button, 0.85, false);
-            var hardB = buttonManager.createButton(game, "hard", true, (game.width/2) + 55, (game.height/2) + 10, menuButtonSize.width - 30, 20, function() {
-                soundManager.playSound(game, clickS);
-                dificulty = 2;
-                game.time.events.add(Phaser.Timer.SECOND*0.4, function() {
-                    alert('dificulty set to: hard');
-                });
-            }, buttonFrame.menu_button, 0.85, false);
-            var survivalB = buttonManager.createButton(game, "survival", true, (game.width/2) + 55, (game.height/2) + 30, menuButtonSize.width - 30, 20, function() {
-                soundManager.playSound(game, clickS);
-                dificulty = 3;
-                game.time.events.add(Phaser.Timer.SECOND*0.4, function() {
-                    alert('dificulty set to: survival');
-                });
-            }, buttonFrame.menu_button, 0.85, false);
-        }, buttonFrame.menu_button, 0.85, false);
-        
-        var soundsB = buttonManager.createButton(game, "sounds", true, game.width/2, (game.height/2) + 60, menuButtonSize.width - 30, menuButtonSize.height - 10, function() {
+        mute_text = textManager.createText(game, (game.width/2) + 30, 52, mute, colors.red, false);
+        muteB = buttonManager.createButton(game, "mute:", true, game.width/2, 50, menuButtonSize.width - 40, menuButtonSize.height - 12, function() {
             clickS.play();
-            soundEnable = soundManager.soundControl(game);
+            mute_state = soundManager.soundControl(game);
+            isMuteBPressed = true;
         }, buttonFrame.menu_button, 0.85, false);
+
+        dificulty_text = textManager.createText(game, (game.width/2) + 57, (game.height/2) - 18, dificulty, colors.white, false);
+        isDificultyBPressed = false;
+        dificultyB = buttonManager.createButton(game, "Difficulty:", true, game.width/2, (game.height/2) - 20, menuButtonSize.width - 15, 20, function() {
+            soundManager.playSound(game, clickS);
+
+            if(isDificultyBPressed == false) {
+                isDificultyBPressed = true;
+                
+                normalB = buttonManager.createButton(game, "normal", true, (game.width/2) - 50, game.height/2, menuButtonSize.width - 30, 20, function() {
+                    soundManager.playSound(game, clickS);
+                    dificulty = "normal";
+                    isDificultyPressed = true;
+                }, buttonFrame.menu_button, 0.85, false);
+                hardB = buttonManager.createButton(game, "hard", true, game.width/2, game.height/2, menuButtonSize.width - 30, 20, function() {
+                    soundManager.playSound(game, clickS);
+                    dificulty = "hard";
+                    isDificultyPressed = true;
+                }, buttonFrame.menu_button, 0.85, false);
+                survivalB = buttonManager.createButton(game, "survival", true, (game.width/2) + 50, game.height/2, menuButtonSize.width - 30, 20, function() {
+                    soundManager.playSound(game, clickS);
+                    dificulty = "survival";
+                    isDificultyPressed = true;
+                }, buttonFrame.menu_button, 0.85, false);
+            }
+            else {}
+        }, buttonFrame.menu_button, 0.85, false);
+
+        selectSpriteB = buttonManager.createButton(game, "Sprites", true, game.width/2, (game.height/2) + 45, menuButtonSize.width - 15, 20, function() {
+            soundManager.playSound(game, clickS);
+        }, buttonFrame.menu_button, 0.85, false);
+    },
+
+    update:function(game) {
+        if(isDificultyPressed == true) {
+            dificulty_text.visible = false;
+            dificulty_text = textManager.createText(game, (game.width/2) + 57, (game.height/2) - 18, dificulty, colors.white, false);
+            isDificultyPressed = false;
+        }
+        else {}
+
+        if(isMuteBPressed == true) {
+            mute_text.visible = false;
+            mute_text = textManager.createText(game, (game.width/2) + 30, 52, mute_state, colors.red, false);
+            isMuteBPressed = false;
+        }
+        else {}
     }
 };

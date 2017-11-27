@@ -1,13 +1,13 @@
 var soundManager = new Object();
 
-var mute = false;
+var mute = "off";
 var muteC = 0;
 
 soundManager.playSound = function(game, sound) {
-    if(mute == false) {
+    if(mute == "off") {
         sound.play();
     }
-    else if(mute == true) {
+    else if(mute == "on") {
         sound.stop();
     }
 };
@@ -19,19 +19,13 @@ soundManager.soundControl = function(game) {
     }
 
     if(muteC % 2 == 0) {
-        mute = false;
-        game.time.events.add(Phaser.Timer.SECOND*0.4, function() {
-            alert('mute: off');
-        });
+        mute = "off";
     }
     else if(muteC % 2 == 1) {
-        mute = true;
-        game.time.events.add(Phaser.Timer.SECOND*0.4, function() {
-            alert('mute: on');
-        });
+        mute = "on";
     }
 
-    game.time.events.add(Phaser.Timer.SECOND*0.4, function() {
+    game.time.events.add(Phaser.Timer.SECOND*0.3, function() {
         soundManager.playSound(game, backgroundS);
     });
     

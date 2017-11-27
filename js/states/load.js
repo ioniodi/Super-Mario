@@ -7,17 +7,6 @@ Game.loadState.prototype = {
     init:function(game) {
 		this.input.maxPointers = 1;
         //this.stage.disableVisibilityChange = true;
-        
-        //init levels and score
-        var c = 0;
-        levelLocked[0] = 2; //level 0 is unlocked (frames: 2 green (yes) and 1 red (no))
-        for(c=1; c<level.length; c++) {
-            //levelLocked[c] = 1;
-            levelScore[c-1] = 0;
-        }
-
-        //temp
-	levelLocked = [2,2,2,2];
     },
     
     //loads sprites from spritesheets
@@ -32,11 +21,10 @@ Game.loadState.prototype = {
         //load sptites
         game.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16, 16);
         game.load.spritesheet('goomba', 'assets/sprites/enemies/goomba.png', 16, 16, 3);
-        game.load.spritesheet('player', 'assets/sprites/player/player.png', 14, 16, 7);
+        game.load.spritesheet('player', 'assets/sprites/player/alien.png', 14, 16, 7);
         game.load.spritesheet('rotated_coin', 'assets/sprites/rotated_coin.png', 14, 16);
         game.load.spritesheet('fireball', 'assets/sprites/enemies/fireball.png', 15, 21);
         game.load.spritesheet('lives', 'assets/sprites/left_lives.png', 49, 8, 6);
-        game.load.spritesheet('teleportD', 'assets/sprites/teleportD.png', 16, 16);
         game.load.spritesheet('checkpoint', 'assets/sprites/checkpoint.png', 10, 16);
         game.load.spritesheet('firework', 'assets/sprites/firework.png', 241, 244, 10);
         
@@ -49,12 +37,12 @@ Game.loadState.prototype = {
         game.load.spritesheet('bonus_star', 'assets/sprites/bonus_star.png', 16, 16);
         game.load.spritesheet('mushroom', 'assets/sprites/mushroom.png', 16, 16);
         game.load.spritesheet('finish', 'assets/sprites/finish.png', 14, 14);
-        game.load.spritesheet('teleportB', 'assets/sprites/teleportB.png', 16, 16);
+        game.load.spritesheet('teleport', 'assets/sprites/teleport.png', 16, 16);
         game.load.spritesheet('stop_sign', 'assets/sprites/stop_sign.png', 14, 14);
 
 //////////////
         game.load.spritesheet('ufo', 'assets/sprites/enemies/ufo.png', 18, 18);
-        game.load.image('laser', 'assets/sprites/purple_ball.png');
+        game.load.spritesheet('laser', 'assets/sprites/purple_ball.png');
 //////////////
 
         //load audio
@@ -70,6 +58,7 @@ Game.loadState.prototype = {
         game.load.audio('clickS', 'assets/audio/click.wav', true);
         game.load.audio('teleportS', 'assets/audio/teleport.wav', true);
         game.load.audio('fireworkS', 'assets/audio/firework_explosion.wav', true);
+        game.load.audio('lazerS', 'assets/audio/lazer1.wav', true);
 
         game.load.bitmapFont('font', 'assets/sprites/font.png', 'assets/sprites/font.xml');
     },
@@ -82,20 +71,21 @@ Game.loadState.prototype = {
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         //add audio
-        jumpS = game.add.audio('jumpS', 0.08);
-        coinS = game.add.audio('coinS', 0.12);
-        stompS = game.add.audio('stompS', 0.12);
-        deathS = game.add.audio('deathS', 0.85);
-        stage_clearS = game.add.audio('stage_clearS', 0.2);
+        jumpS = game.add.audio('jumpS', 0.05);
+        coinS = game.add.audio('coinS', 0.09);
+        stompS = game.add.audio('stompS', 0.13);
+        deathS = game.add.audio('deathS', 0.55);
+        stage_clearS = game.add.audio('stage_clearS', 0.15);
         game_overS = game.add.audio('game_overS', 0.2);
         checkpointS = game.add.audio('checkpointS', 0.4);
-        doubleCoinS = game.add.audio('doubleCoinS', 0.12);
-        doubleKillS = game.add.audio('doubleKillS', 0.12);
+        doubleCoinS = game.add.audio('doubleCoinS', 0.09);
+        doubleKillS = game.add.audio('doubleKillS', 0.09);
         backgroundS = game.add.audio('backgroundS', 0.5);
         backgroundS.loopFull();
         clickS = game.add.audio('clickS');
-        teleportS = game.add.audio('teleportS');
-        fireworkS = game.add.audio('fireworkS');
+        teleportS = game.add.audio('teleportS', 0.7);
+        fireworkS = game.add.audio('fireworkS', 0.7);
+        lazerS = game.add.audio('lazerS', 0.055);
 
         game.state.start('boot_menu');
     }

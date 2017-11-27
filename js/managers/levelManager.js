@@ -20,7 +20,7 @@ levelManager.createLevelInfo = function(game) {
     if(firstGame == true) {
         if(currentLevel == 0) {
             textManager.createText(game, game.width - 30, 20, "lives", colors.orange, true);
-            textManager.createText(game, scoreCor.x+10, scoreCor.y+20, "score", colors.orange, true);
+            textManager.createText(game, scoreCor.x+16, scoreCor.y+20, "score", colors.orange, true);
             textManager.createText(game, bonusCor.x+30, bonusCor.y+20, "bonus info", colors.orange, true);
             textManager.createText(game, 44, 90, "collect coins\n to increase score", colors.orange, false);
             textManager.createText(game, 155, 90, "teleports you \nafter 1 second", colors.orange, false);
@@ -29,7 +29,7 @@ levelManager.createLevelInfo = function(game) {
             textManager.createText(game, 463, 150, "finish", colors.orange, false);
         }
         else if(currentLevel == 1) {
-            textManager.createText(game, 959, 151, "checkpoint", colors.orange, false);
+            textManager.createText(game, 959, 151, "checkpoint", colors.red, false);
             textManager.createText(game, 2032, 131, "finish", colors.orange, false);
         }
         else if(currentLevel == 2) {
@@ -44,22 +44,22 @@ levelManager.createLevelInfo = function(game) {
 };
 
 levelManager.makeDificulty = function(game) {
-    if(dificulty == 1) {
+    if(dificulty == "normal") {
         currentLifes = 5;
         extraDificulty = 1;
     }
-    if(dificulty == 2) {
+    if(dificulty == "hard") {
         currentLifes = 5;
         extraDificulty = 2.1;
     }
-    else if(dificulty == 3) {
+    else if(dificulty == "survival") {
         currentLifes = 1;
         extraDificulty = 1;
     }
 };
 
 levelManager.updateDificulty = function(game) {
-    if(dificulty == 1) {
+    if(dificulty == "normal") {
         if(!currentLifes == 0) {
             currentLifes++;
         }

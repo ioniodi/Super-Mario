@@ -26,7 +26,7 @@
 * "If you want them to be more intelligent, read them more fairy tales."
 *                                                     -- Albert Einstein
 */
-var me = 'by jimtria';
+
 /**
  * The MIT License (MIT)
  *
