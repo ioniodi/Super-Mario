@@ -97,7 +97,7 @@ body {
 			cursors = game.input.keyboard.createCursorKeys();
 			scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '16px', fill: '#000' });
 		        scoreText.fixedToCamera = true;
-                        lifeText = game.add.text(16, 30, 'life: 3', { fontSize: '16px', fill: '#000' });
+                        lifeText = game.add.text(16, 30, 'life: 2', { fontSize: '16px', fill: '#000' });
 		        lifeText.fixedToCamera = true;
 		}
 
@@ -155,6 +155,8 @@ body {
 				player.body.velocity.y = -80;
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
+					score += 10;
+                                scoreText.text = 'Score: ' + score;
 				});
 			} else {
 				player.frame = 6;
