@@ -146,7 +146,14 @@ Game.playState.prototype = {
         //ufos.enableBody = true;
         //map.createFromTiles(4, null, 'ufo', 'stuff', ufos);
         //ufos.alpha = visibleObject.true;
-        ufo = game.add.sprite(230, 40, 'ufo');
+        
+        var ufoX;
+        if(currentLevel==1) { ufoX = 322; }
+        if(currentLevel==2) { ufoX = 130; }
+        if(currentLevel==3) { ufoX = 900; }
+        ufo = game.add.sprite(ufoX, 40, 'ufo');
+        if(currentLevel==0) { ufo.visible = false; }
+        else { ufo.visible = true; }
         ufo.enableBody = true;
 //////////////////
     },
@@ -158,8 +165,11 @@ Game.playState.prototype = {
 
         this.playerMoves(game);
         this.bonusEffect(game);
-        this.fire(game);
 
+        if(currentLevel != 0) {
+            this.fire(game);
+        }
+        
         if(game.input.keyboard.isDown(Phaser.KeyCode.T)) {
             player.x = 2030;
             player.y = 40
@@ -384,7 +394,7 @@ Game.playState.prototype = {
                     laser.reset(ufo.x+3, ufo.y+3);
 
                     game.physics.arcade.moveToObject(laser, player, 80);
-                    soundManager.playSound(game, lazerS);
+                    soundManager.playSound(game, laserS);
                 }
             }
         }        

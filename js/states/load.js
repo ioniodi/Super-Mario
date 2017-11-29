@@ -58,7 +58,7 @@ Game.loadState.prototype = {
         game.load.audio('clickS', 'assets/audio/click.wav', true);
         game.load.audio('teleportS', 'assets/audio/teleport.wav', true);
         game.load.audio('fireworkS', 'assets/audio/firework_explosion.wav', true);
-        game.load.audio('lazerS', 'assets/audio/lazer1.wav', true);
+        game.load.audio('laserS', 'assets/audio/laser.wav', true);
 
         game.load.bitmapFont('font', 'assets/sprites/font.png', 'assets/sprites/font.xml');
     },
@@ -85,7 +85,7 @@ Game.loadState.prototype = {
         clickS = game.add.audio('clickS');
         teleportS = game.add.audio('teleportS', 0.7);
         fireworkS = game.add.audio('fireworkS', 0.7);
-        lazerS = game.add.audio('lazerS', 0.055);
+        laserS = game.add.audio('laserS', 0.055);
 
         game.state.start('boot_menu');
     }
