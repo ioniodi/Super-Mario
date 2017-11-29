@@ -170,11 +170,6 @@ Game.playState.prototype = {
             this.fire(game);
         }
         
-        if(game.input.keyboard.isDown(Phaser.KeyCode.T)) {
-            player.x = 2030;
-            player.y = 40
-        }
-        
         //mushroom effect
         //this.physics.arcade.collide(player, mushrooms);
         //this.physics.arcade.collide(mushrooms, layer);
