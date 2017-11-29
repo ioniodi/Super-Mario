@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Super-Mario</title>
+<meta charset="utf-8">
+<style>
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #000;
+}
+</style>
+<script src = "Menu.js"></script>
+<script src = "Stage1.js"></script>
+<script src = "//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
+</head>
+<body>
+	<script type = "text/javascript">
+		var game = new Phaser.Game(256, 240, Phaser.CANVAS, '', this, false, false);
+		
+		//txts
+		var WorldText;
+		var CoincountText;
+		var scoreText;
+		var livesText;
+
+		//misc
+		var score = 0;
+		var Coincount = 0;
+		var lives = 3;
+
+		//sounds
+		var music;
+		var mm;
+		var stomp;
+		var mariodie;
+		var CoinK;
+		var oneup;
+		var gameover;
+		var jump;
+		
+		game.state.add('Stage1', Stage1);
+		game.state.add('Menu', Menu);
+		game.state.start('Menu');
+
+		function lifelost() {
+			lives--;
+			livesText.text = "x " + lives;
+			music.stop();
+			mariodie = game.add.audio('mariodie');
+			mariodie.play();
+			game.time.events.add(Phaser.Timer.SECOND * 3, function(){
+				game.state.restart();
+			});
+		}
+
+		function lifegain() {
+			lives++;
+			livesText.text = 'x ' + lives;
+			oneup = game.add.audio('oneup');
+			oneup.play();
+		}
+
+		/*function gameOver(){
+			music.stop();
+			gameover = game.add.audio('gameover')
+		}*/
+
+		function coinOverlap(player, coin){
+			CoinK = game.add.audio('CoinK');
+			CoinK.play();
+			coin.kill();
+			Coincount++;
+			CoincountText.text = 'x ' + Coincount;
+			score += 100;
+			scoreText.text = "Score: " + score;
+			if (Coincount > 99){
+				lifegain();
+				Coincount = 0;
+			}
+		}
+
+		function goombaOverlap(player, goomba) {
+			if (player.body.touching.down) {
+				stomp = game.add.audio('stomp');
+				stomp.play();
+				goomba.animations.stop();
+				goomba.frame = 2;
+				score += 200;
+				scoreText.text = 'Score: ' + score;
+				goomba.body.enable = false;
+				player.body.velocity.y = -120;
+				game.time.events.add(Phaser.Timer.SECOND, function() {
+					goomba.kill();
+				});
+			} 
+			else {
+				player.frame = 6;
+				player.body.enable = false;
+				player.animations.stop();
+				lifelost();
+			}
+		}
+	</script>
+</body>
+</html>
