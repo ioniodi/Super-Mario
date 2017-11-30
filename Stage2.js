@@ -1,7 +1,7 @@
 var Stage2 = {
 		preload: function() {
 
-			this.load.spritesheet('tiles', 'Tiles/tiles2.png', 16, 16);
+			this.load.spritesheet('tiles', 'assets/tiles2.png', 16, 16);
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
 			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin2.png', 16, 16);
@@ -12,7 +12,7 @@ var Stage2 = {
 			this.load.image('lives', 'assets/lives.png');
 
 
-			game.load.tilemap('level', 'TiledMaps/SMM2.json', null, Phaser.Tilemap.TILED_JSON);
+			game.load.tilemap('level', 'assets/SMM2.json', null, Phaser.Tilemap.TILED_JSON);
 
 			this.load.audio('music2', 'audio/underground.mp3');
 			this.load.audio('CoinK', 'audio/coin.wav');
