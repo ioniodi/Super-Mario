@@ -20,6 +20,11 @@ body {
 	<script type = "text/javascript">
 		var game = new Phaser.Game(256, 240, Phaser.CANVAS, '', this, false, false);
 		
+		function preload(){
+
+		this.load.baseURL = 'https://p16sako.github.io/Super-Mario/';
+		this.load.crossOrigin = 'anonymous';
+		}	
 
 		//counters
 		var score = 0;
