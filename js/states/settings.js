@@ -52,11 +52,10 @@ Game.settingsState.prototype = {
             }
             else {}
         }, buttonFrame.menu_button, 0.85, false);
-/*
+
         selectSpriteB = buttonManager.createButton(game, "Sprites", true, game.width/2, (game.height/2) + 45, menuButtonSize.width - 15, 20, function() {
             soundManager.playSound(game, clickS);
         }, buttonFrame.menu_button, 0.85, false);
-*/
     },
 
     update:function(game) {

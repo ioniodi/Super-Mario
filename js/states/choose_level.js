@@ -17,7 +17,7 @@ Game.choose_levelState.prototype = {
             soundManager.playSound(game, clickS);
             currentLevel = levelManager.checkLevelAvailability(game, 0, levelLocked[0]);
         }, levelLocked[0], 0.85, false);
-/*
+
         level_one_B = buttonManager.createButton(game, "1", false, 80, 40, levelButtonSize.width, levelButtonSize.height, function() {
             soundManager.playSound(game, clickS);
             currentLevel = levelManager.checkLevelAvailability(game, 1, levelLocked[1]);
@@ -27,8 +27,8 @@ Game.choose_levelState.prototype = {
             soundManager.playSound(game, clickS);
             currentLevel = levelManager.checkLevelAvailability(game, 2, levelLocked[2]);
         }, levelLocked[2], 0.85, false);
-*/
-        level_three_B = buttonManager.createButton(game, "1", false, 160, 40, levelButtonSize.width, levelButtonSize.height, function() {
+
+        level_three_B = buttonManager.createButton(game, "3", false, 160, 40, levelButtonSize.width, levelButtonSize.height, function() {
             soundManager.playSound(game, clickS);
             currentLevel = levelManager.checkLevelAvailability(game, 3, levelLocked[3]);
         }, levelLocked[3], 0.85, false);
