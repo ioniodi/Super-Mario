@@ -11,7 +11,7 @@ levelManager.checkLevelAvailability = function(game, level, isAvailable) {
         tempL = level + 1; //logw arithmhshs spritesheet (preview of levels)
     }
 
-    imageManager.createImage(game, game.width/2, (game.height/2) + 45, 'preview_levels', 0.7, 0.6, tempL, false);
+    imageManager.createImage(game, game.width/2, (game.height/2) + 45, 'preview_levels', 0.4, 0.3, tempL, false);
 
     return level;
 };

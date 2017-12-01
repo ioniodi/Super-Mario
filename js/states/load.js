@@ -29,7 +29,7 @@ Game.loadState.prototype = {
         game.load.spritesheet('firework', 'assets/sprites/firework.png', 241, 244, 10);
         
         game.load.spritesheet('button', 'assets/sprites/button.png', 100, 50);
-        game.load.spritesheet('preview_levels', 'assets/levels/preview_levels.png', 253, 237, 5);
+        game.load.spritesheet('preview_levels', 'assets/levels/preview_levels.png', 571, 525, 5);
         game.load.spritesheet('background', 'assets/background.png');
         game.load.spritesheet('instructions', 'assets/instructions.png');
 
