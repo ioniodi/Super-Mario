@@ -47,6 +47,7 @@ body {
 			this.load.spritesheet('bonus', 'assets/NES.png', 16, 16);
 			this.load.spritesheet('coins', 'assets/coins.png', 16, 16);
 			this.load.spritesheet('bigcoins', 'assets/bigcoins.png', 16, 32);
+			this.load.spritesheet('spiny', 'assets/spiny.png', 16, 16);
 			this.load.audio('BGM', 'audio/bgm.mp3');
 			this.load.audio('stomp', 'audio/stomp.wav');
 			this.load.audio('jump', 'audio/jump.wav');
@@ -69,6 +70,7 @@ body {
 			this.map = game.add.tilemap('level');
 			this.map.addTilesetImage('tiles', 'tiles');
 			this.map.addTilesetImage('bigcoins', 'bigcoins');
+			this.map.addTilesetImage('spiny','spiny');
 			this.map.setCollisionBetween(3, 12, true, 'solid');
 
 			this.map.createLayer('background');
@@ -98,6 +100,15 @@ body {
 			this.goombas.setAll('body.bounce.x', 1);
 			this.goombas.setAll('body.velocity.x', -20);
 			this.goombas.setAll('body.gravity.y', 500);
+			
+			this.spiny = game.add.group();
+			this.spiny.enableBody = true;
+			this.map.createFromTiles(1,null,'spiny','stuff',this.spiny);
+			this.spiny.callAll('animations.add','animations','walk',[1,2],2,true);
+			this.spiny.callAll('animations.play','animations','walk');
+			this.spiny.setAll('boby.bounce.x',1);
+			this.spiny.setAll('body.velocity.x',-20);
+			this.spiny.setAll('body.gravity.y',500);
 
 			this.player = game.add.sprite(30, game.world.height - 48, 'mario');
 			game.physics.arcade.enable(this.player);
@@ -152,7 +163,9 @@ body {
 
 			game.physics.arcade.collide(this.player, this.layer);
 			game.physics.arcade.collide(this.goombas, this.layer);
+			game.physics.arcade.collide(this.spiny, this.layer);
 			game.physics.arcade.overlap(this.player, this.goombas, goombaOverlap);
+			game.physics.arcade.overlap(this.player, this.spiny, spinyOverlap);
 			game.physics.arcade.overlap(this.player,this.bigcoins,bigcoinsOverlap,function(){
 				game.bigcoin = game.add.audio('coin');
 				game.bigcoin.play();
@@ -205,6 +218,40 @@ body {
 
 		function bigcoinsOverlap(player, bigcoins){
 			bigcoins.kill();
+		}
+		
+		function spinyOverlap(player,spiny){
+			if(player.body.touching.down){
+				player.frame=6;
+				player.body.enable = false;
+				player.animations.stop();
+				music.stop();
+				game.time.events.add(Phaser.Timer.SECOND * 2,function() {
+					game.world.removeAll();
+					if(lives_count>0){
+						lives_count -= 1;
+						lives1.text='lives x' + lives_count;
+						var contGame = game.add.text(25,16,'Lives x' + lives_count, {
+							fontSize:'18px',
+							fill:'#FFFFFF',
+						});
+						contGame.fixedToCamera = true;
+						contGame.cameraOffset.setTo(80,100);
+					}
+					else{
+						var gameOver = game.add.text(25,16,'Game Over',{
+							fontSize:'35px',
+							fill:'#FFFFFF'
+						});
+						gameOver.fixedToCamera = true;
+						gameOver.cameraOffset.setTo(30,70);
+						game.pause=true;
+					}
+					game.time.events.add(Phaser.Timer.SECOND * 2, function(){
+						game.state.restart();
+					});
+				});
+			}
 		}
 
 		function goombaOverlap(player, goomba) {
