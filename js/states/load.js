@@ -11,7 +11,7 @@ Game.loadState.prototype = {
         var c = 0;
         levelLocked[0] = 2; //level 0 is unlocked (frames: 2 green (yes) and 1 red (no))
         for(c=0; c<level.length; c++) {
-            levelLocked[c+1] = 1;
+            levelLocked[c+1] = 2;
             levelScore[c] = 0;
         }
     },
