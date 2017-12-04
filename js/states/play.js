@@ -2,6 +2,8 @@ Game.playState = function(game) {
 
 };
 
+var test;
+
 Game.playState.prototype = {
 
     init:function(game) {
@@ -132,30 +134,27 @@ Game.playState.prototype = {
         bonus_type_text.fixedToCamera = true;
         bonus_type_text.text = "none  0";
 
-        soundManager.playSound(game, backgroundS);
+        ufos = game.add.group();
+        ufos.enableBody = true;
+        map.createFromTiles(4, null, 'ufo', 'stuff', ufos);
+        ufos.alpha = visibleObject.true;
 
-        levelManager.createLevelInfo(game);
-////////////////
         lasers = game.add.group();
         lasers.enableBody = true;
         lasers.createMultiple(50, 'laser');
         lasers.setAll('checkWorldBounds', true);
         lasers.setAll('outOfBoundsKill', true);
 
-        //ufos = game.add.group();
-        //ufos.enableBody = true;
-        //map.createFromTiles(4, null, 'ufo', 'stuff', ufos);
-        //ufos.alpha = visibleObject.true;
+        soundManager.playSound(game, backgroundS);
         
-        var ufoX;
-        if(currentLevel==1) { ufoX = 322; }
-        if(currentLevel==2) { ufoX = 130; }
-        if(currentLevel==3) { ufoX = 900; }
-        ufo = game.add.sprite(ufoX, 40, 'ufo');
-        if(currentLevel==0) { ufo.visible = false; }
-        else { ufo.visible = true; }
-        ufo.enableBody = true;
-//////////////////
+        levelManager.createLevelInfo(game);
+/*
+        test = game.add.sprite(455, 150, 'test', 1);
+        test.scale.setTo(0.2,0.2);
+        test.animations.add('walk', [ 0, 1, 2 ,3], 8, true);
+        //test.animations.add('walk', Phaser.Animation.generateFrameNames('assets/test/', 1, 4, '', 2), 10, true, false);
+        test.animations.play('walk');
+*/
     },
 
     update:function(game) {
@@ -166,8 +165,11 @@ Game.playState.prototype = {
         this.playerMoves(game);
         this.bonusEffect(game);
 
-        if(currentLevel != 0) {
-            this.fire(game);
+        ufos.forEach(this.shoot, this);
+        
+        if(game.input.keyboard.isDown(Phaser.KeyCode.T) && gameOver == false) {
+            player.x = 2030;
+            player.y = 40
         }
         
         //mushroom effect
@@ -270,12 +272,12 @@ Game.playState.prototype = {
                     game.setPlayerPosition(this);
                 }
                 else if(currentLifes <= 0) {
+                    gameOver = true;
                     backgroundS.stop();
                     game.time.events.add(Phaser.Timer.SECOND, function() {
                         soundManager.playSound(this, game_overS);
                     });
                     game.time.events.add(Phaser.Timer.SECOND*5, function() {
-                        gameOver = true;
                         game.state.start('next_level');
                     });
                 }
@@ -379,17 +381,17 @@ Game.playState.prototype = {
         }
     },
 
-    fire:function(game) {
+    shoot:function(ufo) {
         if(player.body.enable == true && player.alpha == visibleObject.true)  {
             if(player.x >= ufo.x - ufoRange && player.x <= ufo.x + ufoRange) {
-                if (game.time.now > nextFire && lasers.countDead() > 0) {
-                    nextFire = game.time.now + fireRate;
+                if (this.time.now > nextFire && lasers.countDead() > 0) {
+                    nextFire = this.time.now + fireRate;
             
                     var laser = lasers.getFirstDead();
                     laser.reset(ufo.x+3, ufo.y+3);
 
-                    game.physics.arcade.moveToObject(laser, player, 80);
-                    soundManager.playSound(game, laserS);
+                    this.physics.arcade.moveToObject(laser, player, 80);
+                    soundManager.playSound(this, laserS);
                 }
             }
         }        
