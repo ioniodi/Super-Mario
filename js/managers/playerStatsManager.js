@@ -1,6 +1,6 @@
 var playerStatsManager = new Object();
 
-var say;
+var say = '';
 
 playerStatsManager.printOveralStats = function(game, lives, score, level, numOfLevels) {
     textManager.createText(game, game.width/2, 24, 'Your stats \n', colors.orange, false);
