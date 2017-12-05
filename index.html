@@ -44,7 +44,7 @@ body {
 			mariodie = game.add.audio('mariodie');
 			mariodie.play();
 			game.time.events.add(Phaser.Timer.SECOND * 3, function(){
-				game.state.start(game.state.current);
+				game.state.restart();
 			});
 		}
 
