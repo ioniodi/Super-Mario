@@ -58,19 +58,19 @@ var Stage1 = {
 			crab = game.add.group();
 			crab.enableBody = true;
 			map.createFromTiles(22, null, 'crab', 'stuff', crab);
-			crab.callAll('animations.add', 'animations', 'walk', [ 0, 1 ], 3, true);
+			crab.callAll('animations.add', 'animations', 'walk', [ 0, 1 ], 4, true);
 			crab.callAll('animations.play', 'animations', 'walk');
 			crab.setAll('body.bounce.x', 1);
-			crab.setAll('body.velocity.x', -20);
+			crab.setAll('body.velocity.x', -70);
 			crab.setAll('body.gravity.y', 500);
 
 			goombas = game.add.group();
 			goombas.enableBody = true;
 			map.createFromTiles(1, null, 'goomba', 'stuff', goombas);
-			goombas.callAll('animations.add', 'animations', 'walk', [ 0, 1 ], 3, true);
+			goombas.callAll('animations.add', 'animations', 'walk', [ 0, 1 ], 4, true);
 			goombas.callAll('animations.play', 'animations', 'walk');
 			goombas.setAll('body.bounce.x', 1);
-			goombas.setAll('body.velocity.x', -20);
+			goombas.setAll('body.velocity.x', -30);
 			goombas.setAll('body.gravity.y', 500);
 
 			door1 = game.add.sprite(2000, game.world.height - 112, 'door');
