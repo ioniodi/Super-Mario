@@ -168,12 +168,12 @@ Game.playState.prototype = {
         this.bonusEffect(game);
 
         ufos.forEach(this.shoot, this);
-        
+/*        
         if(game.input.keyboard.isDown(Phaser.KeyCode.T) && gameOver == false) {
             player.x = 2030;
             player.y = 40
         }
-        
+*/        
         //mushroom effect
         //this.physics.arcade.collide(player, mushrooms);
         //this.physics.arcade.collide(mushrooms, layer);
