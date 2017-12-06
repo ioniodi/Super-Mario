@@ -67,7 +67,7 @@ Game.settingsState.prototype = {
         }
         else {}
 
-        //this.unlockCommands(game);
+        this.unlockCommands(game);
     },
 
     unlockCommands:function(game) {
