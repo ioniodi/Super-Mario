@@ -30,14 +30,14 @@ body {
 			this.load.baseURL = 'https://ntinoskio.github.io/Super-Mario/';
 			this.load.crossOrigin = 'anonymous';
 
-			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,
-					16);
+			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,16);
+			this.load.spritesheet('firework','assets/firework.png',16,16);
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
+			this.load.spritesheet('koopa', 'assets/koopa.png', 16, 24);
 			this.load.spritesheet('waluigi', 'assets/waluigi.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
-
-			this.load.tilemap('level', 'assets/2016096.json', null,
-					Phaser.Tilemap.TILED_JSON);
+			this.load.spritesheet('teleporter', 'assets/teleporter.png', 16, 16);
+			this.load.tilemap('level', 'assets/2016096.json', null,Phaser.Tilemap.TILED_JSON);
 			game.load.audio('theme','audio/Super-Mario-Bros-Theme-Song.ogg');
 			game.load.audio('collect','audio/coin.wav');
 			game.load.audio('stomp','audio/stomp.wav');
@@ -60,7 +60,6 @@ body {
 			game.physics.startSystem(Phaser.Physics.ARCADE);
 
 			game.stage.backgroundColor = '#5c94fc';
-
 			map = game.add.tilemap('level');
 			map.addTilesetImage('tiles', 'tiles');
 			map.setCollisionBetween(3, 12, true, 'solid');
@@ -76,7 +75,15 @@ body {
 			coins.callAll('animations.add', 'animations', 'spin',
 					[ 0, 1, 2, 3, 4, 5, 6, 7], 8, true);
 			coins.callAll('animations.play', 'animations', 'spin');
-
+			teleporters = game.add.group();
+			teleporters.enableBody = true;
+			map.createFromTiles(12, null, 'teleporter', 'stuff', teleporters);
+			
+			fireworks = game.add.group();
+			fireworks.enableBody = true;
+			map.createFromTiles(9, null, 'firework', 'stuff', fireworks);
+			fireworks.callAll('animations.add', 'animations', 'spin',[ 0, 1, 2], 3, true);
+			fireworks.callAll('animations.play','animations','spin');
 			goombas = game.add.group();
 			goombas.enableBody = true;
 			map.createFromTiles(1, null, 'goomba', 'stuff', goombas);
@@ -86,6 +93,17 @@ body {
 			goombas.setAll('body.bounce.x', 1);
 			goombas.setAll('body.velocity.x', -20);
 			goombas.setAll('body.gravity.y', 500);
+			
+			koopas = game.add.group();
+			koopas.enableBody = true;
+			map.createFromTiles(3, null, 'koopa', 'stuff', koopas);
+			koopas.callAll('animations.add', 'animations', 'walk', [ 0, 1 ],
+					2, true);
+			koopas.callAll('animations.play', 'animations', 'walk');
+			koopas.setAll('body.bounce.x', 1);
+			koopas.setAll('body.velocity.x', -20);
+			koopas.setAll('body.gravity.y', 500);
+			
 			player = game.add.sprite(16, game.world.height - 48, 'waluigi');
 			game.physics.arcade.enable(player);
 			player.body.gravity.y = 370;
@@ -106,11 +124,15 @@ body {
 			music.loop=true;
 			music.play();
 		}
-		function update() {
+			function update() {
 			game.physics.arcade.collide(player, layer);
 			game.physics.arcade.collide(goombas, layer);
+			game.physics.arcade.collide(koopas, layer);
 			game.physics.arcade.overlap(player, goombas, goombaOverlap);
+			game.physics.arcade.overlap(player, koopas, koopaOverlap);
 			game.physics.arcade.overlap(player, coins, coinOverlap);
+			game.physics.arcade.overlap(player, fireworks, fireworkOverlap);
+			game.physics.arcade.overlap(player, teleporters, teleporterOverlap);
 			var jsound=game.add.audio('jump');
 			if (player.body.enable) {
 				player.body.velocity.x = 0;
@@ -147,7 +169,13 @@ body {
 				}
 			}
 		}
-
+		function fireworkOverlap(player,firework){
+			alert("You have won the game! Play again?");
+			location.reload();
+		}	
+		function teleporterOverlap(player,teleporter){
+			player.reset(16,48);
+		}	
 		function coinOverlap(player, coin) {
 			if(coincount==35){
 				alert("You have collected at least 35 coins! Coins now count for double score!");
@@ -164,10 +192,6 @@ body {
 			var csound=game.add.audio('collect');
 			csound.play();
 			coin.kill();
-			if(coincount==80){
-				alert("You have won the game! Play again?");
-				location.reload();
-			}
 		}
 
 		function goombaOverlap(player, goomba) {
@@ -182,6 +206,46 @@ body {
 				score.text='WALUIGI\n'+scorecount;
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
+				});
+			} else {
+				var dsound=game.add.audio('death');
+				music.stop();
+				dsound.play();
+				player.frame = 6;
+				player.body.enable = false;
+				player.animations.stop();
+				if(lives>1){
+					setTimeout(function(){
+						scorecount=0;
+						coincount=0;
+						lives--;
+						game.state.restart();
+					},3000);
+				}
+				else{
+					var gameover=game.add.audio('gameover');
+					gameover.play();
+					setTimeout(function(){
+						alert("All lives lost. Restart?");
+					},3000);
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+						location.reload();
+					});
+				}
+			}
+		}
+		function koopaOverlap(player, koopa) {
+			if (player.body.touching.down) {
+				var ssound=game.add.audio('stomp');
+				ssound.play();
+				koopa.animations.stop();
+				koopa.frame = 2;
+				koopa.body.enable = false;
+				player.body.velocity.y = -80;
+				scorecount +=200;
+				score.text='WALUIGI\n'+scorecount;
+				game.time.events.add(Phaser.Timer.SECOND, function() {
+					koopa.kill();
 				});
 			} else {
 				var dsound=game.add.audio('death');
