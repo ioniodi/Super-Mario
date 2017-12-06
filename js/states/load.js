@@ -8,12 +8,8 @@ Game.loadState.prototype = {
 		this.input.maxPointers = 1;
         //this.stage.disableVisibilityChange = true;
 
-        var c = 0;
-        levelLocked[0] = 2; //level 0 is unlocked (frames: 2 green (yes) and 1 red (no))
-        for(c=0; c<level.length; c++) {
-            levelLocked[c+1] = 2;
-            levelScore[c] = 0;
-        }
+        levelManager.controlLevels(game, 1);
+        playerStatsManager.resetScores(game, 0);
     },
     
     //loads sprites from spritesheets
@@ -35,9 +31,6 @@ Game.loadState.prototype = {
         game.load.spritesheet('checkpoint', 'assets/sprites/checkpoint.png', 10, 16);
         game.load.spritesheet('firework', 'assets/sprites/firework.png', 241, 244, 10);
         game.load.spritesheet('button', 'assets/sprites/button.png', 100, 50);
-        game.load.spritesheet('preview_levels', 'assets/levels/preview_levels.png', 571, 525, 5);
-        game.load.spritesheet('background', 'assets/background.png');
-        game.load.spritesheet('instructions', 'assets/instructions.png');
         game.load.spritesheet('score', 'assets/sprites/score.png', 14, 16);
         game.load.spritesheet('bonus_star', 'assets/sprites/bonus_star.png', 16, 16);
         game.load.spritesheet('mushroom', 'assets/sprites/mushroom.png', 16, 16);
@@ -46,6 +39,12 @@ Game.loadState.prototype = {
         game.load.spritesheet('stop_sign', 'assets/sprites/stop_sign.png', 14, 14);
         game.load.spritesheet('ufo', 'assets/sprites/enemies/ufo.png', 18, 18);
         game.load.spritesheet('laser', 'assets/sprites/purple_ball.png');
+
+        //load images
+        game.load.image('menuBackground', 'assets/images/menuBackground.jpg');
+        game.load.image('gameBackground', 'assets/images/gameBackground.png');
+        game.load.spritesheet('preview_levels', 'assets/images/preview_levels.png', 208, 194, 5);
+        game.load.image('instructions', 'assets/images/instructions.png');
 
         //load audio
         game.load.audio('jumpS', 'assets/audio/jump.wav', true);

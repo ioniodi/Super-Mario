@@ -5,7 +5,7 @@ Game.choose_levelState = function(game) {
 Game.choose_levelState.prototype = {
     create:function(game) {
         currentLevel = -1;
-        imageManager.createImage(game, game.width/2, game.height/2, 'background', 0.45, 0.65, 0, false);
+        imageManager.createImage(game, game.width / 2, game.height / 2, 'menuBackground', 0.15, 0.15, 0, false);
 
         textManager.createText(game, game.width/2, 10, "Levels", colors.white, false);
 

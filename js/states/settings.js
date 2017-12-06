@@ -2,16 +2,9 @@ Game.settingsState = function(game) {
     
 };
 
-var dificulty_text;
-var mute_text;
-var isDificultyPressed = false;
-var isMuteBPressed = false;
-var mute_state;
-var isDificultyBPressed = false;
-
 Game.settingsState.prototype = {
     create:function(game) {
-        imageManager.createImage(game, game.width / 2, game.height / 2, 'background', 0.45, 0.65, 0, false);
+        imageManager.createImage(game, game.width / 2, game.height / 2, 'menuBackground', 0.15, 0.15, 0, false);
 
         textManager.createText(game, game.width/2, 10, "Settings", colors.white, false);
 
@@ -73,5 +66,16 @@ Game.settingsState.prototype = {
             isMuteBPressed = false;
         }
         else {}
+
+        //this.unlockCommands(game);
+    },
+
+    unlockCommands:function(game) {
+        if(game.input.keyboard.isDown(Phaser.KeyCode.L)) {
+            levelManager.controlLevels(game, 2);    //unlock all levels
+        }
+        if(game.input.keyboard.isDown(Phaser.KeyCode.S)) {
+            //unlock all sprites
+        }
     }
 };

@@ -2,7 +2,7 @@ Game.playState = function(game) {
 
 };
 
-var test;
+//var test;
 
 Game.playState.prototype = {
 
@@ -10,6 +10,7 @@ Game.playState.prototype = {
         checkP =false;
         checkT = false;
         checkB = false;
+        checkF = false;
         currentBonus = 0;
         currentBonusScoreEffect = 1;
         checkPointX = 0;
@@ -17,12 +18,13 @@ Game.playState.prototype = {
         teleportX = 0;
         teleportY = 0;
         nextFire = 0;
+        enableEnemyPhysics = true;
         gameOver = false;
     },
 
     preload:function(game) {
         //game.stage.backgroundColor = levelColor[currentLevel];
-        imageManager.createImage(game, game.width/2, game.height/2, 'background', 0.45, 0.65, 0, true);
+        imageManager.createImage(game, game.width/2, game.height/2, 'gameBackground', 0.45, 0.65, 0, true);
         //load tilemap
         this.load.tilemap('level', 'assets/levels/' +level[currentLevel] +'.json', null, Phaser.Tilemap.TILED_JSON);
     },
@@ -50,7 +52,7 @@ Game.playState.prototype = {
         coins.callAll('animations.play', 'animations', 'spin');
 
         //create player
-        player = game.add.sprite(startCor.x, startCor.y, 'player');
+        player = game.add.sprite(startXY.x, startXY.y, 'player');
         this.physics.arcade.enable(player);
         player.body.gravity.y = 370;
         player.body.collideWorldBounds = true;
@@ -119,18 +121,18 @@ Game.playState.prototype = {
         firework.visible = false;
 
         //create sprite and text for score and bonus
-        score = game.add.sprite(scoreCor.x, scoreCor.y, 'score');
+        score = game.add.sprite(scoreXY.x, scoreXY.y, 'score');
         score.scale.setTo(0.7, 0.7);
         score.fixedToCamera = true;
         score = 0;
-        score_text = game.add.bitmapText(scoreCor.x+15, scoreCor.y+1, 'font', score, 12);
+        score_text = game.add.bitmapText(scoreXY.x+15, scoreXY.y+1, 'font', score, 12);
         score_text.text = score;
         score_text.fixedToCamera = true;
 
-        bonus = game.add.sprite(bonusCor.x, bonusCor.y, 'bonus_star');
+        bonus = game.add.sprite(bonusXY.x, bonusXY.y, 'bonus_star');
         bonus.scale.setTo(0.7, 0.7);
         bonus.fixedToCamera = true;
-        bonus_type_text = game.add.bitmapText(bonusCor.x+15, bonusCor.y+1,'font', score, 12);
+        bonus_type_text = game.add.bitmapText(bonusXY.x+15, bonusXY.y+1,'font', score, 12);
         bonus_type_text.fixedToCamera = true;
         bonus_type_text.text = "none  0";
 
@@ -166,12 +168,12 @@ Game.playState.prototype = {
         this.bonusEffect(game);
 
         ufos.forEach(this.shoot, this);
-/*        
+        
         if(game.input.keyboard.isDown(Phaser.KeyCode.T) && gameOver == false) {
             player.x = 2030;
             player.y = 40
         }
-*/        
+        
         //mushroom effect
         //this.physics.arcade.collide(player, mushrooms);
         //this.physics.arcade.collide(mushrooms, layer);
@@ -306,7 +308,7 @@ Game.playState.prototype = {
             this.setPlayer(game, checkPointX - 15, checkPointY - 10);
         }
         else if(checkP == false){
-            this.setPlayer(game, startCor.x, startCor.y);
+            this.setPlayer(game, startXY.x, startXY.y);
         }
         
         this.time.events.add(Phaser.Timer.SECOND * 0.5, function() {
