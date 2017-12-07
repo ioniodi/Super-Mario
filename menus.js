@@ -9,7 +9,7 @@ var menus={
 		game.scale.pageAlignVertically = true
 		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		var m=game.add.sprite(0,0,'menu');
+		var m=game.add.sprite(256,240,'menu');
 		var button1=game.add.button(180,170,"l1",function(){
 			game.state.start('stage1');
 		});
