@@ -41,7 +41,8 @@ body {
 		game.state.add('STAGE2',STAGE2);
 		game.state.add('MENUS',MENUS);
 		game.state.start('MENUS');
-
+		function teleporterOverlap(player,teleporter){
+		}
 		function fireworkOverlap(player,firework){
 			alert("You have won the game! Play again?");
 			location.reload();
