@@ -1,0 +1,149 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Super-Mario</title>
+	<link href="http://www.fontspace.com/freaky-fonts/emulogic?text=" rel="stylesheet" type='text/css'>
+<meta charset="utf-8">
+<style>
+body {
+	font-family: 'emulogic', cursive;
+	font-weight: normal;
+   	font-style: normal;
+	margin: 0;
+	padding: 0;
+	background-color: #000;
+}
+</style>
+<script src="MENUS.js"></script>
+<script src="STAGE1.js"></script>
+<script src="STAGE2.js"></script>
+<script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		var game = new Phaser.Game(256, 240, Phaser.CANVAS, '',this,false,false);
+		function preload() {
+
+			//  We need this because the assets are on github pages
+			//  Remove the next 2 lines if running locally
+			//this.load.baseURL = 'https://ntinoskio.github.io/Super-Mario/';
+			//this.load.crossOrigin = 'anonymous';
+		}
+		var music;
+		var score;
+		var jsound;
+		var scorecount=0;
+		var cointext;
+		var coincount=0;
+		var livestext;
+		var lives=3;
+		game.state.add('STAGE1',STAGE1);
+		game.state.add('STAGE2',STAGE2);
+		game.state.add('MENUS',MENUS);
+		game.state.start('MENUS');
+
+		function fireworkOverlap(player,firework){
+			alert("You have won the game! Play again?");
+			location.reload();
+		}	
+		function coinOverlap(player, coin) {
+			if(coincount==35){
+				alert("You have collected at least 35 coins! Coins now count for double score!");
+			}
+			else if(coincount<35){
+				scorecount +=100;
+			}
+			else{
+				scorecount +=200;
+			}
+			score.text='WALUIGI\n\t\t'+scorecount;
+			coincount +=1;
+			cointext.text='COINS\n\t\t'+coincount;
+			var csound=game.add.audio('collect');
+			csound.play();
+			coin.kill();
+		}
+
+		function goombaOverlap(player, goomba) {
+			if (player.body.touching.down) {
+				var ssound=game.add.audio('stomp');
+				ssound.play();
+				goomba.animations.stop();
+				goomba.frame = 2;
+				goomba.body.enable = false;
+				player.body.velocity.y = -80;
+				scorecount +=100;
+				score.text='WALUIGI\n'+scorecount;
+				game.time.events.add(Phaser.Timer.SECOND, function() {
+					goomba.kill();
+				});
+			} else {
+				var dsound=game.add.audio('death');
+				music.stop();
+				dsound.play();
+				player.frame = 6;
+				player.body.enable = false;
+				player.animations.stop();
+				if(lives>1){
+					setTimeout(function(){
+						scorecount=0;
+						coincount=0;
+						lives--;
+						game.state.restart();
+					},3000);
+				}
+				else{
+					var gameover=game.add.audio('gameover');
+					gameover.play();
+					setTimeout(function(){
+						alert("All lives lost. Restart?");
+					},3000);
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+						location.reload();
+					});
+				}
+			}
+		}
+		function koopaOverlap(player, koopa) {
+			if (player.body.touching.down) {
+				var ssound=game.add.audio('stomp');
+				ssound.play();
+				koopa.animations.stop();
+				koopa.frame = 2;
+				koopa.body.enable = false;
+				player.body.velocity.y = -80;
+				scorecount +=200;
+				score.text='WALUIGI\n'+scorecount;
+				game.time.events.add(Phaser.Timer.SECOND, function() {
+					koopa.kill();
+				});
+			} else {
+				var dsound=game.add.audio('death');
+				music.stop();
+				dsound.play();
+				player.frame = 6;
+				player.body.enable = false;
+				player.animations.stop();
+				if(lives>1){
+					setTimeout(function(){
+						scorecount=0;
+						coincount=0;
+						lives--;
+						game.state.restart();
+					},3000);
+				}
+				else{
+					var gameover=game.add.audio('gameover');
+					gameover.play();
+					setTimeout(function(){
+						alert("All lives lost. Restart?");
+					},3000);
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+						location.reload();
+					});
+				}
+			}
+		}
+	</script>
+</body>
+</html>
