@@ -60,7 +60,7 @@ body {
 				coincoll=game.add.text(100,140,'Coins now count for double score!',{font:'8px emulogic'});
 				coincol.fixedToCamera=true;
 				coincoll.fixedToCamera=true;
-				game.time.events.add(Phaser.Timer.SECOND, function() {
+				game.time.events.add(Phaser.Timer.SECOND*2, function() {
 					coincol.kill();
 					coincoll.kill();
 				});
