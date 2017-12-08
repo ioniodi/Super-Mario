@@ -1,5 +1,9 @@
 var Ground2 = {
 	preload: function(){
+		var style = { font: "bold 32px Arial",fill: "#fff", boundsAlignH: "center", boundsAlignV: "top" }; 
+		text = game.add.text(0, 0, "LEVEL 2", style);
+ 		text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+		text.setTextBounds(0, 50, 800, 150);
 		this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,16);
 		this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
 		this.load.spritesheet('turtle', 'assets/turtle.png', 16, 24);
