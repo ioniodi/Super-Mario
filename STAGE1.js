@@ -111,5 +111,10 @@ var STAGE1 = {
 					player.frame = 12;
 			}
 		}
+	},
+	function teleporterOverlap(player,teleporter){
+		if(cursors.right.isDown){
+			player.reset(5,45);
+		}
 	}
 }
