@@ -3,7 +3,7 @@ var Menu = {
 
 		game.load.image('Menu', 'assets/Menu.png');
 		game.load.image('Stage1', 'assets/Stage1.png');
-		game.load.audio('tm', 'assets/Stressed Out - Twenty One Pilots - Lyrics.mp3');
+		game.load.audio('tm', 'audio/Rio vs THe XX - Mia NyxtA pOu tAsteRi Mas laMpei oSo KaNeNa.mp3');
 		},
 		
 		create: function() {
