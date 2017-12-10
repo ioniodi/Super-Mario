@@ -1,8 +1,8 @@
 var Menu = {
 	preload: function() {
 
-		game.load.image('Menu', 'assets/menu.png');
-		game.load.image('Stage 1', 'assets/stage 1.png');
+		game.load.image('MENU', 'assets/MENU.png');
+		game.load.image('STAGE1', 'assets/STAGE1.png');
 		game.load.audio('tm', 'audio/Rio vs THe XX - Mia NyxtA pOu tAsteRi Mas laMpei oSo KaNeNa.mp3');
 		},
 		
@@ -16,7 +16,7 @@ var Menu = {
 			game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 			game.physics.startSystem(Phaser.Physics.ARCADE);
 			
-			var menuPic = game.add.sprite(8, 8, 'Menu');
+			var menuPic = game.add.sprite(8, 8, 'MENU');
 
 			var StageText = game.add.text(38, 150, 'STAGE1', {fontSize: '12px', fill: '#000'});
 			var click1 = game.add.button(60, 197, 'STAGE1', function() {
