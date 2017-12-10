@@ -1,8 +1,8 @@
 var Menu = {
 	preload: function() {
 
-		game.load.image('Menu', 'assets/Menu.png');
-		game.load.image('Stage 1', 'assets/Stage 1.png');
+		game.load.image('Menu', 'assets/menu.png');
+		game.load.image('Stage 1', 'assets/stage 1.png');
 		game.load.audio('tm', 'audio/Rio vs THe XX - Mia NyxtA pOu tAsteRi Mas laMpei oSo KaNeNa.mp3');
 		},
 		
