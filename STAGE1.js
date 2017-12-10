@@ -7,7 +7,7 @@ var Stage1 = {
 			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
            		this.load.image('live','assets/emotion_heart.png');
-            		this.load.spritesheet('new goomba', 'assets/new goomba.png',16, 16);
+            		this.load.spritesheet('new goomba', 'assets/goomba1.png',16, 16);
 			game.load.tilemap('level', 'assets/super_mario_map_new.json', null,
 					Phaser.Tilemap.TILED_JSON);
             //game sound
@@ -46,15 +46,15 @@ var Stage1 = {
 			goombas.setAll('body.bounce.x', 1);
 			goombas.setAll('body.velocity.x', -20);
 			goombas.setAll('body.gravity.y', 500);
-            //new staff(squirtle)
-            new goomba = game.add.group();
-			new goomba.enableBody = true;
-			map.createFromTiles(1, null, 'new goomba', 'enemy', new goomba);
-			new goomba.callAll('animations.add', 'animations', 'walkRight',[ 0, 1 ],2, true);
-			new goomba.callAll('animations.play', 'animations', 'walkRight');
-			new goomba.setAll('body.bounce.x', 1);
-			new goomba.setAll('body.velocity.x', 60);
-			new goomba.setAll('body.gravity.y', 50);
+          
+            goomba1 = game.add.group();
+			goomba1.enableBody = true;
+			map.createFromTiles(1, null, 'new goomba', 'enemy', goomba1);
+			goomba1.callAll('animations.add', 'animations', 'walkRight',[ 0, 1 ],2, true);
+			goomba1.callAll('animations.play', 'animations', 'walkRight');
+			goomba1.setAll('body.bounce.x', 1);
+			goomba1.setAll('body.velocity.x', 60);
+			goomba1.setAll('body.gravity.y', 50);
             
 			player = game.add.sprite(16, game.world.height - 48, 'mario');
 			game.physics.arcade.enable(player);
@@ -96,8 +96,8 @@ var Stage1 = {
 			game.physics.arcade.collide(player,pipe,pipeOverlap);
 			game.physics.arcade.collide(player, layer);
 			game.physics.arcade.collide(goombas, layer);
-            game.physics.arcade.collide(squirtle, layer);
-            game.physics.arcade.overlap(player, squirtle, squirtleOverlap);
+            game.physics.arcade.collide(goomba1, layer);
+            game.physics.arcade.overlap(player, goomba1, goomba1Overlap);
 			game.physics.arcade.overlap(player, goombas, goombaOverlap);
 			game.physics.arcade.overlap(player, coins, coinOverlap);
             
