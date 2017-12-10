@@ -130,7 +130,7 @@ body {
 		}
 		function coinOverlap(player, coin) {
 			coin.kill();
-			var  = new Audio('audio/coin.wav');
+			var coinSound = new Audio('audio/coin.wav');
 			coinSound.play();
 			
 			myScore+=1;
@@ -142,13 +142,11 @@ body {
 				goomba.frame = 2;
 				goomba.body.enable = false;
 				player.body.velocity.y = -80;
-				game.time.events.add(Phaser.Timer.SECOND, function() {
-					var goombastomp = new Audio('audio/stomp.wav');
-					goombastomp.play();
-					goomba.kill();
-					myScore+=100;
-					sscore.text = 'SCORE --> ' + myScore;
-				});
+				var goombastomp = new Audio('audio/stomp.wav');
+				goombastomp.play();
+				goomba.kill();
+				myScore+=100;
+				sscore.text = 'SCORE --> ' + myScore;
 			} else {
 				player.frame = 6;
 				myLives--;
