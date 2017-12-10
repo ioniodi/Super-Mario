@@ -10,7 +10,7 @@ body {
 	background-color: #000;
 }
 </style>
-<script src = "MENUS.js"></script>
+<script src = "MENU.js"></script>
 <script src = "STAGE1.js"></script>
 <script src = "//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
 </head>
@@ -33,9 +33,9 @@ body {
 			this.load.baseURL = 'https://Theblackdemoniv.github.io/Super-Mario/';
 			this.load.crossOrigin = 'anonymous';
 		}
-			game.state.add('Stage1', Stage1);
-			game.state.add('Menu', Menu);
-			game.state.start('Menu');
+			game.state.add('STAGE1', STAGE1);
+			game.state.add('MENU', MENU);
+			game.state.start('MENU');
 		function pipeOverlap(player,pipe){
 			if (cursors.down.isDown && (player.body.onFloor())) {
 			player.animations.play('Teleport');
@@ -46,17 +46,17 @@ body {
 					});
 			}
 		}
-		function new goombaOverlap(player, new goomba) {
+		function goomba1Overlap(player, goomba1) {
 			if (player.body.touching.down) {
-				new goomba.animations.stop();
+				goomba1.animations.stop();
 				stompsound.play();
-				new goomba.frame = 2;
-				new goomba.body.enable = false;
+				goomba1.frame = 2;
+				goomba1.body.enable = false;
 				player.body.velocity.y = -80;
                 score += 150;
     			scoreText.text = 'Score: ' + score; 
 				game.time.events.add(Phaser.Timer.SECOND, function() {
-					new goomba.kill();
+					goomba1.kill();
 				});
 			} else {
             	backgroundsound.stop();
