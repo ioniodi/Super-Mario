@@ -10,7 +10,7 @@ body {
 	background-color: #000;
 }
 </style>
-<script src = "MENUS.js"></script>
+<script src = "MENU.js"></script>
 <script src = "STAGE1.js"></script>
 <script src = "//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
 </head>
@@ -33,9 +33,9 @@ body {
 			this.load.baseURL = 'https://Theblackdemoniv.github.io/Super-Mario/';
 			this.load.crossOrigin = 'anonymous';
 		}
-			game.state.add('Stage1', STAGE1);
-			game.state.add('Menu', MENUS);
-			game.state.start('Menu');
+			game.state.add('STAGE1', STAGE1);
+			game.state.add('MENU', MENU);
+			game.state.start('MENU');
 		function pipeOverlap(player,pipe){
 			if (cursors.down.isDown && (player.body.onFloor())) {
 			player.animations.play('Teleport');
