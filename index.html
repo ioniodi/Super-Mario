@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Super-Mario</title>
+<meta charset="utf-8">
+<style>
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #000;
+}
+</style>
+<script src="menu.js"></script>
+<script src="first.js"></script>
+<script src="second.js"></script>
+<script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+        score = 0;
+        lives = 3;
+		var game = new Phaser.Game(256, 240, Phaser.CANVAS, '', this, false, false);
+
+		function preload() {
+
+			//  We need this because the assets are on github pages
+			//  Remove the next 2 lines if running locally
+			//this.load.baseURL = 'https://ioniodi.github.io/Super-Mario/';
+			//this.load.crossOrigin = 'anonymous';
+		}
+
+		game.state.add('first',first);
+		game.state.add('second',second);
+		game.state.add('menu',menu);
+		game.state.start('menu');
+		var coins_collected=0;
+
+		function coinOverlap(player, coin) {
+            		coin_sound.play();
+            		score+=10;
+			coin.kill();
+			coins_collected++;
+			if(coins_collected==85){
+				var victory=game.add.sprite(0,0,'win');
+				victory.fixedToCamera=true;
+				game.time.events.add(Phaser.Timer.SECOND, function() {
+					location.reload();
+				});
+			}
+		}
+
+		function goombaOverlap(player, goomba) {
+			if (player.body.touching.down) {
+                		stompsound.play();
+				goomba.animations.stop();
+				goomba.frame = 2;
+                		score+=20;
+				goomba.body.enable = false;
+				player.body.velocity.y = -80;
+				game.time.events.add(Phaser.Timer.SECOND, function() {
+					goomba.kill();
+				});
+			} else {
+                		lives-=1;
+                		run_sound.stop();
+                		onkillsound.play();
+				player.frame = 38;
+                		if(lives==0){
+                   			music.stop();
+                    			player.body.enable = false;
+                    			player.animations.stop();
+					var gameover=game.add.sprite(0,0,'lose');
+					gameover.fixedToCamera=true;
+                    			game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+						location.reload();
+                    			});
+                		}else{
+                    			score=0;
+					coins_collected=0;
+					game.state.restart();
+                		}
+			}
+		}
+		function monsterOverlap(player, monster) {
+			if (player.body.touching.down) {
+                		stompsound.play();
+				monster.animations.stop();
+				monster.frame = 2;
+                		score+=20;
+				monster.body.enable = false;
+				player.body.velocity.y = -80;
+				game.time.events.add(Phaser.Timer.SECOND, function() {
+					monster.kill();
+				});
+			} else {
+                		lives-=1;
+                		run_sound.stop();
+                		onkillsound.play();
+				player.frame = 38;
+                		if(lives==0){
+                   			music.stop();
+                    			player.body.enable = false;
+                    			player.animations.stop();
+					var gameover=game.add.sprite(0,0,'lose');
+					gameover.fixedToCamera=true;
+                    			game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+						location.reload();
+                    			});
+                		}else{
+                    			score=0;
+					coins_collected=0;
+					game.state.restart();
+                		}
+			}
+		}
+	</script>
+</body>
+</html>
