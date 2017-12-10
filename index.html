@@ -21,13 +21,11 @@ body {
 		}, false, false);
         
         var myScore = 0;
-        var myBonus = 0;
         var myLives = 3;
         
         var sscore;
-        var bbonus;
         var llives;
-                
+        var text;      
 		
 		function preload() {
 			//  We need this because the assets are on github pages
@@ -47,8 +45,7 @@ body {
 			this.load.audio('coin', 'audio/coin.wav');
 			
 		}
-		mySound = new sound("bon_t.mp3");
-			mySound.play();
+		
 		function create() {
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 			game.scale.pageAlignHorizontally = true;
@@ -91,12 +88,10 @@ body {
 			cursors = game.input.keyboard.createCursorKeys();
 			
             //text
-             sscore = game.add.text(16,7, 'SCORE--> 0 ', {fontSize: '10px', fill: '#800000'});
-             bbonus = game.add.text(100,7, 'BONUS--> 0 ', {fontSize: '10px', fill: '#800000'});
-             llives = game.add.text(200,7, 'LIVES--> 0 ', {fontSize: '10px', fill: '#800000'});
+             sscore = game.add.text(10,5, 'Score--> 0 ', {fontSize: '14px', fill: '#800000'});
+             llives = game.add.text(10,25, 'Lives--> 0 ', {fontSize: '14px', fill: '#800000'});
              
              sscore.fixedToCamera = true;
-             bbonus.fixedToCamera = true;
              llives.fixedToCamera = true;
 		}
 		function update() {
@@ -135,18 +130,11 @@ body {
 		}
 		function coinOverlap(player, coin) {
 			coin.kill();
-            myScore++;
-	    myCoins++;
-            //sscore.text = 'SCORE-->' + myScore; 
-	    if ( myCoins >= 99) {
-		    myCoins = myCoins - 100;
-		    myLives++;
-	    }
-			
-	     llives.text = 'LIVES --> ' + myLives;
-			sscore.text = 'SCORE --> ' + myScore;
-			var coinSound = new Audio('audio/coin.wav');
+			var  = new Audio('audio/coin.wav');
 			coinSound.play();
+			
+			myScore+=1;
+			sscore.text = "Score--> " + myScore; 
 		}
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
