@@ -21,11 +21,12 @@ body {
 		}, false, false);
         
         var myScore = 0;
+        var score;
         var myLives = 3;
-        
-        var sscore;
-        var llives;
-        var text;      
+        var lives;
+        var text; 
+	var end;
+	
 		
 		function preload() {
 			//  We need this because the assets are on github pages
@@ -37,6 +38,7 @@ body {
 			this.load.spritesheet('goomba', 'assets/goomba_new1.png', 16, 16);
 			this.load.spritesheet('mario', 'assets/mario_new1.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin_new1.png', 16, 16);
+			this.load.spritesheet('plankton' , 'assets/plankton.png', 16, 16);
 			this.load.tilemap('level', 'assets/super_mario_map_new.json', null,
 					Phaser.Tilemap.TILED_JSON);
 			this.load.audio('sound', 'audio/bon_t.mp3');
@@ -56,6 +58,7 @@ body {
 			
 			game.sound = game.add.audio('sound');
                         game.sound.play();
+			
 			map = game.add.tilemap('level');
 			map.addTilesetImage('tiles', 'tiles');
 			map.setCollisionBetween(3, 12, true, 'solid');
@@ -68,6 +71,7 @@ body {
 			coins.callAll('animations.add', 'animations', 'spin',
 					[ 0, 0, 1, 2 ], 3, true);
 			coins.callAll('animations.play', 'animations', 'spin');
+			
 			goombas = game.add.group();
 			goombas.enableBody = true;
 			map.createFromTiles(1, null, 'goomba', 'stuff', goombas);
@@ -77,6 +81,19 @@ body {
 			goombas.setAll('body.bounce.x', 1);
 			goombas.setAll('body.velocity.x', -20);
 			goombas.setAll('body.gravity.y', 500);
+			
+			//plankton
+			plankton = game.add.group();
+			plankton.enableBody = true;
+			map.createFromTiles(8, null, 'plankton', 'stuff', plankton);
+			plankton.callAll('animations.add', 'animations', 'walk', [ 0, 1 ],
+			2, true);
+			plankton.callAll('animations.play', 'animations', 'walk');
+			plankton.setAll('body.bounce.x', 1);
+			plankton.setAll('body.velocity.x', -20);
+			plankton.setAll('body.gravity.y', 500);
+			
+			
 			player = game.add.sprite(16, game.world.height - 48, 'mario');
 			game.physics.arcade.enable(player);
 			player.body.gravity.y = 370;
@@ -88,17 +105,27 @@ body {
 			cursors = game.input.keyboard.createCursorKeys();
 			
             //text
-             sscore = game.add.text(10,5, 'Score--> 0 ', {fontSize: '14px', fill: '#800000'});
-             llives = game.add.text(10,25, 'Lives--> 0 ' + myLives , {fontSize: '14px', fill: '#800000'});
+             score = game.add.text(10,5, 'Score: 0 ', {fontSize: '14px', fill: '#800000'});
+             lives = game.add.text(10,25, 'Lives: 3 ' , {fontSize: '14px', fill: '#800000'});
+	     end = game.add.text(10,50, '  ', {fontSize: '14px', fill: '#800000'});
+	     text = game.add.text(10,50, '  ', {fontSize: '14px', fill: '#800000'});
              
-             sscore.fixedToCamera = true;
-             llives.fixedToCamera = true;
+             score.fixedToCamera = true;
+             lives.fixedToCamera = true;
+	     end.fixesToCamera = true;
+	     text.fixedToCamera = true;
 		}
+		
+		
 		function update() {
 			game.physics.arcade.collide(player, layer);
 			game.physics.arcade.collide(goombas, layer);
+			game.physics.arcade.collide(plankton, layer);
+			
 			game.physics.arcade.overlap(player, goombas, goombaOverlap);
 			game.physics.arcade.overlap(player, coins, coinOverlap);
+			game.physics.arcade.overlap(player, plankton, planktonOverlap);
+			
 			if (player.body.enable) {
 				player.body.velocity.x = 0;
 				if (cursors.left.isDown) {
@@ -120,6 +147,12 @@ body {
 					player.body.velocity.y = -190;
 					player.animations.stop();
 				}
+				
+				if(player.x > 126*16 && player.x 127*16)
+					text.level.text = 'Level 1 -- Comlete! ';
+			        }
+			
+			
 				if (player.body.velocity.y != 0) {
 					if (player.goesRight)
 						player.frame = 5;
@@ -136,6 +169,36 @@ body {
 			myScore+=1;
 			sscore.text = "Score--> " + myScore; 
 		}
+		
+		function planktonOverlap(player, plankton) {
+			if(player.body.touching) {
+				plankton.animations.stop();
+				plankton.frame = 2;
+				plankton.body.enable = false;
+				player.body.velocity.y = -80;
+				player.frame = 6;
+				myLives = myLives - 1
+				lives.text = 'Lives: ' + myLives;
+				player.invincible=true;
+				player.body.enable = false;
+				player.animations.stop();
+				game.time.events.add(Phaser.Timer.SECOND * 3 , function() {
+					if(life<=0){
+						//game.bacSnd.pause();
+						game.paused = true;
+                        			endinfo.text= "GAME OVER"
+					}
+					else{
+						player.invincible= false ;
+						player.body.enable = true;
+						player.x = 16;
+						player.y = game.world.height - 48;
+					}
+				
+				});
+			}
+		}
+				
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
 				goomba.animations.stop();
@@ -155,6 +218,7 @@ body {
 				player.animations.stop();
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
 					game.paused = true;
+					end.text = 'Game Over'
 				});
 			}
 		}
