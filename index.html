@@ -38,7 +38,7 @@ body {
 			this.load.spritesheet('goomba', 'assets/goomba_new1.png', 16, 16);
 			this.load.spritesheet('mario', 'assets/mario_new1.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin_new1.png', 16, 16);
-			this.load.spritesheet('plankton' , 'assets/plankton.png', 16, 16);
+			//this.load.spritesheet('plankton' , 'assets/plankton.png', 16, 16);
 			this.load.tilemap('level', 'assets/super_mario_map_new.json', null,
 					Phaser.Tilemap.TILED_JSON);
 			this.load.audio('sound', 'audio/bon_t.mp3');
@@ -83,7 +83,7 @@ body {
 			goombas.setAll('body.gravity.y', 500);
 			
 			//plankton
-			plankton = game.add.group();
+			/*plankton = game.add.group();
 			plankton.enableBody = true;
 			map.createFromTiles(8, null, 'plankton', 'stuff', plankton);
 			plankton.callAll('animations.add', 'animations', 'walk', [ 0, 1 ],
@@ -102,7 +102,7 @@ body {
 			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
 			player.goesRight = true;
 			game.camera.follow(player);
-			cursors = game.input.keyboard.createCursorKeys();
+			cursors = game.input.keyboard.createCursorKeys();*/
 			
             //text
              score = game.add.text(10,5, 'Score: 0 ', {fontSize: '14px', fill: '#800000'});
@@ -170,7 +170,7 @@ body {
 			sscore.text = "Score--> " + myScore; 
 		}
 		
-		function planktonOverlap(player, plankton) {
+		/*function planktonOverlap(player, plankton) {
 			if(player.body.touching) {
 				plankton.animations.stop();
 				plankton.frame = 2;
@@ -197,7 +197,7 @@ body {
 				
 				});
 			}
-		}
+		}*/
 				
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
