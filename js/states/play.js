@@ -3,6 +3,9 @@ Game.playState = function(game) {
 };
 
 //var test;
+var gameTimeCounter;
+var gameTime;
+var globalTime_text;
 
 Game.playState.prototype = {
 
@@ -20,6 +23,8 @@ Game.playState.prototype = {
         nextFire = 0;
         enableEnemyPhysics = true;
         gameOver = false;
+        gameTimeCounter=0;
+        gameTime=1;
     },
 
     preload:function(game) {
@@ -129,12 +134,11 @@ Game.playState.prototype = {
         score_text.text = score;
         score_text.fixedToCamera = true;
 
-        bonus = game.add.sprite(bonusXY.x, bonusXY.y, 'bonus_star');
-        bonus.scale.setTo(0.7, 0.7);
-        bonus.fixedToCamera = true;
-        bonus_type_text = game.add.bitmapText(bonusXY.x+15, bonusXY.y+1,'font', score, 12);
-        bonus_type_text.fixedToCamera = true;
-        bonus_type_text.text = "none  0";
+        clock = game.add.sprite(clockXY.x, clockXY.y, 'clock');
+        clock.scale.setTo(0.7, 0.7);
+        clock.fixedToCamera = true;
+        time_event_text = game.add.bitmapText(clockXY.x+15, clockXY.y+1,'font', "", 12);
+        time_event_text.fixedToCamera = true;
 
         ufos = game.add.group();
         ufos.enableBody = true;
@@ -160,7 +164,6 @@ Game.playState.prototype = {
     },
 
     update:function(game) {
-        
         this.collisions(game);
         this.overlaps(game);
 
@@ -168,15 +171,13 @@ Game.playState.prototype = {
         this.bonusEffect(game);
 
         ufos.forEach(this.shoot, this);
-/*        
-        if(game.input.keyboard.isDown(Phaser.KeyCode.T) && gameOver == false) {
-            player.x = 2030;
-            player.y = 40
+
+        if(player.body.enable==true) {
+            this.currentGameTime(game);
+            if(checkB==false) {
+                time_event_text.text = "time: " +gameTime;
+            }
         }
-*/        
-        //mushroom effect
-        //this.physics.arcade.collide(player, mushrooms);
-        //this.physics.arcade.collide(mushrooms, layer);
     },
 
     //collisions
@@ -325,6 +326,7 @@ Game.playState.prototype = {
 
     mushroomOverlap:function(player, mushroom) {
         checkB = true;
+        soundManager.playSound(this, mushroomSound);
         mushroom.kill();
         currentBonus = bonus_type[Math.floor(Math.random() * bonus_type.length)];
         if(currentBonus == bonus_type[0] || currentBonus == bonus_type[1]) {
@@ -339,19 +341,20 @@ Game.playState.prototype = {
 
     //bonus effect
     bonusEffect:function(game) {
-        if(checkB == true) {
-            if(this.timer(game) == 0) {
-                player.alpha = visibleObject.true;
-                timeCounter = 0;
-                timeLeft = 0;
-                checkB = false;
-                enableEnemyPhysics = true;
-                currentBonus = "none";
-                currentBonusScoreEffect = 1;
+        if(player.body.enable == true) {
+            if(checkB == true) {
+                if(this.timer(game,0) == 0) {
+                    player.alpha = visibleObject.true;
+                    timeCounter = 0;
+                    timeLeft = 0;
+                    checkB = false;
+                    enableEnemyPhysics = true;
+                    currentBonus = "";
+                    currentBonusScoreEffect = 1;
+                }
+                time_event_text.text = currentBonus +"   " +this.timer(game,0);
             }
-            bonus_type_text.text = currentBonus +"   " +this.timer(game);
         }
-        else {}
     },
 
     teleportOverlap:function(player, teleport) {
@@ -359,10 +362,10 @@ Game.playState.prototype = {
         checkT = true;
         teleportX = teleport.x;
         teleportY = teleport.y;
-        this.teleport(this);
+        this.doTeleport(this);
     },
 
-    teleport:function(game) {
+    doTeleport:function(game) {
         game.time.events.add(Phaser.Timer.SECOND*0.15, function() {
             player.body.enable = false;
             player.body.velocity.x = 0;
@@ -425,13 +428,28 @@ Game.playState.prototype = {
     },
 
     //effect countdown timer
-    timer:function(game) {
+    timer:function(game, flag) {
         timeCounter++;
         if(timeCounter == 90) {
-            timeLeft--;
+            if(flag==0) {
+                timeLeft--;
+            }
+            else if(flag==1) {
+                timeLeft++;
+            }
             timeCounter = 0;
         }
         return timeLeft;
+    },
+
+    //effect countdown timer
+    currentGameTime:function(game) {
+        gameTimeCounter++;
+        if(gameTimeCounter == 90) {
+            gameTime++;
+            gameTimeCounter = 0;
+        }
+        return gameTime;
     },
 
     //players movements and views

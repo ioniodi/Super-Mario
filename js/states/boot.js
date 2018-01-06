@@ -15,7 +15,6 @@ var soundEnable = true;
 
 //level vars
 var currentLevel = 0;
-//var levelColor = ['3399FF', '3399FF', '#33CCAA', '#33CCAA'];
 var level = ['super_mario_map0', 'super_mario_map1', 'super_mario_map2', 'super_mario_map3'];
 var levelScore = [];
 var levelLocked = [];
@@ -24,7 +23,7 @@ var max_level = currentLevel;
 
 //text
 var score_text;
-var bonus_type_text;
+var time_event_text;
 
 //check vars for events
 var checkB;
@@ -76,7 +75,7 @@ var scoreXY = {
     y:1
 }
 
-var bonusXY = {
+var clockXY = {
     x:95,
     y:1
 }

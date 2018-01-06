@@ -19,7 +19,7 @@ levelManager.checkLevelAvailability = function(game, level, isAvailable) {
         tempL = level + 1; //logw arithmhshs spritesheet (preview of levels)
     }
 
-    imageManager.createImage(game, game.width/2, (game.height/2) + 45, 'preview_levels', 0.8, 0.7, tempL, false);
+    imageManager.createImage(game, game.width/2, (game.height/2) + 35, 'preview_levels', 0.9, 0.9, tempL, false);
 
     return level;
 };
@@ -60,7 +60,7 @@ levelManager.createLevelInfo = function(game) {
         if(currentLevel == 0) {
             textManager.createText(game, game.width - 30, 20, "lives", colors.orange, true);
             textManager.createText(game, scoreXY.x+16, scoreXY.y+20, "score", colors.orange, true);
-            textManager.createText(game, bonusXY.x+30, bonusXY.y+20, "bonus info", colors.orange, true);
+            textManager.createText(game, clockXY.x+35, clockXY.y+20, "time events", colors.orange, true);
             textManager.createText(game, 44, 90, "collect coins\n to increase score", colors.orange, false);
             textManager.createText(game, 155, 90, "teleports you \nafter 1 second", colors.orange, false);
             textManager.createText(game, 260, 110, "collect mushrooms\n to activate a bonus", colors.orange, false);

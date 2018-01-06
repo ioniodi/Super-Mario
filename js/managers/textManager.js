@@ -1,7 +1,9 @@
 var textManager = new Object();
 
+var text;
+
 textManager.createText = function(game, x, y, text, text_color, check) {
-    var text = game.add.text(x, y, text, {
+    text = game.add.text(x, y, text, {
         font:"12px Arial", 
         fill:text_color, 
         align:"center"

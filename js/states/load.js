@@ -32,7 +32,7 @@ Game.loadState.prototype = {
         game.load.spritesheet('firework', 'assets/sprites/firework.png', 241, 244, 10);
         game.load.spritesheet('button', 'assets/sprites/button.png', 100, 50);
         game.load.spritesheet('score', 'assets/sprites/score.png', 14, 16);
-        game.load.spritesheet('bonus_star', 'assets/sprites/bonus_star.png', 16, 16);
+        game.load.spritesheet('clock', 'assets/sprites/clock.png', 17, 17);
         game.load.spritesheet('mushroom', 'assets/sprites/mushroom.png', 16, 16);
         game.load.spritesheet('finish', 'assets/sprites/finish.png', 14, 14);
         game.load.spritesheet('teleport', 'assets/sprites/teleport.png', 16, 16);
@@ -60,10 +60,11 @@ Game.loadState.prototype = {
         game.load.audio('teleportS', 'assets/audio/teleport.wav', true);
         game.load.audio('fireworkS', 'assets/audio/firework_explosion.wav', true);
         game.load.audio('laserS', 'assets/audio/laser.wav', true);
+        game.load.audio('mushroomSound', 'assets/audio/mushroomSound.wav', true);
 
         game.load.bitmapFont('font', 'assets/sprites/font.png', 'assets/sprites/font.xml');
 
-        //game.load.atlasJSONHash('test', 'assets/test.png', 'assets/test.json');
+        //game.load.atlasJSONHash('test', 'assets/sprites/unused/test.png', 'assets/test.json');
     },
 
     create:function(game) {
@@ -89,6 +90,7 @@ Game.loadState.prototype = {
         teleportS = game.add.audio('teleportS', 0.7);
         fireworkS = game.add.audio('fireworkS', 0.7);
         laserS = game.add.audio('laserS', 0.055);
+        mushroomSound = game.add.audio('mushroomSound', 0.35);
 
         game.state.start('boot_menu');
     }
