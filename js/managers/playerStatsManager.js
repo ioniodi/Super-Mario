@@ -1,6 +1,6 @@
 var playerStatsManager = new Object();
 
-playerStatsManager.printOveralStats = function(game, lives, score, level, numOfLevels) {
+playerStatsManager.printOveralStats = function(game, lives, score, time, level, numOfLevels) {
     textManager.createText(game, game.width/2, 24, 'Your stats \n', colors.orange, false);
     var say = 'Congrats\n You have unlocked level: ' +level;
     if (level > numOfLevels) {
@@ -10,7 +10,7 @@ playerStatsManager.printOveralStats = function(game, lives, score, level, numOfL
         say = 'Game Over';
     }
     score = playerStatsManager.currentOveralScore(game, levelScore);
-    textManager.createText(game, game.width/2,  game.height/2, '\n' +say +'\nlives: ' +lives +'\ntotal score gained: ' +score +'\n' +'\n', colors.white, false);
+    textManager.createText(game, game.width/2,  game.height/2, '\n' +say +'\nlives: ' +lives +'\ntotal score gained: ' +score +'\n' +'level time: ' +time +' seconds\n', colors.white, false);
 };
 
 playerStatsManager.currentOveralScore = function(game, scoresArray) {

@@ -3,9 +3,6 @@ Game.playState = function(game) {
 };
 
 //var test;
-var gameTimeCounter;
-var gameTime;
-var globalTime_text;
 
 Game.playState.prototype = {
 
@@ -28,7 +25,6 @@ Game.playState.prototype = {
     },
 
     preload:function(game) {
-        //game.stage.backgroundColor = levelColor[currentLevel];
         imageManager.createImage(game, game.width/2, game.height/2, 'gameBackground', 0.45, 0.65, 0, true);
         //load tilemap
         this.load.tilemap('level', 'assets/levels/' +level[currentLevel] +'.json', null, Phaser.Tilemap.TILED_JSON);
@@ -173,7 +169,7 @@ Game.playState.prototype = {
         ufos.forEach(this.shoot, this);
 
         if(player.body.enable==true) {
-            this.currentGameTime(game);
+            this.gameTimer(game);
             if(checkB==false) {
                 time_event_text.text = "time: " +gameTime;
             }
@@ -207,7 +203,6 @@ Game.playState.prototype = {
             this.physics.arcade.overlap(player, goombas, this.goombaOverlap.bind(this));
             this.physics.arcade.overlap(player, fireballs, this.fireballOverlap.bind(this));
         }
-        else {}
     },
 
     //player collects coins
@@ -289,7 +284,7 @@ Game.playState.prototype = {
             if(score <= 0) {
                 score = 0;
             }
-            else if(score > 0) {
+            else {
                 score -= 5;
                 score_text.text = score;
             }
@@ -443,7 +438,7 @@ Game.playState.prototype = {
     },
 
     //effect countdown timer
-    currentGameTime:function(game) {
+    gameTimer:function(game) {
         gameTimeCounter++;
         if(gameTimeCounter == 90) {
             gameTime++;

@@ -43,9 +43,11 @@ var ufoRange = 85;
 var fireRate = 1450;
 var nextFire;
 
-//countdown timer
+//time vars
 var timeCounter = 0;
 var timeLeft = 0;
+var gameTime = 0;
+var gameTimeCounter = 0;
 
 var checkPointX;
 var checkPointY;
