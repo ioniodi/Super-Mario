@@ -1,0 +1,30 @@
+{"frames": {
+
+"eat0":
+{
+	"frame": {"x":0,"y":0,"w":16,"h":23},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":23},
+	"sourceSize": {"w":16,"h":23},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"eat1":
+{
+	"frame": {"x":0,"y":23,"w":16,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":24},
+	"sourceSize": {"w":16,"h":24},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "PiranaPlant.png",
+	"format": "RGBA8888",
+	"size": {"w":16,"h":47},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:a6bda631b179fb4c24c86f998c121d7c:b4f1fb2960c86ae09e4b2dd4047aaffb:31de46985ea88820dd6d51f37f6c2c4b$"
+}
+}

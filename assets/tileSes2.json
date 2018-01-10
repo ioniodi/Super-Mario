@@ -1,0 +1,30 @@
+{"frames": {
+
+"PiranaPlant1.png":
+{
+	"frame": {"x":0,"y":0,"w":16,"h":24},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":16,"h":24},
+	"sourceSize": {"w":16,"h":24},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"super_mario_tiles3.png":
+{
+	"frame": {"x":16,"y":0,"w":48,"h":112},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":48,"h":112},
+	"sourceSize": {"w":48,"h":112},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "tileSes2.png",
+	"format": "RGBA8888",
+	"size": {"w":64,"h":112},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:d1b0cabf4fe5023b9bfc1aa4eddf64f7:e7454ee779740d5e220d00287fabeba9:bc0288361196808e0b706b4442a2f17a$"
+}
+}
