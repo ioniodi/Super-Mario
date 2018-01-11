@@ -7,9 +7,7 @@
 body {
 	margin: 0;
 	padding: 0;
-        background-image: url("assets/piccolo.jpg");
-                background-attachment : fixed;
-                background-size : 100% auto;
+	background-color: #000;
 }
 </style>
 <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
@@ -57,7 +55,7 @@ body {
 			game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 			game.physics.startSystem(Phaser.Physics.ARCADE);
 
-			game.stage.backgroundColor = '#9933ff';
+			game.stage.backgroundColor = '#751aff';
 
 			map = game.add.tilemap('level');
 			map.addTilesetImage('tiles', 'tiles');
