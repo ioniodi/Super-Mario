@@ -15,7 +15,7 @@ var soundEnable = true;
 
 //level vars
 var currentLevel = 0;
-var level = ['super_mario_map0', 'super_mario_map1', 'super_mario_map2', 'super_mario_map3'];
+var level = ['super_mario_map0', 'super_mario_map1', 'super_mario_map2', '2015077'];
 var levelScore = [];
 var levelLocked = [];
 var finishLevel = level.length-1;
