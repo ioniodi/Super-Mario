@@ -40,12 +40,30 @@
  "tileheight":16,
  "tilesets":[
         {
+         "columns":3,
          "firstgid":1,
-         "source":"..\/..\/piccolo-map.tsx"
+         "image":"tileq.png",
+         "imageheight":112,
+         "imagewidth":48,
+         "margin":0,
+         "name":"tiles",
+         "spacing":0,
+         "tilecount":21,
+         "tileheight":16,
+         "tilewidth":16
         }, 
         {
+         "columns":1,
          "firstgid":22,
-         "source":"..\/portal.tsx"
+         "image":"portal.gif",
+         "imageheight":32,
+         "imagewidth":20,
+         "margin":0,
+         "name":"portal",
+         "spacing":0,
+         "tilecount":0,
+         "tileheight":32,
+         "tilewidth":20
         }],
  "tilewidth":16,
  "type":"map",
