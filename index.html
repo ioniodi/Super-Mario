@@ -42,6 +42,8 @@ body {
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
 			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
+			this.load.spritesheet('portal', 'assets/portal.gif', 20, 32);
+			this.load.audio('portal','audio/portal.mp3');
 
 
 			this.load.tilemap('level', 'assets/piccolomap.json', null,
@@ -49,6 +51,9 @@ body {
 		}
 
 		function create() {
+			
+			portal = game.add.audio('portal');
+			
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 			game.scale.pageAlignHorizontally = true;
 			game.scale.pageAlignVertically = true
@@ -98,6 +103,15 @@ body {
 		        scoreText.fixedToCamera = true;
                         lifeText = game.add.text(16, 30, 'life: 4', { fontSize: '12px', fill: '#ff3300' });
 		        lifeText.fixedToCamera = true;
+			
+			portal = game.add.group();
+			portal.enableBody = true;
+			map.createFromTiles(22,null,'portal','stuff',portal);
+			portal.callAll('animations.add', 'animations', 'still', [0],1,true);
+			portal.callAll('animations.play','animations','still');
+			portal.setAll('body.immovable',true);
+			
+			
 		}
 
 		function update() {
