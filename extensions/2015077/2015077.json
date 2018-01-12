@@ -44,7 +44,7 @@
         {
          "columns":9,
          "firstgid":1,
-         "image":"..\/super_mario_tiles.png",
+         "image":"super_mario_tiles.png",
          "imageheight":112,
          "imagewidth":144,
          "margin":0,
