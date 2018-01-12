@@ -42,8 +42,6 @@ body {
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
 			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
-			
-			this.load.audio('portal','audio/portal.mp3');
 
 
 			this.load.tilemap('level', 'assets/piccolomap.json', null,
@@ -51,8 +49,6 @@ body {
 		}
 
 		function create() {
-			
-			portal = game.add.audio('portal');
 			
 			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
 			game.scale.pageAlignHorizontally = true;
