@@ -26,7 +26,7 @@ body {
 		}, false, false);
 		var score = 0;
                 var scoreText;
-                var life = 2;
+                var life = 4;
                 var lifeText;
                 var gameoverText;
 
@@ -40,7 +40,7 @@ body {
 			this.load.spritesheet('tiles', 'assets/tileq.png', 16,
 					16);
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
-			this.load.spritesheet('mario', 'assets/mario.png', 42, 53);
+			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
 
 
@@ -94,9 +94,9 @@ body {
 			game.camera.follow(player);
 
 			cursors = game.input.keyboard.createCursorKeys();
-			scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '16px', fill: '#ace600' });
+			scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '22px', fill: '#ace600' });
 		        scoreText.fixedToCamera = true;
-                        lifeText = game.add.text(16, 30, 'life: 4', { fontSize: '16px', fill: '#ffff33' });
+                        lifeText = game.add.text(16, 30, 'life: 4', { fontSize: '22px', fill: '#ffff33' });
 		        lifeText.fixedToCamera = true;
 		}
 
