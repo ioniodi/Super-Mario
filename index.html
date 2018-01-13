@@ -175,8 +175,8 @@ body {
 				audio.play()
 				}
 		        if(life==0){
-				audio.pause();
-				audio.currentTime = 0;
+				audio/bgm.pause();
+				audio/bgm.currentTime = 0;
 				var audio = new Audio('audio/over.mp3');
 				audio.play()
 			 	player.frame = 6;
@@ -184,7 +184,7 @@ body {
 				player.animations.stop();
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
 				gameoverText = game.add.text(200, 120, 'BUU BUU WINS', { font: 'bold 32px Roman', fill: '#ff75a1', boundsAlignH: 'center', boundsAlignV: 'middle' });
-			        gameoverText.fixedToCamera.follow(player) = true;
+			        gameoverText.fixedToCamera = true;
 				game.paused = true;
 				});
 			}
