@@ -175,13 +175,13 @@ body {
 				audio.play()
 				}
 		        if(life==0){
+				var audio = new Audio('audio/over.wav');
+				audio.play()
 			 	player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
-				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-				var audio = new Audio('audio/over.wav');
-				audio.play()	
-				gameoverText = game.add.text(200, 120, 'GAME OVER', { font: 'bold 42px Roman', fill: '#093a39', boundsAlignH: 'center', boundsAlignV: 'middle' });
+				game.time.events.add(Phaser.Timer.SECOND * 3, function() {	
+				gameoverText = game.add.text(200, 120, 'GAME OVER', { font: 'bold 42px Roman', fill: '#adff2f', boundsAlignH: 'center', boundsAlignV: 'middle' });
 			        gameoverText.fixedToCamera = true;
 				game.paused = true;
 				});
