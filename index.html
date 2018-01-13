@@ -169,7 +169,9 @@ body {
 				player.body.enable = false;
 				player.animations.stop();
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-					game.paused = true;
+				gameoverText = game.add.text(20, 100, 'GAME OVER', { fontSize: '32px', fill: '#093a39' });
+			        gameoverText.fixedToCamera = true;
+				game.paused = true;
 				});
 			}
 		}
