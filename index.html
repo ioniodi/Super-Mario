@@ -179,7 +179,9 @@ body {
 				player.body.enable = false;
 				player.animations.stop();
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-				gameoverText = game.add.text(20, 100, 'GAME OVER', { font: 'bold 32px Arial', fill: '#093a39', boundsAlignV: "middle" });
+				var audio = new Audio('audio/over.wav');
+				audio.play()	
+				gameoverText = game.add.text(200, 120, 'GAME OVER', { font: 'bold 32px Arial', fill: '#093a39', boundsAlignH: 'center', boundsAlignV: 'middle' });
 			        gameoverText.fixedToCamera = true;
 				game.paused = true;
 				});
