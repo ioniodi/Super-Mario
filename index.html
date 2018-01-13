@@ -159,7 +159,7 @@ body {
 				player.body.velocity.y = -80;
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
-					var audio = new Audio('audio/buu.mp3');
+					var audio = new Audio('audio/buu.wav');
 					audio.play()
 					score += 10;
                                 scoreText.text = 'Score: ' + score;
