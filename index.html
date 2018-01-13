@@ -26,7 +26,7 @@ body {
 		}, false, false);
 		var score = 0;
                 var scoreText;
-                var life = 4;
+                var life = 2;
                 var lifeText;
                 var gameoverText;
 
@@ -97,7 +97,7 @@ body {
 			cursors = game.input.keyboard.createCursorKeys();
 			scoreText = game.add.text(16, 16, 'score: 0', { fontSize: '12px', fill: '#cc0000' });
 		        scoreText.fixedToCamera = true;
-                        lifeText = game.add.text(16, 30, 'life: 4', { fontSize: '12px', fill: '#ff3300' });
+                        lifeText = game.add.text(16, 30, 'life: 2', { fontSize: '12px', fill: '#ff3300' });
 		        lifeText.fixedToCamera = true;
 			
 
@@ -165,6 +165,12 @@ body {
                                 scoreText.text = 'Score: ' + score;
 				});
 			} else {
+				life--;
+				lifeText.text = 'life: ' +life;
+				player.x=player.x-50;
+			        var audio = new Audio('audio/death.wav');
+				audio.play()
+			 if(life==0){
 				player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
