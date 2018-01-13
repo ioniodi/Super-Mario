@@ -175,12 +175,12 @@ body {
 				audio.play()
 				}
 		        if(life==0){
+				var audio = new Audio('audio/over.mp3');
+				audio.play()
 			 	player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-				var audio = new Audio('audio/over.wav');
-				audio.play()
 				gameoverText = game.add.text(200, 120, 'GAME-OVER #BUU_WINS', { font: 'bold 32px Roman', fill: '#ff75a1', boundsAlignH: 'center', boundsAlignV: 'middle' });
 			        gameoverText.fixedToCamera.follow(player) = true;
 				game.paused = true;
