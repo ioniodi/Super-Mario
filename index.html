@@ -132,6 +132,9 @@ body {
 				if (cursors.up.isDown && player.body.onFloor()) {
 					player.body.velocity.y = -190;
 					player.animations.stop();
+					
+					var audio = new Audio('audio/jump.wav');
+					audio.play()			
 				}
 
 				if (player.body.velocity.y != 0) {
