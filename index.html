@@ -153,14 +153,14 @@ body {
 
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
+				var audio = new Audio('audio/buu.wav');
+				audio.play()
 				goomba.animations.stop();
 				goomba.frame = 2;
 				goomba.body.enable = false;
 				player.body.velocity.y = -80;
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
-					var audio = new Audio('audio/buu.wav');
-					audio.play()
 					score += 10;
                                 scoreText.text = 'Score: ' + score;
 				});
