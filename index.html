@@ -170,8 +170,9 @@ body {
 				player.x=player.x-50;
 			        var audio = new Audio('audio/death.wav');
 				audio.play()
-			 if(life==0){
-				player.frame = 6;
+				}
+		        if(life==0){
+			 	player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
