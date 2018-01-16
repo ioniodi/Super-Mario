@@ -175,8 +175,8 @@ body {
 				audio.play()
 				}
 		        if(life==0){
-				var audio = new Audio('audio/over.mp3');
-				audio.play()
+				var audioGameOver = new Audio('assets/over.mp3');
+			        audioGameOver.play();
 			 	player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
