@@ -1,0 +1,263 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Super-Mario</title>
+<meta charset="utf-8">
+<style>
+body {
+	margin: 0;
+	padding: 0;
+	background-color: #000;
+}
+</style>
+<script src="MainMenu.js"></script>
+<script src="Level1.js"></script>
+<script src='Level2.js'></script>
+<script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		var game = new Phaser.Game(1440, 810, Phaser.CANVAS, '',	 false, false);
+		
+		function preload() {
+			
+		//this.load.baseURL = 'https://dhmhtrhsd.github.io/Super-Mario/';
+		//this.load.crossOrigin = 'anonymous';
+
+		}
+		
+		var score = 0;
+		var scoreText;
+		var lives = 3;
+		var livesText;
+		var coinsnd; 		//coin kill sound
+		var stompsnd;		//goomba kill sound
+		var deathsnd;		//death sound
+		var themesnd;		//theme song music
+		var gameoversnd;	//game over sound
+		var gameoverText;
+		var Level1Text;
+		var Level2Text;
+		var level1CompleteText;
+		var level2CompleteText;
+		var jumpsnd;		// jumping sound
+		var mysteryboxhitsnd;
+		var supersaiyansnd;
+		var portalsnd;
+		var ascent = 0;
+		var finishcheck=0;
+		
+
+
+
+		game.state.add('MainMenu', MainMenu);
+		game.state.add('Level1', Level1);
+		game.state.add('Level2', Level2);
+		game.state.start('MainMenu');
+
+		function fade() {
+   			game.camera.fade(0x000000, 3000);
+		}
+
+		function coinOverlap(player, coin) {
+			coin.kill();
+			coinsnd = game.add.audio("coin");
+			coinsnd.volume = 0.1;
+			coinsnd.play();
+			//  Add and update the score
+    			score += 10;
+    			scoreText.text = 'Score: ' + score;
+    			if(finishcheck==1 && game.state.current == 'Level1'){
+    				player.body.enable = false;
+    				player.animations.stop();
+    				level1CompleteText = game.add.bitmapText(40,85,'font', 'Level 1 Complete',55);
+					level1CompleteText.fixedToCamera = true;
+					fade();
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+					game.state.start('Level2');
+					themesnd.stop();
+					});
+    			}
+    			else if(finishcheck==1 && game.state.current == 'Level2'){
+    				player.body.enable = false;
+    				player.animations.stop();
+    				level1CompleteText = game.add.bitmapText(40,85,'font', 'Level 2 Complete',55);
+					level1CompleteText.fixedToCamera = true;
+					fade();
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+					themesnd.stop();
+					game.scale.setGameSize(1440, 810);
+					game.state.start('MainMenu');
+					});
+    			}
+		}
+
+		function portalboxOverlap(player, portalbox){
+				finishcheck=1;
+				portalsnd.play();
+				player.body.velocity.x = 20;
+					if(game.state.current == 'Level1')
+						player.reset(976, 19);
+					else
+						player.reset(2000, 19);
+				player.animations.play('walkRight');
+		}
+
+		function mysteryboxOverlap(player, mysterybox){
+			if (cursors.up.isDown & player.body.touching.down) {
+				jumpsnd.volume = 0.1;
+				jumpsnd.play();
+				player.body.velocity.y = -190;
+				player.animations.stop();
+			}	
+			 if (player.body.touching.up & mysterybox.frame!=3) {
+				mysteryboxhitsnd.play();
+				mysterybox.animations.stop();
+				mysterybox.frame=3;
+
+				mushroomsprite = game.make.sprite(mysterybox.x, mysterybox.y-15, 'mushroomsprite')
+				mushroom.addChild(mushroomsprite);																
+				mushroomsprite.animations.add('spawning', [1,2,3,4,5,6,7],8,false);
+				mushroomsprite.animations.play('spawning');
+				game.physics.arcade.enable(mushroomsprite);
+		}
+	}
+
+		function mushroomOverlap(player, mushroom){
+				player.body.enable = false;
+				player.animations.stop();
+				player.animations.play('mushroomSuper');
+				ascent = 1;
+				supersaiyansnd.play();
+				mushroom.kill();
+				//player.body.setSize(16,29);
+				player.body.gravity.y = 250;
+				game.time.events.add(Phaser.Timer.SECOND * 2, function() {
+					player.body.enable = true;
+					});
+			}
+
+		function goombaOverlap(player, goomba) {
+			if (player.body.touching.down) {
+				score += 15;
+				scoreText.text = 'Score: ' + score;
+				stompsnd = game.add.audio("stomp");
+				stompsnd.volume = 0.1;
+				stompsnd.play();
+				goomba.animations.stop();
+				goomba.frame = 2;
+				goomba.body.enable = false;
+				player.body.velocity.y = -80;
+				game.time.events.add(Phaser.Timer.SECOND, function() {
+					goomba.kill();
+				});
+			} else {
+				themesnd.stop();
+				if(ascent == 0)
+					player.frame = 1;
+				else
+					player.frame = 8;
+				player.body.enable = false;
+				player.animations.stop();
+				score = 0;
+				ascent = 0;
+				if(lives>1){
+					deathsnd.play();
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+					lives-= 1;
+					game.state.restart();
+					});
+				}
+				else{
+					gameoversnd.play();
+					gameoverText = game.add.bitmapText(115	,85,'font', 'Game Over',64);
+					gameoverText.fixedToCamera = true;
+					game.time.events.add(Phaser.Timer.SECOND * 6, function() {
+						game.scale.setGameSize(1440, 810);
+						game.state.start('MainMenu');
+					});
+				}
+			}
+		}
+
+		function waterOverlap(player, water){
+				themesnd.stop();
+				player.animations.stop();
+				player.body.enable = false;
+			if(lives>1){
+				lives-= 1;
+				deathsnd.play();
+				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+					game.state.restart();
+				});
+			}
+			else{
+				gameoversnd.play();
+				gameoverText = game.add.bitmapText(115	,85,'font', 'Game Over',64);
+				gameoverText.fixedToCamera = true;
+				game.time.events.add(Phaser.Timer.SECOND * 6, function() {
+				game.scale.setGameSize(1440, 810);
+				game.state.start('MainMenu');
+					});
+			}
+			
+				
+		}
+
+		function friezaOverlap(player, frieza) {
+			if (player.body.touching.down) {
+				score += 15;
+				scoreText.text = 'Score: ' + score;
+				stompsnd = game.add.audio("stomp");
+				stompsnd.volume = 0.1;
+				stompsnd.play();
+				frieza.animations.stop();
+				frieza.frame = 3;
+				frieza.body.enable = false;
+				player.body.velocity.y = -80;
+				game.time.events.add(Phaser.Timer.SECOND, function() {
+					frieza.kill();
+				});
+			} else {
+				themesnd.stop();
+				if(ascent == 0)
+					player.frame = 1;
+				else
+					player.frame = 8;
+				player.body.enable = false;
+				player.animations.stop();
+				score = 0;
+				ascent = 0;
+				if(lives>1){
+					deathsnd.play();
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+					lives-= 1;
+					game.state.restart();
+					});
+				}
+				else{
+					gameoversnd.play();
+					gameoverText = game.add.bitmapText(115	,85,'font', 'Game Over',64);
+					gameoverText.fixedToCamera = true;
+					game.time.events.add(Phaser.Timer.SECOND * 6, function() {
+						game.scale.setGameSize(1440, 810);
+						game.state.start('MainMenu');
+					});
+				}
+			}
+		}
+
+		function friezaHit(frieza,layer){
+			if (frieza.body.position.x - frieza.body.prev.x > 0){
+				frieza.animations.play('walkRight');
+			}
+			else{
+				frieza.animations.play('walkLeft');
+			}
+		}
+
+		
+
+	</script>
+</body>
+</html>
