@@ -182,7 +182,7 @@ body {
 				player.animations.stop();
 				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
 				gameoverText = game.add.text(200, 120, 'GAME OVER', { font: 'bold 32px Roman', fill: '#ff75a1' });
-			        gameoverText.fixedToCamera = true;
+			        gameoverText.camera.follow(player);
 				game.paused = true;
 				});
 			}
