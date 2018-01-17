@@ -1,19 +1,45 @@
-# Super-Mario
+SUPER MARIO
 
-## Initial Settings
-- Από την στιγμή που έχεις κάνει αντιγραφή (fork) το [αποθετήριο](https://github.com/ioniodi/Super-Mario) του παιχνιδιού, θα πρέπει να έχει κατέβει στο προσωπικό σου github αποθετήριο ο [κώδικας του παιχνιδιού](index.html), ο φάκελος [assets](/assets/) με τα αντικείμενα (πίστες, εικόνες) και ο φάκελος [audio](/audio/) με τους ήχους που θα χρησιμοποιήσεις στο παιχνίδι σου.
+Ονοματεπώνυμο: Νάνου Ναστικά Ναυσικά
 
-- Ενεργοποίησε το Github Pages στα setting του προσωπικού σου repository και *άλλαξε το λινκ στην κορυφή του αποθετηρίου σου ώστε να δείχνει στην σελίδα του παιχνιδιού σου.*
-![ScreenShot](1.png)
+ΑΜ: Π2013015
 
-- Στο [index.html](index.html) άλλαξε το ioniodi με το δικό σου username.
-![ScreenShot](2.png)
 
-## Notes
-- Στην περίπτωση που κάποιος θέλει εναλλακτικά να τρέξει το παιχνίδι **τοπικά** μπορεί να ακολουθήσει τις οδηγίες από το [επίσημο site](http://phaser.io/tutorials/getting-started/index). Προτεινόμενος local web server: [xampp](https://www.apachefriends.org/index.html). Editor μπορείτε να βρείτε από [εδώ](http://phaser.io/tutorials/getting-started/part4) ή να χρησιμοποιήσετε το [eclipse](http://www.eclipse.org/) ακολουθώντας τις οδηγίες που δίνονται [εδώ](http://www.html5gamedevs.com/topic/22688-setting-up-eclipse-to-work-with-phaser-how-to/). **Προσοχή:** Για να βαθμολογηθεί το παιχνίδι πρέπει να βρίσκεται υποχρεωτικά στην προσωπική σας github page.
+Παραδοτέο 1
 
-## Resources
-- [Phaser Tutorial](http://phaser.io/learn)
-- [Official Phaser Tutorials](https://phaser.io/learn/official-tutorials)
-- [Phaser Examples](http://phaser.io/examples)
-- [Javascript tutorial](http://www.w3schools.com/js/)
+-Επιλογή θέμα εργασίας: Super-Mario
+
+
+
+Παραδοτέο 2
+
+- Δημιούργησα μια νέα πίστα για το παιχνίδι χρησιμοποιώντας το Tiled.Κράτησα το ίδιο tileset και άλλαξα τα χρώματα ανάμεσα στα tiles και στην πίστα.
+- Άλλαξα την εμφάνιση του Mario χρησιμοποιώντας έναν άλλο χαρακτήρα για πρωταγωνιστή του παιχνιδιού απο το manga και anime  Dragon Ball τoν Piccolo, αντί για coins μαζεύει τις dragon ball τον αριθμό 4 όπως υπήρχε και η FOUR STAR TEAM στο anime.Στη θέση του goomba εμφανίζεται ο Majin Buu.
+-Πρόσθεσα μουσική και ήχους(εφέ).Την ώρα εκτέλεσης του παιχνιδιού παίζει το soundtrack του DragonBall σε μια πιο chill έκδοση.
+Πρόσθεσα ήχους στις κινήσεις του πρωταγωνιστή, όταν μαζεύει τις DragonBall και όταν σκοτώνει τον Majin Buu(Buu).
+-Πρόσθεσα ζωή και score.
+
+
+Παραδοτέο 3
+
+-Έχω φτιάξει ένα menu με το soundtrack του anime το οποίο τραγουδά ο Τζίμης Πανούσης με μια εικόνα του Majin Buu.  Πάνω στην εικόνα έχει το ένα κουμπί πράσινο που να λέει play  που σου επιτρέπει να συνεχίσεις στην πίστα.
+
+Παραδοτέο 4
+
+Προσωπικό Αποθετηρίο: https://github.com/isoqar/Super-Mario
+
+Εκτελέσιμο: https://isoqar.github.io/Super-Mario/preIndex.html
+
+----
+ΕΡΓΑΛΕΙΑ:
+
+Με την βοήθεια της βιβλιοθήκης του Phaser κατάφερα να φτιάξω και να ολοκρηρώσω το παιχνίδι μου.
+Μέσω του Tiled ολοκρήρωσα την δικιά μου πίστα.
+Την μουσική και τους ήχους τα βρήκα απο το https://www.youtube.com/
+Τις εικόνες και τους χαρακτήρες τις επεξεργάστηκα στο https://www194.lunapic.com/editor/ (μέγεθος, χρώμα,..)
+Τους ήχους(εφέ), μουσική τα επεξεργάστηκα στο https://mp3cut.net/ 
+
+ΣΥΜΠΕΡΑΣΜΑΤΑ:
+Απο την υλοποίηση της εργασίας είναι εύκολο να κατανοήσεις την λειτουργία του github.
+Απο την ολοκρήρωση της με την βοήθεια του Phaser μια πολύ ενδιαφέρουσα και χρήσιμη βιβλιοθήκη.
+Κάθε άτομο χωρίς πολλές γνώσεις μπορεί να επεκτείνει ένα παιχνίδι.
