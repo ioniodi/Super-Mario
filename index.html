@@ -44,6 +44,7 @@ body {
 			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
 			this.load.image('teleport', 'assets/teleport.png', 17, 17);
+			this.load.image('enemy', 'assets/enemy.png', 24, 24);
 
 			this.load.tilemap('level', 'assets/piccolomap.json', null,
 					Phaser.Tilemap.TILED_JSON);
@@ -72,6 +73,11 @@ body {
 			teleports = game.add.group();
 			teleport.enableBody = true;
 			game.physics.arcade.enable(teleport);
+			
+			enemy = game.add.sprite(1460, game.world.height-270, 'enemy');
+			enemies = game.add.group();
+			enemy.enableBody = true;
+			game.physics.arcade.enable(enemy);
 
 			coins = game.add.group();
 			coins.enableBody = true;
@@ -124,6 +130,7 @@ body {
 			game.physics.arcade.overlap(player, goombas, goombaOverlap);
 			game.physics.arcade.overlap(player, coins, coinOverlap);
 			game.physics.arcade.collide(player, teleport, teleportCollide1);
+			game.physics.arcade.overlap(player, enemies, enemyOverlap);
 
 			if (player.body.enable) {
 				player.body.velocity.x = 0;
@@ -165,6 +172,15 @@ body {
 		        var audio = new Audio('audio/coin.wav');
 			audio.play()
 			score += 5;
+                        scoreText.text = 'Score: ' + score;
+		}
+		
+		function enemyOverlap(player, enemy) {
+			enemy.kill();
+		        var audio = new Audio('audio/kid.mp3');
+			audio.play()
+			enemy.body.enable = false;
+			score += 25;
                         scoreText.text = 'Score: ' + score;
 		}
 
