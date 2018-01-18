@@ -14,7 +14,7 @@ var MENU = {
 			game.state.start('Ground1');
 		});
 		key1.anchor.set(0.5,0.5);
-		var key2=game.add.button(50,170,"LEVEL2",function(){
+		var key2=game.add.button(110,150,"LEVEL2",function(){
 			game.state.start('Ground2');
 		});
 		key2.anchor.set(0.5,0.5);
