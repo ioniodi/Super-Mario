@@ -29,6 +29,7 @@ body {
                 var life = 2;
                 var lifeText;
                 var gameoverText;
+		var teleport;
 
 		function preload() {
 
@@ -42,7 +43,7 @@ body {
 			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
 			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
 			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
-
+			this.load.image('teleport', 'assets/teleport.png', 17, 17);
 
 			this.load.tilemap('level', 'assets/piccolomap.json', null,
 					Phaser.Tilemap.TILED_JSON);
@@ -66,6 +67,11 @@ body {
 
 			layer = map.createLayer('solid');
 			layer.resizeWorld();
+			
+			teleport = game.add.sprite(704, game.world.height-192, 'teleport');
+			teleports = game.add.group();
+			teleport.enableBody = true;
+			game.physics.arcade.enable(teleport);
 
 			coins = game.add.group();
 			coins.enableBody = true;
@@ -104,6 +110,13 @@ body {
 			
 			
 		}
+		
+		function teleportCollide1(player, teleport){
+			teleport.kill();
+			teleport.body.enable = false;
+			player.reset(1808, -144);
+		}
+		
 
 		function update() {
 			game.physics.arcade.collide(player, layer);
