@@ -1,2 +1,0 @@
-# Super-Mario
-Super Mario
