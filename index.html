@@ -26,6 +26,7 @@
 	        var sscore;
 	        var llives;
 	        var text;      
+		var endinfo;
 			
 			function preload() {
 				//  We need this because the assets are on github pages
@@ -88,8 +89,8 @@
 				cursors = game.input.keyboard.createCursorKeys();
 				
 	            //text
-	             sscore = game.add.text(10,5, 'Score--> 0 ', {fontSize: '14px', fill: '#800000'});
-	             llives = game.add.text(10,25, 'Lives--> 3 ', {fontSize: '14px', fill: '#800000'});
+	             sscore = game.add.text(10,5, 'Score: 0 ', {fontSize: '14px', fill: '#800000'});
+	             llives = game.add.text(10,25, 'Lives: 3 ', {fontSize: '14px', fill: '#800000'});
 	             
 	             sscore.fixedToCamera = true;
 	             llives.fixedToCamera = true;
@@ -134,7 +135,7 @@
 				coinSound.play();
 				
 				myScore+=1;
-				sscore.text = "Score--> " + myScore; 
+				sscore.text = "Score: " + myScore; 
 			}
 			function goombaOverlap(player, goomba) {
 				if (player.body.touching.down) {
@@ -146,11 +147,11 @@
 					goombastomp.play();
 					goomba.kill();
 					myScore+=100;
-					sscore.text = 'SCORE --> ' + myScore;
+					sscore.text = 'Score: ' + myScore;
 				} else {
 					player.frame = 6;
 					myLives--;
-					llives.text = 'LIVES --> ' + myLives;
+					llives.text = 'Lives: ' + myLives;
 					player.body.enable = false;
 					player.animations.stop();
 					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
