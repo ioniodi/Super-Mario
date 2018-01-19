@@ -1,229 +1,164 @@
 <!DOCTYPE HTML>
-		<html>
-		<head>
-		<title>Super-Mario</title>
-		<meta charset="utf-8">
-		<style>
-		body {
-			margin: 0;
-			padding: 0;
-			background-color: #000;
-		}
-		</style>     
-		<script src="http://cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
-		</head>
-		<body>
-		<script type="text/javascript">var game = new Phaser.Game(512, 240, Phaser.CANVAS, '',{preload : preload,create : create,update : update}, false, false);
-		   
-		var myScore = 0;
-	        var score;
-		var myLives = 3;
-		var lives;
-		var myKills = 0;                   
-		var kills;
-		var endinfo;
-		var invincible = 0;
-		var speed = 0;
-		var jump = 0;
-		function preload() {
-		//  We need this because the assets are on github pages
-		//  Remove the next 2 lines if running locally
-		this.load.baseURL = 'https://ioniodi.github.io/Super-Mario/';
-		this.load.crossOrigin = 'anonymous';
-		this.load.spritesheet('tiles', 'assets/super_mario_tileslvl2.png', 16,16);
-		this.load.spritesheet('goomba', 'assets/goombalvl2.png', 16, 16);
-		this.load.spritesheet('mario', 'assets/mariolvl2.png', 16, 16);
-		this.load.spritesheet('coin', 'assets/coinlvl2.png', 16, 16);
-		this.load.tilemap('level','assets/leve2.json',null, Phaser.Tilemap.TILED_JSON);
-		this.load.audio('sound', 'audio/song.mp3');
-		this.load.audio('jump', 'audio/jump.wav');
-		this.load.audio('stomp', 'audio/stomp.wav');
-		this.load.audio('coin', 'audio/coin.wav');
-		}
-				
-		function create() {
-			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
-			game.scale.pageAlignHorizontally = true;
-			game.scale.pageAlignVertically = true;
-			game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-			game.physics.startSystem(Phaser.Physics.ARCADE);
-			game.stage.backgroundColor = '#7db9b3';
-					
-					
-	                game.sound = game.add.audio('sound');
-		        game.sound.play();
-	                        
-			map = game.add.tilemap('level');
-			map.addTilesetImage('tiles', 'tiles');
-			map.setCollisionBetween(3, 12, true, 'solid');
-			map.createLayer('background');
-			layer = map.createLayer('solid');
-			layer.resizeWorld();
-			coins = game.add.group();
-			coins.enableBody = true;
-			map.createFromTiles(2, null, 'coin', 'stuff', coins);
-			coins.callAll('animations.add', 'animations', 'spin',[ 0, 0, 1, 2 ], 3, true);
-			coins.callAll('animations.play', 'animations', 'spin');
-			goombas = game.add.group();
-			goombas.enableBody = true;
-			map.createFromTiles(1, null, 'goomba', 'stuff',goombas);
-			goombas.callAll('animations.add', 'animations', 'walk', [ 0, 1 ],2, true);
-			goombas.callAll('animations.play', 'animations', 'walk');
-			goombas.setAll('body.bounce.x', 1);
-			goombas.setAll('body.velocity.x', -20);
-			goombas.setAll('body.gravity.y', 500);
-			player = game.add.sprite(16, game.world.height - 48, 'mario');
-			game.physics.arcade.enable(player);
-			player.body.gravity.y = 370;
-			player.body.collideWorldBounds = true;
-			player.animations.add('walkRight', [ 1, 2, 3 ], 10, true);
-			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
-			player.goesRight = true;
-			game.camera.follow(player);
-			cursors = game.input.keyboard.createCursorKeys();
-				
-			
-            		
-	
-		        //text
-			score = game.add.text(10,5, 'Score: 0 ', {fontSize: '14px', fill: '#ff0000'});
-			lives = game.add.text(10,25, 'Lives: 3 ', {fontSize: '14px', fill: '#ff0000'});
-			kills = game.add.text(10,45, 'Kills: 0 ', {fontSize: '14px', fill: '#ff0000'});
-			endinfo = game.add.text(120,46,'  ', {fontSize:'40px', fill:'#ffffff '});
-			score.fixedToCamera = true;
-			lives.fixedToCamera = true;
-			kills.fixedToCamera = true;
-			endinfo.fixedToCamera = true;
-			}
+	<html>
+	<head>
+	<title>Super-Mario</title>
+	<meta charset="utf-8">
+	<style>
+	body {
+		margin: 0;
+		padding: 0;
+		background-color: #000;
+	}
+	</style>
+	<script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var game = new Phaser.Game(512, 240, Phaser.CANVAS, '', {
+				preload : preload,
+				create : create,
+				update : update
+			}, false, false);
+	        
+	        var myScore = 0;
+	        var myLives = 3;
+	        
+	        var sscore;
+	        var llives;
+	        var text;      
 		
-		function update() {
-			game.physics.arcade.collide(player, layer);
-			game.physics.arcade.collide(goombas, layer);
 			
-			if(invincible == 0){
+			function preload() {
+				//  We need this because the assets are on github pages
+				//  Remove the next 2 lines if running locally
+				this.load.baseURL = 'https://Kwnstant1na.github.io/Super-Mario/';
+				this.load.crossOrigin = 'anonymous';
+				this.load.spritesheet('tiles', 'assets/super_mario_tileslvl2.png', 16,
+						16);
+				this.load.spritesheet('goomba', 'assets/goombalvl2.png', 16, 16);
+				this.load.spritesheet('mario', 'assets/mariolvl2.png', 16, 16);
+				this.load.spritesheet('coin', 'assets/coinlvl2.png', 16, 16);
+				this.load.tilemap('level', 'assets/level2.json', null,
+						Phaser.Tilemap.TILED_JSON);
+				this.load.audio('sound', 'audio/song.mp3');
+				this.load.audio('jump', 'audio/jump.wav');
+				this.load.audio('stomp', 'audio/stomp.wav');
+				this.load.audio('coin', 'audio/coin.wav');
+				
+			}
+			
+			function create() {
+				Phaser.Canvas.setImageRenderingCrisp(game.canvas)
+				game.scale.pageAlignHorizontally = true;
+				game.scale.pageAlignVertically = true
+				game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+				game.physics.startSystem(Phaser.Physics.ARCADE);
+				game.stage.backgroundColor = '#7db9b3';
+				
+				game.sound = game.add.audio('sound');
+	                        game.sound.play();
+				map = game.add.tilemap('level');
+				map.addTilesetImage('tiles', 'tiles');
+				map.setCollisionBetween(3, 12, true, 'solid');
+				map.createLayer('background');
+				layer = map.createLayer('solid');
+				layer.resizeWorld();
+				coins = game.add.group();
+				coins.enableBody = true;
+				map.createFromTiles(2, null, 'coin', 'stuff', coins);
+				coins.callAll('animations.add', 'animations', 'spin',
+						[ 0, 0, 1, 2 ], 3, true);
+				coins.callAll('animations.play', 'animations', 'spin');
+				goombas = game.add.group();
+				goombas.enableBody = true;
+				map.createFromTiles(1, null, 'goomba', 'stuff', goombas);
+				goombas.callAll('animations.add', 'animations', 'walk', [ 0, 1 ],
+						2, true);
+				goombas.callAll('animations.play', 'animations', 'walk');
+				goombas.setAll('body.bounce.x', 1);
+				goombas.setAll('body.velocity.x', -20);
+				goombas.setAll('body.gravity.y', 500);
+				player = game.add.sprite(16, game.world.height - 48, 'mario');
+				game.physics.arcade.enable(player);
+				player.body.gravity.y = 370;
+				player.body.collideWorldBounds = true;
+				player.animations.add('walkRight', [ 1, 2, 3 ], 10, true);
+				player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
+				player.goesRight = true;
+				game.camera.follow(player);
+				cursors = game.input.keyboard.createCursorKeys();
+				
+	            //text
+	             sscore = game.add.text(10,5, 'Score: 0 ', {fontSize: '14px', fill: '#800000'});
+	             llives = game.add.text(10,25, 'Lives: 3 ', {fontSize: '14px', fill: '#800000'});
+	             
+	             sscore.fixedToCamera = true;
+	             llives.fixedToCamera = true;
+			}
+			function update() {
+				game.physics.arcade.collide(player, layer);
+				game.physics.arcade.collide(goombas, layer);
 				game.physics.arcade.overlap(player, goombas, goombaOverlap);
-			}
-			else if(invincible == 1){
-				game.physics.arcade.overlap(player, goombas, null);
-			}
-			if (player.scale.x < 1.1){
-				speed = 1;
-				jump = 1;
-			}
-			else{
-				speed = 1.5;
-				jump = 2;
-			}
-			game.physics.arcade.overlap(player, coins, coinOverlap);
-			if (player.body.enable) {
-				player.body.velocity.x = 0;
-				if (cursors.left.isDown) {
-					player.body.velocity.x = -90 * speed;
-					player.animations.play('walkLeft');
-					player.goesRight = false;
-				} else if (cursors.right.isDown) {
-					player.body.velocity.x = 90 * speed;
-					player.animations.play('walkRight');
-					player.goesRight = true;
-				} else {
-					player.animations.stop();
-					if (player.goesRight)
-						player.frame = 0;
-					else
-						player.frame = 7;
-				}
-				if (cursors.up.isDown && player.body.onFloor()) {
-					player.body.velocity.y = -190 * jump;
-					player.animations.stop();
-				}
-				if (player.body.velocity.y != 0) {
-					if (player.goesRight)
-						player.frame = 5;
-					else
-						player.frame = 12;
+				game.physics.arcade.overlap(player, coins, coinOverlap);
+				if (player.body.enable) {
+					player.body.velocity.x = 0;
+					if (cursors.left.isDown) {
+						player.body.velocity.x = -90;
+						player.animations.play('walkLeft');
+						player.goesRight = false;
+					} else if (cursors.right.isDown) {
+						player.body.velocity.x = 90;
+						player.animations.play('walkRight');
+						player.goesRight = true;
+					} else {
+						player.animations.stop();
+						if (player.goesRight)
+							player.frame = 0;
+						else
+							player.frame = 7;
+					}
+					if (cursors.up.isDown && player.body.onFloor()) {
+						player.body.velocity.y = -190;
+						player.animations.stop();
+					}
+					if (player.body.velocity.y != 0) {
+						if (player.goesRight)
+							player.frame = 5;
+						else
+							player.frame = 12;
+					}
 				}
 			}
-		}
-		function coinOverlap(player, coin) {
-			coin.kill();
-			var coinSound = new Audio('audio/coin.wav');
-			coinSound.play();		
-			myScore+=1;
-			score.text = "Score: " + myScore; 
-		}
-		function goombaOverlap(player, goomba) {
-		if(invincible == 1){
-			invincible =0;
-		}
-			if (player.body.touching.down) {
-				goomba.animations.stop();
-				goomba.frame = 2;
-				goomba.body.enable = false;
-				player.body.velocity.y = -80;
-	                    	game.time.events.add(Phaser.Timer.SECOND, function(){
+			function coinOverlap(player, coin) {
+				coin.kill();
+				var coinSound = new Audio('audio/coin.wav');
+				coinSound.play();
+				
+				myScore+=1;
+				sscore.text = "Score: " + myScore; 
+			}
+			function goombaOverlap(player, goomba) {
+				if (player.body.touching.down) {
+					goomba.animations.stop();
+					goomba.frame = 2;
+					goomba.body.enable = false;
+					player.body.velocity.y = -80;
 					var goombastomp = new Audio('audio/stomp.wav');
-					goomba.kill();
 					goombastomp.play();
+					goomba.kill();
 					myScore+=100;
-					score.text = "Score: " + myScore;
-					myKills+=1;
-					kills.text = "Kills: " + myKills;
-					if (myKills >= 2){
-						if (myKills % 2 == 0){
-							player.scale.x = 1.2;
-        
-							player.scale.y = 1.2;
-							game.time.events.add(Phaser.Timer.SECOND * 5, function(){
-								player.scale.x = 1.0;
-        
-								player.scale.y = 1.0;
-							});
-						}
-					}
-					if (myKills == 5 || myKills == 10 || myKills == 15 ||myKills == 20   ){
-						myLives +=1;
-						lives.text = 'Lives: ' + myLives;
-					}
-				});
-			} else {
-				if (player.scale.x < 1.1){
-					invincible = 0;
-					myLives -=1;
-					lives.text = 'Lives: ' + myLives;
-					player.scale.x = 1.0;
-        
-					player.scale.y = 1.0;
+					sscore.text = 'Score: ' + myScore;
+				} else {
 					player.frame = 6;
+					myLives--;
+					llives.text = 'Lives: ' + myLives;
 					player.body.enable = false;
 					player.animations.stop();
-					if(myLives <= 0){
-						game.sound.stop();
-						endinfo.text= "GAME OVER";
-						game.time.events.add(Phaser.Timer.SECOND, function(){
-                        			game.paused = true;});
-					}
-					else{
-						player.body.enable = true;
-						player.x = 16;
-						player.y = 100;
-					}
-				}
-				else {
-					invincible = 1;
-					player.scale.x = 1.0;
-        
-					player.scale.y = 1.0;
-    					player.alpha = 0.5;
-					game.add.tween(player).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true, 0, 1000, true);
-						
-					game.time.events.add(Phaser.Timer.SECOND * 2, function(){ 
-						invincible = 0; 
-    						player.alpha = 1.0;
-						game.add.tween(player).to( { alpha: 1 }, 500, Phaser.Easing.Linear.None, true, 0, 1000, true);
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+						game.paused = true;
 					});
 				}
 			}
-		}
 		</script>
 	</body>
-</html>
+	</html>
