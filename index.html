@@ -79,18 +79,18 @@
 				goombas.setAll('body.bounce.x', 1);
 				goombas.setAll('body.velocity.x', -20);
 				goombas.setAll('body.gravity.y', 500);
-				
-				enemies = game.add.group();
+                
+                                enemies = game.add.group();
 				enemies.enableBody = true;
 				map.createFromTiles(1, null, 'enemy', 'stuff', enemies);
 				enemies.callAll('animations.add', 'animations', 'walk', [ 0, 1 ],
 						2, true);
 				enemies.callAll('animations.play', 'animations', 'walk');
 				enemies.setAll('body.bounce.x', 1);
-				enemies.setAll('body.velocity.x', -20);
+				enemies.setAll('body.velocity.x', -61);
 				enemies.setAll('body.gravity.y', 500);
-				
-				
+                
+                
 				player = game.add.sprite(16, game.world.height - 48, 'mario');
 				game.physics.arcade.enable(player);
 				player.body.gravity.y = 370;
@@ -113,8 +113,10 @@
 				game.physics.arcade.collide(goombas, layer);
 				game.physics.arcade.overlap(player, goombas, goombaOverlap);
 				game.physics.arcade.overlap(player, coins, coinOverlap);
-				game.physics.arcade.overlap(player, enemies, enemyOverlap);
-				
+                                game.physics.arcade.collide(enemies, layer);
+                                game.physics.arcade.overlap(player, enemies, enemyOverlap);
+                
+                
 				if (player.body.enable) {
 					player.body.velocity.x = 0;
 					if (cursors.left.isDown) {
