@@ -22,11 +22,10 @@
 	        
 	        var myScore = 0;
 	        var myLives = 3;
-	        
 	        var sscore;
 	        var llives;
 	        var text;      
-		var endinfo;
+		    var endinfo;
 			
 			function preload() {
 				//  We need this because the assets are on github pages
@@ -104,9 +103,11 @@
 	            //text
 	             sscore = game.add.text(10,5, 'Score: 0 ', {fontSize: '14px', fill: '#800000'});
 	             llives = game.add.text(10,25, 'Lives: 3 ', {fontSize: '14px', fill: '#800000'});
+                 endinfo = game.add.text(120,46,'  ', {fontSize:'40px', fill:'#800000 '});
 	             
 	             sscore.fixedToCamera = true;
 	             llives.fixedToCamera = true;
+                 endinfo.fixedToCamera = true;
 			}
 			function update() {
 				game.physics.arcade.collide(player, layer);
@@ -174,7 +175,18 @@
 					player.body.enable = false;
 					player.animations.stop();
 					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+                                                if(myLives <=0 ){
+						game.sound.pause();
 						game.paused = true;
+                                                endinfo.text= "GAME OVER"
+					}
+					else{
+						player.invincible= false ;
+						player.body.enable = true;
+						player.x = 16;
+						player.y = game.world.height - 48;
+					}
+					
 					});
 				}
 			}			     
@@ -197,7 +209,18 @@
 					player.body.enable = false;
 					player.animations.stop();
 					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+                                                if(myLives <= 0){
+						game.sound.pause();
 						game.paused = true;
+                                                endinfo.text= "GAME OVER"
+					}
+					else{
+						player.invincible= false ;
+						player.body.enable = true;
+						player.x = 16;
+						player.y = game.world.height - 48;
+					}
+						
 					});
 				}
 			}
