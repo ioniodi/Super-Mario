@@ -2,148 +2,183 @@
 <html>
 <head>
 <title>Super-Mario</title>
+	<link href="http://www.fontspace.com/freaky-fonts/emulogic?text=" rel="stylesheet" type='text/css'>
 <meta charset="utf-8">
 <style>
 body {
+	font-family: 'emulogic', cursive;
+	font-weight: normal;
+   	font-style: normal;
 	margin: 0;
 	padding: 0;
 	background-color: #000;
 }
 </style>
+<script src="MENUS.js"></script>
+<script src="STAGE1.js"></script>
+<script src="STAGE2.js"></script>
+<script src="STAGE3.js"></script>
 <script src="//cdn.jsdelivr.net/phaser/2.6.2/phaser.min.js"></script>
 </head>
 <body>
 	<script type="text/javascript">
-		var game = new Phaser.Game(256, 240, Phaser.CANVAS, '', {
-			preload : preload,
-			create : create,
-			update : update
-		}, false, false);
-
+		var game = new Phaser.Game(256, 240, Phaser.CANVAS, '',this,false,false);
 		function preload() {
-
 			//  We need this because the assets are on github pages
 			//  Remove the next 2 lines if running locally
-			this.load.baseURL = 'https://ioniodi.github.io/Super-Mario/';
+			this.load.baseURL = 'https://dimitragkena.github.io/Super-Mario/';
 			this.load.crossOrigin = 'anonymous';
-
-			this.load.spritesheet('tiles', 'assets/super_mario_tiles.png', 16,
-					16);
-			this.load.spritesheet('goomba', 'assets/goomba.png', 16, 16);
-			this.load.spritesheet('mario', 'assets/mario.png', 16, 16);
-			this.load.spritesheet('coin', 'assets/coin.png', 16, 16);
-
-			this.load.tilemap('level', 'assets/super_mario_map.json', null,
-					Phaser.Tilemap.TILED_JSON);
 		}
-
-		function create() {
-			Phaser.Canvas.setImageRenderingCrisp(game.canvas)
-			game.scale.pageAlignHorizontally = true;
-			game.scale.pageAlignVertically = true
-			game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-			game.physics.startSystem(Phaser.Physics.ARCADE);
-
-			game.stage.backgroundColor = '#5c94fc';
-
-			map = game.add.tilemap('level');
-			map.addTilesetImage('tiles', 'tiles');
-			map.setCollisionBetween(3, 12, true, 'solid');
-
-			map.createLayer('background');
-
-			layer = map.createLayer('solid');
-			layer.resizeWorld();
-
-			coins = game.add.group();
-			coins.enableBody = true;
-			map.createFromTiles(2, null, 'coin', 'stuff', coins);
-			coins.callAll('animations.add', 'animations', 'spin',
-					[ 0, 0, 1, 2 ], 3, true);
-			coins.callAll('animations.play', 'animations', 'spin');
-
-			goombas = game.add.group();
-			goombas.enableBody = true;
-			map.createFromTiles(1, null, 'goomba', 'stuff', goombas);
-			goombas.callAll('animations.add', 'animations', 'walk', [ 0, 1 ],
-					2, true);
-			goombas.callAll('animations.play', 'animations', 'walk');
-			goombas.setAll('body.bounce.x', 1);
-			goombas.setAll('body.velocity.x', -20);
-			goombas.setAll('body.gravity.y', 500);
-
-			player = game.add.sprite(16, game.world.height - 48, 'mario');
-			game.physics.arcade.enable(player);
-			player.body.gravity.y = 370;
-			player.body.collideWorldBounds = true;
-			player.animations.add('walkRight', [ 1, 2, 3 ], 10, true);
-			player.animations.add('walkLeft', [ 8, 9, 10 ], 10, true);
-			player.goesRight = true;
-
-			game.camera.follow(player);
-
-			cursors = game.input.keyboard.createCursorKeys();
-		}
-
-		function update() {
-			game.physics.arcade.collide(player, layer);
-			game.physics.arcade.collide(goombas, layer);
-			game.physics.arcade.overlap(player, goombas, goombaOverlap);
-			game.physics.arcade.overlap(player, coins, coinOverlap);
-
-			if (player.body.enable) {
-				player.body.velocity.x = 0;
-				if (cursors.left.isDown) {
-					player.body.velocity.x = -90;
-					player.animations.play('walkLeft');
-					player.goesRight = false;
-				} else if (cursors.right.isDown) {
-					player.body.velocity.x = 90;
-					player.animations.play('walkRight');
-					player.goesRight = true;
-				} else {
-					player.animations.stop();
-					if (player.goesRight)
-						player.frame = 0;
-					else
-						player.frame = 7;
-				}
-
-				if (cursors.up.isDown && player.body.onFloor()) {
-					player.body.velocity.y = -190;
-					player.animations.stop();
-				}
-
-				if (player.body.velocity.y != 0) {
-					if (player.goesRight)
-						player.frame = 5;
-					else
-						player.frame = 12;
-				}
-			}
-		}
-
+		var music;
+		var score;
+		var jsound;
+		var scorecount=0;
+		var cointext;
+		var coincount=0;
+		var livestext;
+		var lives=3;
+		var gameo;
+		var cong;
+		var coincol;
+		var coincoll;
+		game.state.add('STAGE1',STAGE1);
+		game.state.add('STAGE2',STAGE2);
+		game.state.add('STAGE3',STAGE3);
+		game.state.add('MENUS',MENUS);
+		game.state.start('MENUS');
+		function fireworkOverlap(player,firework){
+			cong=game.add.sprite(0,0,'congrats');
+			cong.fixedToCamera=true;
+			game.time.events.add(Phaser.Timer.SECOND, function() {
+				scorecount=0;
+				coincount=0;
+				lives=3;
+				game.state.start('MENUS');
+			});
+			
+		}	
 		function coinOverlap(player, coin) {
+			if(coincount==35){
+				coincol=game.add.text(50,120,'You have collected at least 35 coins!',{font:'6px emulogic'});
+				coincoll=game.add.text(50,140,'Coins now count for double score!',{font:'6px emulogic'});
+				coincol.fixedToCamera=true;
+				coincoll.fixedToCamera=true;
+				game.time.events.add(Phaser.Timer.SECOND, function() {
+					coincol.kill();
+					coincoll.kill();
+				});
+			}
+			else if(coincount<35){
+				scorecount +=100;
+			}
+			else{
+				scorecount +=200;
+			}
+			score.text='WALUIGI\n\t\t'+scorecount;
+			coincount +=1;
+			cointext.text='COINS\n\t\t'+coincount;
+			var csound=game.add.audio('collect');
+			csound.play();
 			coin.kill();
 		}
-
 		function goombaOverlap(player, goomba) {
 			if (player.body.touching.down) {
+				var ssound=game.add.audio('stomp');
+				ssound.play();
 				goomba.animations.stop();
 				goomba.frame = 2;
 				goomba.body.enable = false;
 				player.body.velocity.y = -80;
+				scorecount +=100;
+				score.text='WALUIGI\n'+scorecount;
 				game.time.events.add(Phaser.Timer.SECOND, function() {
 					goomba.kill();
 				});
 			} else {
+				var dsound=game.add.audio('death');
+				music.stop();
+				dsound.play();
 				player.frame = 6;
 				player.body.enable = false;
 				player.animations.stop();
-				game.time.events.add(Phaser.Timer.SECOND * 3, function() {
-					game.paused = true;
-				});
+				if(lives>1){
+					setTimeout(function(){
+						scorecount=0;
+						coincount=0;
+						lives--;
+						game.state.restart();
+					},3000);
+				}
+				else{
+					var gameover=game.add.audio('gameover');
+					gameover.play();
+					gameo=game.add.sprite(0,0,'go');
+					gameo.fixedToCamera=true;
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+						location.reload();
+					});
+				}
 			}
+		}
+		function koopaOverlap(player, koopa) {
+			if (player.body.touching.down) {
+				var ssound=game.add.audio('stomp');
+				ssound.play();
+				koopa.animations.stop();
+				koopa.frame = 2;
+				koopa.body.enable = false;
+				player.body.velocity.y = -80;
+				scorecount +=200;
+				score.text='WALUIGI\n'+scorecount;
+				game.time.events.add(Phaser.Timer.SECOND, function() {
+					koopa.kill();
+				});
+			} else {
+				var dsound=game.add.audio('death');
+				music.stop();
+				dsound.play();
+				player.frame = 6;
+				player.body.enable = false;
+				player.animations.stop();
+				if(lives>1){
+					setTimeout(function(){
+						scorecount=0;
+						coincount=0;
+						lives--;
+						game.state.restart();
+					},3000);
+				}
+				else{
+					var gameover=game.add.audio('gameover');
+					gameover.play();
+					gameo=game.add.sprite(0,0,'go');
+					gameo.fixedToCamera=true;
+					game.time.events.add(Phaser.Timer.SECOND * 3, function() {
+						location.reload();
+					});
+				}
+			}
+		}
+		function teleporterOverlap(player,teleporter){
+			var tp=game.add.text(100,120,'Teleport available',{font:'8px emulogic'});
+			tp.fixedToCamera=true;
+			game.time.events.add(Phaser.Timer.SECOND, function() {
+				tp.kill();
+			});
+			if(cursors.right.isDown){
+				player.reset(5,45);
+			}
+			else if(cursors.down.isDown){
+				player.reset(960,160);
+			}
+			else if(cursors.up.isDown){
+				player.reset(1485,28);
+			}
+		}
+		function stoneOverlap(player,stone){
+			game.time.events.add(Phaser.Timer.SECOND, function(){
+				game.state.start('STAGE3');
+			});
 		}
 	</script>
 </body>
